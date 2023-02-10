@@ -1,12 +1,46 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ReactDOM from 'react-dom'
-
+import AccountCard from "./AccountCard"
 import './popup.css'
-import {createRoot} from "react-dom/client";
+import {AWSAccount, getAccounts} from "../utils/api";
+import AccountGraph from "./AccountGraph";
 
-const test = <img src="images/icon128.png.png"/>
+const App: React.FC<{}> = () => {
+    const [accounts, setAccounts] = useState<AWSAccount[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getAccounts();
+            setAccounts(data);
+        };
+        fetchData();
+    }, []);
+
+    return (
+        <div>
+            <section>
+                <h2>Data</h2>
+                {accounts.map((account) => (
+                    <AccountCard key={account.accountID} awsAccount={account}/>
+                ))}
+            </section>
+            <section>
+                <AccountGraph></AccountGraph>
+            </section>
+        </div>
+    )
+
+};
+
+// return (
+//     <div>
+//         <h1>Available AWS accounts</h1>
+//         <AccountCard name="1111-2222-2222"/>
+//         <AccountCard name="2222-2222-2222"/>
+//     </div>
+// );
+// }
 
 const rootEl = document.createElement("div");
 document.body.appendChild(rootEl);
-const root = createRoot(rootEl);
-root.render(test)
+ReactDOM.render(<App/>, rootEl)
