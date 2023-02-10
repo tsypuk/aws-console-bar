@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.22.0](https://github.com/tsypuk/aws-console-bar/compare/v1.21.0...v1.22.0) (2024-03-11)
+
+
+### Features
+
+* add aws accounts list and graph rendered in popup ([4491fd0](https://github.com/tsypuk/aws-console-bar/commit/4491fd046c6bec49c111617f0daf380be5d22c3b))
+
 ## [1.21.0](https://github.com/tsypuk/aws-console-bar/compare/v1.20.0...v1.21.0) (2024-03-09)
 
 
