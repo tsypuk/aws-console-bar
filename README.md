@@ -7,3 +7,9 @@
 https://developer.chrome.com/docs/webstore/using_webstore_api/
 
 https://chrome.google.com/webstore/devconsole/
+
+
+## TODO:
+
+- add average session line: https://echarts.apache.org/examples/en/editor.html?c=multiple-y-axis
+- 

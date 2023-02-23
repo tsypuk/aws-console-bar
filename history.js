@@ -1,11 +1,43 @@
+function secondsToHHMMSS(seconds) {
+    // get hours from seconds
+    hours = 0
+    if (seconds => 3600) {
+        hours = Math.floor(seconds / 3600);
+    }
+    let minutes = Math.floor((seconds % 3600) / 60);
+    let secondsRemainder = seconds % 60;
+
+    minutes = String(minutes).padStart(2, '0');
+    hours = String(hours).padStart(2, '0');
+    secondsRemainder = String(secondsRemainder).padStart(2, '0');
+
+    return `${hours}:${minutes}:${secondsRemainder}`;
+}
+
 var chartDom = document.getElementById('main');
 var myChart = echarts.init(chartDom);
 
 accounts = new Map()
 xlabels = []
 
+aws_accounts = new Map()
+
+chrome.storage.sync.get(['aws_accounts'], result => {
+    result.aws_accounts.forEach(item => {
+        aws_accounts.set(item.accountID, item.name)
+    })
+    render_history_table()
+})
+
+function enrichAccountName(accountId) {
+    if (aws_accounts.has(accountId)) {
+        return aws_accounts.get(accountId)
+    } else {
+        return accountId
+    }
+}
+
 function appendOrCreateArray(accountId, data) {
-    console.log(accounts.get(accountId))
     if (accounts.has(accountId)) {
         accounts.get(accountId).push(data);
     } else {
@@ -36,12 +68,13 @@ function render_history_table() {
       <thead>
         <tr>
           <th>#</th>
-          <th>account</th>
-          <th>user</th>
-          <th>type</th>
-          <th>start</th>
-          <th>end</th>
-          <th>duration, min</th>
+          <th>Alias</th>
+          <th>AWSAccountID</th>
+          <th>User</th>
+          <th>Type</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Duration, min</th>
         </tr>
       </thead>
       <tbody>
@@ -60,34 +93,38 @@ function render_history_table() {
             result.history.forEach((item, index) => {
                 const newRow = document.createElement('tr');
 
-                const firstCell = document.createElement('td');
-                firstCell.textContent = index
+                const idCell = document.createElement('td');
+                idCell.textContent = index
 
-                const secondCell = document.createElement('td');
-                secondCell.textContent = item.Account
+                const accountAliasCell = document.createElement('td');
+                accountAliasCell.textContent = enrichAccountName(item.Account)
 
-                const thirdCell = document.createElement('td');
-                thirdCell.textContent = item.IAMUser
+                const accountIdCell = document.createElement('td');
+                accountIdCell.textContent = item.Account
 
-                const forthdCell = document.createElement('td');
-                forthdCell.textContent = item.type
+                const iamUserCell = document.createElement('td');
+                iamUserCell.textContent = item.IAMUser
 
-                const fifthdCell = document.createElement('td');
-                fifthdCell.textContent = item.StartTime
+                const typeCell = document.createElement('td');
+                typeCell.textContent = item.type
 
-                const sixdCell = document.createElement('td');
-                sixdCell.textContent = item.EndTime
+                const sessionStartCell = document.createElement('td');
+                sessionStartCell.textContent = item.StartTime
 
-                const sevenCell = document.createElement('td');
-                sevenCell.textContent = secondsToHHMMSS(parseInt(item.Duration / 1000))
+                const sessionEndCell = document.createElement('td');
+                sessionEndCell.textContent = item.EndTime
 
-                newRow.appendChild(firstCell);
-                newRow.appendChild(secondCell);
-                newRow.appendChild(thirdCell);
-                newRow.appendChild(forthdCell);
-                newRow.appendChild(fifthdCell);
-                newRow.appendChild(sixdCell);
-                newRow.appendChild(sevenCell);
+                const sessionDurationCell = document.createElement('td');
+                sessionDurationCell.textContent = secondsToHHMMSS(parseInt(item.Duration / 1000))
+
+                newRow.appendChild(idCell);
+                newRow.appendChild(accountAliasCell);
+                newRow.appendChild(accountIdCell);
+                newRow.appendChild(iamUserCell);
+                newRow.appendChild(typeCell);
+                newRow.appendChild(sessionStartCell);
+                newRow.appendChild(sessionEndCell);
+                newRow.appendChild(sessionDurationCell);
                 tbody.appendChild(newRow);
             })
 
@@ -113,8 +150,7 @@ function render_history_table() {
                     axisTick: {
                         alignWithLabel: true
                     }, data: xlabels
-                },
-                yAxis: {}, series: series
+                }, yAxis: {}, series: series
             };
             option && myChart.setOption(option);
         }
@@ -123,15 +159,3 @@ function render_history_table() {
     const awsHistoryDiv = document.getElementById('aws_history');
     awsHistoryDiv.appendChild(table);
 }
-
-function secondsToHHMMSS(seconds) {
-    let minutes = Math.floor((seconds % 3600) / 60);
-    let secondsRemainder = seconds % 60;
-
-    minutes = String(minutes).padStart(2, '0');
-    secondsRemainder = String(secondsRemainder).padStart(2, '0');
-
-    return `${minutes}:${secondsRemainder}`;
-}
-
-render_history_table()
