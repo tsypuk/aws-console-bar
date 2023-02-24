@@ -21,3 +21,4 @@ https://chrome.google.com/webstore/devconsole/
 - migrate build system webpack assembly
 - update online documentation
 - detect non-home region feature
+- add pagination to session history

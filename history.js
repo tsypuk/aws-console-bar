@@ -14,6 +14,15 @@ function secondsToHHMMSS(seconds) {
     return `${hours}:${minutes}:${secondsRemainder}`;
 }
 
+function mergeAccountAndColors(accounts, colors) {
+    let result = new Map()
+
+    for (i = 0; i < colors.length; i++) {
+        result.set(accounts[i], colors[i])
+    }
+    return result
+}
+
 function mergeArrays(...arrays) {
     let result = []
 
@@ -81,9 +90,19 @@ function render_history_table() {
     const table = document.createElement('table');
     table.className = "table table-hover"
     table.innerHTML = `
+    <style>
+      .circle {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+    </style>
       <thead>
         <tr>
           <th>#</th>
+          <th></th>
           <th>Alias</th>
           <th>AWSAccountID</th>
           <th>User</th>
@@ -102,53 +121,20 @@ function render_history_table() {
     // Populate the table with data from the accounts array
     chrome.storage.local.get(['history'], result => {
         if (result.history) {
+            // Filter and Sorting
             startPageIndex = 0
             pagingSize = 10
 
-            result.history = result.history.sort((a, b) => b.StartTimeStamp - a.StartTimeStamp).slice(startPageIndex, pagingSize)
+            result.history = result.history.sort((a, b) => b.StartTimeStamp - a.StartTimeStamp).slice(startPageIndex, pagingSize).reverse()
+
+            //Graph
             result.history.forEach((item, index) => {
-                const newRow = document.createElement('tr');
-
-                const idCell = document.createElement('td');
-                idCell.textContent = index
-
-                const accountAliasCell = document.createElement('td');
-                accountAliasCell.textContent = enrichAccountName(item.Account)
-
-                const accountIdCell = document.createElement('td');
-                accountIdCell.textContent = item.Account
-
-                const iamUserCell = document.createElement('td');
-                iamUserCell.textContent = item.IAMUser
-
-                const typeCell = document.createElement('td');
-                typeCell.textContent = item.type
-
-                const sessionStartCell = document.createElement('td');
-                sessionStartCell.textContent = item.StartTime
-
-                const sessionEndCell = document.createElement('td');
-                sessionEndCell.textContent = item.EndTime
-
-                const sessionDurationCell = document.createElement('td');
-                sessionDurationCell.textContent = secondsToHHMMSS(parseInt(item.Duration / 1000))
-
-                newRow.appendChild(idCell);
-                newRow.appendChild(accountAliasCell);
-                newRow.appendChild(accountIdCell);
-                newRow.appendChild(iamUserCell);
-                newRow.appendChild(typeCell);
-                newRow.appendChild(sessionStartCell);
-                newRow.appendChild(sessionEndCell);
-                newRow.appendChild(sessionDurationCell);
-                tbody.appendChild(newRow);
-            })
-
-            result.history.reverse().forEach((item, index) => {
                 appendOrCreateArray(item.Account, parseInt(item.Duration / 1000))
                 // accounts[item.Account].datas.push(parseInt(item.Duration / 1000))
                 xlabels.push(item.StartTime)
             })
+
+            result.history.reverse()
 
             series = []
             data = []
@@ -232,6 +218,71 @@ function render_history_table() {
                 , series: series
             };
             option && myChart.setOption(option);
+
+            myChartColors = []
+            myChart.getModel().getSeries().map(s => {
+                myChartColors.push(myChart.getVisual({seriesIndex: s.seriesIndex}, 'color'))
+            })
+
+
+            // prepare color map
+            color_account_map = mergeAccountAndColors(data, myChartColors)
+            console.log(color_account_map)
+            // data
+            // Table Object
+
+            result.history.forEach((item, index) => {
+                const newRow = document.createElement('tr');
+
+                const circleCell = document.createElement('td');
+
+                const idCell = document.createElement('td');
+                idCell.textContent = index
+
+                const accountAliasCell = document.createElement('td');
+                accountAliasCell.textContent = enrichAccountName(item.Account)
+
+                const accountIdCell = document.createElement('td');
+                accountIdCell.textContent = item.Account
+
+                const iamUserCell = document.createElement('td');
+                iamUserCell.textContent = item.IAMUser
+
+                const typeCell = document.createElement('td');
+                typeCell.textContent = item.type
+
+                const sessionStartCell = document.createElement('td');
+                sessionStartCell.textContent = item.StartTime
+
+                const sessionEndCell = document.createElement('td');
+                sessionEndCell.textContent = item.EndTime
+
+                const sessionDurationCell = document.createElement('td');
+                sessionDurationCell.textContent = secondsToHHMMSS(parseInt(item.Duration / 1000))
+
+
+                newRow.appendChild(idCell);
+
+                const span = document.createElement('span');
+                span.className = "circle"
+                console.log(item.Account)
+                console.log(color_account_map.get(item.Account))
+                span.style.backgroundColor = color_account_map.get(item.Account)
+                circleCell.appendChild(span)
+
+                newRow.appendChild(idCell);
+                newRow.appendChild(circleCell)
+                newRow.appendChild(accountAliasCell);
+                newRow.appendChild(accountIdCell);
+                newRow.appendChild(iamUserCell);
+                newRow.appendChild(typeCell);
+                newRow.appendChild(sessionStartCell);
+                newRow.appendChild(sessionEndCell);
+                newRow.appendChild(sessionDurationCell);
+                tbody.appendChild(newRow);
+            })
+
+
         }
     })
 
