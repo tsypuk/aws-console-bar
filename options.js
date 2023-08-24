@@ -2,10 +2,7 @@ var popupTextInput = document.getElementById('popupTextInput');
 
 var saveButton = document.getElementById('saveButton');
 
-const accounts = [
-    {accountID: 111, name: 'test', prod: true},
-    {accountID: 123, name: 'int', prod: false}
-];
+let accounts = [];
 
 chrome.storage.sync.get(['popupText'], function (result) {
     popupTextInput.value = result.popupText || "Default Popup Text";
@@ -52,6 +49,9 @@ function render_accounts_table() {
 
 chrome.storage.sync.get(['aws_accounts'], function (result) {
     // popupTextInput.value = result.popupText || "Default Popup Text";
+    console.log('Loading accounts')
+    Array.prototype.push.apply(accounts, result['aws_accounts'])
+    console.log(accounts)
     // Create a table
     render_accounts_table()
 });
@@ -76,6 +76,8 @@ saveButton.addEventListener('click', function () {
         prod: isProdInput.value
     }
     accounts.push(aws_account)
+    console.log(accounts)
+
     var obj = {};
     obj['aws_accounts'] = accounts;
     chrome.storage.sync.set(obj, function () {
