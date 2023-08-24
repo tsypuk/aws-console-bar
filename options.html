@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            width: 400px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<h2>Extension Registered AWS Accounts</h2>
+<label for="popupTextInput">Popup Text:</label>
+<input type="text" id="popupTextInput">
+
+<table>
+    <tr>
+        <td>
+            <label for="accountTextInput">Account ID:</label>
+            <input type="text" id="accountTextInput">
+        </td>
+        <td>
+            <label for="nameTextInput">Name:</label>
+            <input type="text" id="nameTextInput">
+        </td>
+        <td>
+            <label for="isProdInput">PROD:</label>
+            <input type="checkbox" id="isProdInput">
+        </td>
+        <td>
+            <label for="saveButton">Action:</label>
+            <button id="saveButton">Add</button>
+        </td>
+    </tr>
+</table>
+
+
+<div id="aws_accounts">
+
+</div>
+<script src="options.js"></script>
+</body>
+</html>
