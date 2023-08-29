@@ -15,6 +15,7 @@ function clear_accounts_table() {
         awsAccountsDiv.removeChild(awsAccountsDiv.firstChild);
     }
 }
+
 function render_accounts_table() {
     const table = document.createElement('table');
     table.innerHTML = `
@@ -23,6 +24,7 @@ function render_accounts_table() {
           <th>Account ID</th>
           <th>Name</th>
           <th>Production</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -38,8 +40,16 @@ function render_accounts_table() {
         <td>${account.accountID}</td>
         <td>${account.name}</td>
         <td>${account.prod ? 'Yes' : 'No'}</td>
+        <td><button id="del${account.accountID}">Delete</button></td>
       `;
         tbody.appendChild(row);
+        const deleteButton = row.querySelector(`#del${account.accountID}`);
+
+        deleteButton.addEventListener("click", function () {
+            const buttonId = deleteButton.id; // Get the unique ID of the clicked button
+            console.log("Button clicked: " + buttonId);
+        })
+
     });
 
     // Inject the table into the div with id "aws_accounts"
