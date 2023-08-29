@@ -1,4 +1,4 @@
-console.log("Content script loaded");
+console.log("AWS Account script loaded");
 
 accounts = []
 
@@ -18,7 +18,26 @@ setTimeout(changeProgressBar, 5000);
 
 function changeProgressBar() {
     console.log('5 sec looking for global-nav__content')
-    const divElement = document.querySelector('.global-nav__content');
+
+    const spanElement = document.querySelector('[data-testid="awsc-nav-account-menu-button"]');
+    if (spanElement) {
+        const innerText = spanElement.textContent;
+        console.log(innerText);
+        // Split the string by the "@" character
+        const parts = innerText.split('@');
+        const rightSide = parts[1].trim();
+        console.log(rightSide);
+    } else {
+        console.log("Span element not found.");
+    }
+
+    const regionSpanElement = document.querySelector('[data-testid="awsc-nav-regions-menu-button"]');
+    if (regionSpanElement) {
+        const innerText = regionSpanElement.textContent;
+        console.log(innerText);
+    }
+
+    const divElement = document.querySelector('#awsc-navigation-container');
     if (divElement) {
         divElement.style.backgroundColor = 'red';
         const textNode = document.createTextNode('DATA: ');
