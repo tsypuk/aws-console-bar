@@ -2,6 +2,8 @@ console.log("AWS Account script loaded");
 
 accounts = []
 
+const textNode = document.createTextNode('DATA: ');
+
 chrome.storage.sync.get(['aws_accounts'], function (result) {
     // popupTextInput.value = result.popupText || "Default Popup Text";
     console.log('Loading accounts')
@@ -10,6 +12,17 @@ chrome.storage.sync.get(['aws_accounts'], function (result) {
     // Create a table
     render_accounts_table()
 });
+
+function findAccount(accountToFind) {
+    const foundAccount = accounts.find(account => account.accountID === accountToFind);
+
+    if (foundAccount) {
+        return foundAccount
+    } else {
+        console.log("Account not found.");
+        return null
+    }
+}
 
 
 changeProgressBar()
@@ -22,6 +35,13 @@ setInterval(function () {
 
         region = getRegion()
         console.log(region)
+
+        alias = findAccount(accountId)
+        if (alias ===null) {
+            textNode.textContent = `Unknown AccountID: ${accountId} region: ${region}`
+        } else {
+            textNode.textContent = `Active Session: ${alias.name}`
+        }
     }
     , 5000);
 
@@ -59,19 +79,27 @@ function changeProgressBar() {
     if (divElement) {
         // divElement.style.backgroundColor = 'red';
         // divElement.className="globalNav-327"
-        const newDiv = document.createElement('div');
-        newDiv.className = 'globalNav-2217'; // Set the class attribute
-        newDiv.textContent = 'This is a new div'; // Set the text content
-        document.body.appendChild(newDiv);
+        // const newDiv = document.createElement('div');
+        // newDiv.className = 'globalNav-2217'; // Set the class attribute
+        // newDiv.textContent = 'This is a new div'; // Set the text content
+        // document.body.appendChild(newDiv);
 
-        const existingDiv = document.getElementById('aws-unified-search-container');
-        const parent = existingDiv.parentNode;
-        parent.insertBefore(newDiv, existingDiv);
+        // const existingDiv = document.getElementById('aws-unified-search-container');
+        // const parent = existingDiv.parentNode;
+        // parent.insertBefore(newDiv, existingDiv);
 
-        const textNode = document.createTextNode('DATA: ');
 
-// Insert the text node before the div element
-        divElement.parentNode.insertBefore(textNode, divElement);
+        const newdivElement = document.createElement('div');
+
+// Apply styles to the div
+        newdivElement.style.backgroundColor = '#393941';
+        newdivElement.style.color = 'white';
+        newdivElement.style.fontSize = '20px';
+        newdivElement.style.padding = '4px';
+        newdivElement.appendChild(textNode);
+
+        // divElement.parentNode.insertBefore(textNode, divElement);
+        divElement.parentNode.insertBefore(newdivElement, divElement);
 
 
         accounts.forEach(account => {
