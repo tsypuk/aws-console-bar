@@ -1,7 +1,7 @@
 console.log("AWS Account script loaded");
 
 accounts = []
-
+var prevAccountText = ''
 const textNode = document.createTextNode('DATA: ');
 
 chrome.storage.sync.get(['aws_accounts'], function (result) {
@@ -30,17 +30,23 @@ changeProgressBar()
 setTimeout(changeProgressBar, 5000);
 
 setInterval(function () {
-        accountId = getAccountID()
+        let accountId = getAccountID()
         console.log(accountId)
 
-        region = getRegion()
+        let region = getRegion()
         console.log(region)
 
-        alias = findAccount(accountId)
-        if (alias ===null) {
-            textNode.textContent = `Unknown AccountID: ${accountId} region: ${region}`
+        let alias = findAccount(accountId)
+        let accountText;
+        if (alias === null) {
+            accountText = `Unknown AccountID: ${accountId} region: ${region}`
         } else {
-            textNode.textContent = `Active Session: ${alias.name}`
+            accountText = `Active Session: ${alias.name}`
+        }
+
+        if (prevAccountText != accountText) {
+            textNode.textContent = accountText
+            prevAccountText = accountText
         }
     }
     , 5000);
