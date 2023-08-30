@@ -2,7 +2,7 @@ var popupTextInput = document.getElementById('popupTextInput');
 
 var saveButton = document.getElementById('saveButton');
 
-let accounts = [];
+var accounts = [];
 
 chrome.storage.sync.get(['popupText'], function (result) {
     popupTextInput.value = result.popupText || "Default Popup Text";
@@ -14,6 +14,17 @@ function clear_accounts_table() {
     while (awsAccountsDiv.firstChild) {
         awsAccountsDiv.removeChild(awsAccountsDiv.firstChild);
     }
+}
+
+function deleteAccount(accountID){
+    const filteredAccounts = accounts.filter(account => account.accountID !== accountID);
+    accounts = filteredAccounts
+    var obj = {};
+    obj['aws_accounts'] = accounts;
+    chrome.storage.sync.set(obj, function () {
+    });
+    clear_accounts_table()
+    render_accounts_table()
 }
 
 function render_accounts_table() {
@@ -48,6 +59,9 @@ function render_accounts_table() {
         deleteButton.addEventListener("click", function () {
             const buttonId = deleteButton.id; // Get the unique ID of the clicked button
             console.log("Button clicked: " + buttonId);
+            const accountID = buttonId.replace(new RegExp(`^${'del'}`), '');
+            console.log(accountID)
+            deleteAccount(accountID)
         })
 
     });
@@ -91,7 +105,6 @@ saveButton.addEventListener('click', function () {
     var obj = {};
     obj['aws_accounts'] = accounts;
     chrome.storage.sync.set(obj, function () {
-
     });
     clear_accounts_table()
     render_accounts_table()
