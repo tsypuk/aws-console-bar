@@ -16,30 +16,58 @@ changeProgressBar()
 
 setTimeout(changeProgressBar, 5000);
 
-function changeProgressBar() {
-    console.log('5 sec looking for global-nav__content')
+setInterval(function () {
+        accountId = getAccountID()
+        console.log(accountId)
 
-    const spanElement = document.querySelector('[data-testid="awsc-nav-account-menu-button"]');
-    if (spanElement) {
-        const innerText = spanElement.textContent;
-        console.log(innerText);
-        // Split the string by the "@" character
-        const parts = innerText.split('@');
-        const rightSide = parts[1].trim();
-        console.log(rightSide);
-    } else {
-        console.log("Span element not found.");
+        region = getRegion()
+        console.log(region)
     }
+    , 5000);
 
+function getRegion() {
     const regionSpanElement = document.querySelector('[data-testid="awsc-nav-regions-menu-button"]');
     if (regionSpanElement) {
         const innerText = regionSpanElement.textContent;
-        console.log(innerText);
+        // console.log(innerText);
+        return innerText
     }
+    return 'NONE'
+}
+
+function getAccountID() {
+    const spanElement = document.querySelector('[data-testid="awsc-nav-account-menu-button"]');
+    if (spanElement) {
+        const innerText = spanElement.textContent;
+        // console.log(innerText);
+        // Split the string by the "@" character
+        const parts = innerText.split('@');
+        const rightSide = parts[1].trim();
+        // console.log(rightSide);
+        return rightSide
+    } else {
+        console.log("Span element not found.");
+    }
+    return 'NONE'
+}
+
+function changeProgressBar() {
+    console.log('5 sec looking for global-nav__content')
+
 
     const divElement = document.querySelector('#awsc-navigation-container');
     if (divElement) {
-        divElement.style.backgroundColor = 'red';
+        // divElement.style.backgroundColor = 'red';
+        // divElement.className="globalNav-327"
+        const newDiv = document.createElement('div');
+        newDiv.className = 'globalNav-2217'; // Set the class attribute
+        newDiv.textContent = 'This is a new div'; // Set the text content
+        document.body.appendChild(newDiv);
+
+        const existingDiv = document.getElementById('aws-unified-search-container');
+        const parent = existingDiv.parentNode;
+        parent.insertBefore(newDiv, existingDiv);
+
         const textNode = document.createTextNode('DATA: ');
 
 // Insert the text node before the div element
@@ -48,9 +76,9 @@ function changeProgressBar() {
 
         accounts.forEach(account => {
             textNode.appendData(`${account.name}, `)
-          // console.log(account.name)
+            // console.log(account.name)
         })
     }
-    
-    
+
+
 }
