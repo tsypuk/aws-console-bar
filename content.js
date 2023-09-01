@@ -1,29 +1,44 @@
 console.log("AWS Account script loaded");
 
 accounts = []
+var currentAccount = 'None'
 var prevAccountText = ''
 const textNode = document.createTextNode('DATA: ');
 
-chrome.storage.sync.get(['aws_accounts'], function (result) {
-    // popupTextInput.value = result.popupText || "Default Popup Text";
-    console.log('Loading accounts')
-    Array.prototype.push.apply(accounts, result['aws_accounts'])
-    console.log(accounts)
-    // Create a table
-    render_accounts_table()
+const button = document.createElement('button');
+button.style.display = 'none';
+button.innerText = 'Register Account';
+
+// Add event listener to handle button click
+button.addEventListener('click', function () {
+    button.style.display = 'none';
+    chrome.runtime.sendMessage(
+        {
+            "action": "openOptionsPage",
+            "accountID": currentAccount
+        }
+    );
 });
+
+reloadAccountsFromStorage()
+
+function reloadAccountsFromStorage() {
+    chrome.storage.sync.get(['aws_accounts'], function (result) {
+        Array.prototype.push.apply(accounts, result['aws_accounts'])
+    });
+}
 
 function findAccount(accountToFind) {
     const foundAccount = accounts.find(account => account.accountID === accountToFind);
 
-    if (foundAccount) {
+    if (foundAccount !== undefined) {
         return foundAccount
     } else {
-        console.log("Account not found.");
-        return null
+        console.log("Account not found. Reloading storage.");
+        reloadAccountsFromStorage()
+        return accounts.find(account => account.accountID === accountToFind);
     }
 }
-
 
 changeProgressBar()
 
@@ -38,10 +53,17 @@ setInterval(function () {
 
         let alias = findAccount(accountId)
         let accountText;
-        if (alias === null) {
-            accountText = `Unknown AccountID: ${accountId} region: ${region}`
+        if (alias === undefined) {
+            var obj = {};
+            obj['new_account_id'] = accountId;
+            chrome.storage.sync.set(obj, function () {
+            });
+            accountText = `Unknown AWS AccountID: ${accountId} region: ${region}`
+            currentAccount = accountId
+            button.style.display = 'block'
         } else {
             accountText = `Active Session: ${alias.name}`
+            button.style.display = 'none'
         }
 
         if (prevAccountText != accountText) {
@@ -103,6 +125,7 @@ function changeProgressBar() {
         newdivElement.style.fontSize = '20px';
         newdivElement.style.padding = '4px';
         newdivElement.appendChild(textNode);
+        newdivElement.appendChild(button);
 
         // divElement.parentNode.insertBefore(textNode, divElement);
         divElement.parentNode.insertBefore(newdivElement, divElement);

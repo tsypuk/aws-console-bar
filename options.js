@@ -1,8 +1,20 @@
-var popupTextInput = document.getElementById('popupTextInput');
-
 var saveButton = document.getElementById('saveButton');
+var accountID = document.getElementById('accountTextInput');
+var accountName = document.getElementById('nameTextInput');
 
 var accounts = [];
+
+chrome.storage.sync.get(['new_account_id'], function (result) {
+    if (result !== null) {
+        accountID.value = result.new_account_id
+        console.log(result.new_account_id)
+
+        var obj = {};
+        obj['new_account_id'] = null;
+        chrome.storage.sync.set(obj, function () {
+        });
+    }
+})
 
 function clear_accounts_table() {
     const awsAccountsDiv = document.getElementById("aws_accounts");
@@ -100,14 +112,17 @@ chrome.storage.sync.get(['aws_accounts'], function (result) {
     render_accounts_table()
 });
 
+function clear_account_input() {
+    accountID.value = '';
+    accountName.value = '';
+}
+
 saveButton.addEventListener('click', function () {
-    var accountTextInput = document.getElementById('accountTextInput');
-    var nameTextInput = document.getElementById('nameTextInput');
 
     // TODO: add user input validation
     let aws_account = {
-        accountID: accountTextInput.value,
-        name: nameTextInput.value,
+        accountID: accountID.value,
+        name: accountName.value,
     }
     accounts.push(aws_account)
     console.log(accounts)
@@ -119,6 +134,6 @@ saveButton.addEventListener('click', function () {
     clear_accounts_table()
     render_accounts_table()
 
+    clear_account_input()
 
-    // chrome.storage.sync.set({ popupText: newText });
 });
