@@ -1,6 +1,5 @@
 console.log("AWS Account script loaded");
 
-accounts = []
 var currentAccount = 'None'
 var prevAccountText = ''
 const textNode = document.createTextNode('DATA: ');
@@ -12,46 +11,24 @@ button.innerText = 'Register Account';
 // Add event listener to handle button click
 button.addEventListener('click', function () {
     button.style.display = 'none';
-    chrome.runtime.sendMessage(
-        {
-            "action": "openOptionsPage",
-            "accountID": currentAccount
-        }
-    );
-});
-
-reloadAccountsFromStorage()
-
-function reloadAccountsFromStorage() {
-    chrome.storage.sync.get(['aws_accounts'], function (result) {
-        Array.prototype.push.apply(accounts, result['aws_accounts'])
+    chrome.runtime.sendMessage({
+        "action": "openOptionsPage", "accountID": currentAccount
     });
-}
-
-function findAccount(accountToFind) {
-    const foundAccount = accounts.find(account => account.accountID === accountToFind);
-
-    if (foundAccount !== undefined) {
-        return foundAccount
-    } else {
-        console.log("Account not found. Reloading storage.");
-        reloadAccountsFromStorage()
-        return accounts.find(account => account.accountID === accountToFind);
-    }
-}
+});
 
 changeProgressBar()
 
 setTimeout(changeProgressBar, 5000);
 
 setInterval(function () {
-        let accountId = getAccountID()
-        console.log(accountId)
+    let accountId = getAccountIDFromAWSConsole()
+    console.log(accountId)
 
-        let region = getRegion()
-        console.log(region)
+    let region = getRegion()
+    console.log(region)
 
-        let alias = findAccount(accountId)
+    chrome.storage.sync.get(['aws_accounts'], function (result) {
+        alias = result['aws_accounts'].find(account => account.accountID === accountId);
         let accountText;
         if (alias === undefined) {
             var obj = {};
@@ -70,8 +47,10 @@ setInterval(function () {
             textNode.textContent = accountText
             prevAccountText = accountText
         }
-    }
-    , 5000);
+    });
+
+
+}, 5000);
 
 function getRegion() {
     const regionSpanElement = document.querySelector('[data-testid="awsc-nav-regions-menu-button"]');
@@ -83,7 +62,7 @@ function getRegion() {
     return 'NONE'
 }
 
-function getAccountID() {
+function getAccountIDFromAWSConsole() {
     const spanElement = document.querySelector('[data-testid="awsc-nav-account-menu-button"]');
     if (spanElement) {
         const innerText = spanElement.textContent;
@@ -130,12 +109,11 @@ function changeProgressBar() {
         // divElement.parentNode.insertBefore(textNode, divElement);
         divElement.parentNode.insertBefore(newdivElement, divElement);
 
-
-        accounts.forEach(account => {
-            textNode.appendData(`${account.name}, `)
-            // console.log(account.name)
-        })
+        chrome.storage.sync.get(['aws_accounts'], function (result) {
+            result['aws_accounts'].forEach(account => {
+                textNode.appendData(`${account.name}, `)
+                // console.log(account.name)
+            })
+        });
     }
-
-
 }
