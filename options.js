@@ -4,10 +4,6 @@ var saveButton = document.getElementById('saveButton');
 
 var accounts = [];
 
-chrome.storage.sync.get(['popupText'], function (result) {
-    popupTextInput.value = result.popupText || "Default Popup Text";
-});
-
 function clear_accounts_table() {
     const awsAccountsDiv = document.getElementById("aws_accounts");
 
@@ -16,15 +12,29 @@ function clear_accounts_table() {
     }
 }
 
-function deleteAccount(accountID){
+function deleteAccount(accountID) {
     const filteredAccounts = accounts.filter(account => account.accountID !== accountID);
     accounts = filteredAccounts
+    saveAccountsToStorage(accounts)
+    clear_accounts_table()
+    render_accounts_table()
+}
+
+function saveAccountsToStorage(accounts) {
     var obj = {};
     obj['aws_accounts'] = accounts;
     chrome.storage.sync.set(obj, function () {
     });
-    clear_accounts_table()
-    render_accounts_table()
+}
+
+function updateAccount(accountID, accountName) {
+    const updatedAccounts = accounts.map(account =>
+        (account.accountID === accountID) ?
+            {...account, name: accountName} :
+            account
+    );
+    accounts = updatedAccounts
+    saveAccountsToStorage(updatedAccounts)
 }
 
 function render_accounts_table() {
@@ -34,8 +44,8 @@ function render_accounts_table() {
         <tr>
           <th>Account ID</th>
           <th>Name</th>
-          <th>Production</th>
-          <th>Action</th>
+          <th>Update</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -49,19 +59,29 @@ function render_accounts_table() {
         const row = document.createElement('tr');
         row.innerHTML = `
         <td>${account.accountID}</td>
-        <td>${account.name}</td>
-        <td>${account.prod ? 'Yes' : 'No'}</td>
-        <td><button id="del${account.accountID}">Delete</button></td>
+        <td><input type="text" id="account_name_${account.accountID}" value="${account.name}" style="width: 300px" ></td>
+        <td><button id="update_${account.accountID}">Update</button></td>
+        <td><button id="del_${account.accountID}">Delete</button></td>
       `;
         tbody.appendChild(row);
-        const deleteButton = row.querySelector(`#del${account.accountID}`);
+        const deleteButton = row.querySelector(`#del_${account.accountID}`);
+        const updateButton = row.querySelector(`#update_${account.accountID}`);
 
         deleteButton.addEventListener("click", function () {
             const buttonId = deleteButton.id; // Get the unique ID of the clicked button
             console.log("Button clicked: " + buttonId);
-            const accountID = buttonId.replace(new RegExp(`^${'del'}`), '');
+            const accountID = buttonId.replace(new RegExp(`^${'del_'}`), '');
             console.log(accountID)
             deleteAccount(accountID)
+        })
+
+        updateButton.addEventListener("click", function () {
+            const buttonId = updateButton.id; // Get the unique ID of the clicked button
+            const accountID = buttonId.replace(new RegExp(`^${'update_'}`), '');
+            const inputAccountName = document.getElementById(`account_name_${accountID}`);
+            const accountName = inputAccountName.value;
+
+            updateAccount(accountID, accountName)
         })
 
     });
@@ -81,23 +101,13 @@ chrome.storage.sync.get(['aws_accounts'], function (result) {
 });
 
 saveButton.addEventListener('click', function () {
-    var newText = popupTextInput.value;
-    console.log(newText)
-    var obj = {};
-    obj['popupText'] = newText;
-    // chrome.storage.sync.set(obj, function () {
-    //     alert('Data saved');
-    // });
-
-
     var accountTextInput = document.getElementById('accountTextInput');
     var nameTextInput = document.getElementById('nameTextInput');
-    var isProdInput = document.getElementById('isProdInput');
 
+    // TODO: add user input validation
     let aws_account = {
         accountID: accountTextInput.value,
         name: nameTextInput.value,
-        prod: isProdInput.value
     }
     accounts.push(aws_account)
     console.log(accounts)

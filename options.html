@@ -3,37 +3,46 @@
 <head>
     <style>
         body {
-            width: 400px;
+            width: 600px;
             padding: 10px;
         }
     </style>
 </head>
 <body>
 <h2>Extension Registered AWS Accounts</h2>
-<label for="popupTextInput">Popup Text:</label>
-<input type="text" id="popupTextInput">
+
+<h2>Documentation Page</h2>
+
+<h2>Add new AWS Account</h2>
 
 <table>
     <tr>
         <td>
             <label for="accountTextInput">Account ID:</label>
+        </td>
+        <td>
             <input type="text" id="accountTextInput">
         </td>
+    </tr>
+    <tr>
         <td>
             <label for="nameTextInput">Name:</label>
+        </td>
+        <td>
             <input type="text" id="nameTextInput">
         </td>
-        <td>
-            <label for="isProdInput">PROD:</label>
-            <input type="checkbox" id="isProdInput">
-        </td>
+    </tr>
+    <tr>
         <td>
             <label for="saveButton">Action:</label>
+        </td>
+        <td>
             <button id="saveButton">Add</button>
         </td>
     </tr>
 </table>
 
+<h2>Registered AWS Accounts</h2>
 
 <div id="aws_accounts">
 
