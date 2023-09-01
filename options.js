@@ -2,8 +2,6 @@ var saveButton = document.getElementById('saveButton');
 var accountID = document.getElementById('accountTextInput');
 var accountName = document.getElementById('nameTextInput');
 
-var accounts = [];
-
 chrome.storage.sync.get(['new_account_id'], function (result) {
     if (result !== null) {
         accountID.value = result.new_account_id
@@ -25,11 +23,24 @@ function clear_accounts_table() {
 }
 
 function deleteAccount(accountID) {
-    const filteredAccounts = accounts.filter(account => account.accountID !== accountID);
-    accounts = filteredAccounts
-    saveAccountsToStorage(accounts)
-    clear_accounts_table()
-    render_accounts_table()
+    chrome.storage.sync.get(['aws_accounts'], function (result) {
+        const filteredAccounts = result['aws_accounts'].filter(account => account.accountID !== accountID);
+        saveAccountsToStorage(filteredAccounts)
+        clear_accounts_table()
+        render_accounts_table()
+    })
+}
+
+function addAccount(aws_account) {
+    chrome.storage.sync.get(['aws_accounts'], function (result) {
+        result['aws_accounts'].push(aws_account)
+        saveAccountsToStorage(result['aws_accounts'])
+
+        clear_accounts_table()
+        render_accounts_table()
+
+        clear_account_input()
+    })
 }
 
 function saveAccountsToStorage(accounts) {
@@ -40,13 +51,14 @@ function saveAccountsToStorage(accounts) {
 }
 
 function updateAccount(accountID, accountName) {
-    const updatedAccounts = accounts.map(account =>
-        (account.accountID === accountID) ?
-            {...account, name: accountName} :
-            account
-    );
-    accounts = updatedAccounts
-    saveAccountsToStorage(updatedAccounts)
+    chrome.storage.sync.get(['aws_accounts'], function (result) {
+        const updatedAccounts = result['aws_accounts'].map(account =>
+            (account.accountID === accountID) ?
+                {...account, name: accountName} :
+                account
+        );
+        saveAccountsToStorage(updatedAccounts)
+    })
 }
 
 function render_accounts_table() {
@@ -67,50 +79,46 @@ function render_accounts_table() {
     const tbody = table.querySelector('tbody');
 
     // Populate the table with data from the accounts array
-    accounts.forEach(account => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+    chrome.storage.sync.get(['aws_accounts'], function (result) {
+        result['aws_accounts'].forEach(account => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
         <td>${account.accountID}</td>
         <td><input type="text" id="account_name_${account.accountID}" value="${account.name}" style="width: 300px" ></td>
         <td><button id="update_${account.accountID}">Update</button></td>
         <td><button id="del_${account.accountID}">Delete</button></td>
       `;
-        tbody.appendChild(row);
-        const deleteButton = row.querySelector(`#del_${account.accountID}`);
-        const updateButton = row.querySelector(`#update_${account.accountID}`);
+            tbody.appendChild(row);
+            const deleteButton = row.querySelector(`#del_${account.accountID}`);
+            const updateButton = row.querySelector(`#update_${account.accountID}`);
 
-        deleteButton.addEventListener("click", function () {
-            const buttonId = deleteButton.id; // Get the unique ID of the clicked button
-            console.log("Button clicked: " + buttonId);
-            const accountID = buttonId.replace(new RegExp(`^${'del_'}`), '');
-            console.log(accountID)
-            deleteAccount(accountID)
+            deleteButton.addEventListener("click", function () {
+                const buttonId = deleteButton.id; // Get the unique ID of the clicked button
+                console.log("Button clicked: " + buttonId);
+                const accountID = buttonId.replace(new RegExp(`^${'del_'}`), '');
+                console.log(accountID)
+                deleteAccount(accountID)
+            })
+
+            updateButton.addEventListener("click", function () {
+                const buttonId = updateButton.id; // Get the unique ID of the clicked button
+                const accountID = buttonId.replace(new RegExp(`^${'update_'}`), '');
+                const inputAccountName = document.getElementById(`account_name_${accountID}`);
+                const accountName = inputAccountName.value;
+                updateAccount(accountID, accountName)
+            })
+
         })
-
-        updateButton.addEventListener("click", function () {
-            const buttonId = updateButton.id; // Get the unique ID of the clicked button
-            const accountID = buttonId.replace(new RegExp(`^${'update_'}`), '');
-            const inputAccountName = document.getElementById(`account_name_${accountID}`);
-            const accountName = inputAccountName.value;
-
-            updateAccount(accountID, accountName)
-        })
-
-    });
+    })
 
     // Inject the table into the div with id "aws_accounts"
     const awsAccountsDiv = document.getElementById('aws_accounts');
     awsAccountsDiv.appendChild(table);
 }
 
-chrome.storage.sync.get(['aws_accounts'], function (result) {
-    // popupTextInput.value = result.popupText || "Default Popup Text";
-    console.log('Loading accounts')
-    Array.prototype.push.apply(accounts, result['aws_accounts'])
-    console.log(accounts)
-    // Create a table
+
     render_accounts_table()
-});
+
 
 function clear_account_input() {
     accountID.value = '';
@@ -124,16 +132,8 @@ saveButton.addEventListener('click', function () {
         accountID: accountID.value,
         name: accountName.value,
     }
-    accounts.push(aws_account)
-    console.log(accounts)
+    addAccount(aws_account)
 
-    var obj = {};
-    obj['aws_accounts'] = accounts;
-    chrome.storage.sync.set(obj, function () {
-    });
-    clear_accounts_table()
-    render_accounts_table()
 
-    clear_account_input()
 
 });
