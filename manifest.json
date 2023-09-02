@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AWS Accounts Extension",
+  "name": "AWS Console Bar",
   "version": "1.0.0",
-  "description": "Adds a popup line to the main page with aws account text.",
+  "description": "Allows to show AWS account names and IDs when using AWS Console",
   "permissions": ["storage", "activeTab"],
   "options_page": "options.html",
   "action": {
