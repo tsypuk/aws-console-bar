@@ -1,6 +1,16 @@
 {
   "name": "aws_extension",
-  "version": "1.0.0",
-  "dependencies": {
+  "version": "1.1.0",
+  "main": "background-service-worker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "standard-version": "^9.5.0"
   }
 }

@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
   "name": "AWS Console Bar",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Allows to show AWS account names and IDs when using AWS Console",
-  "permissions": ["storage", "activeTab"],
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
   "options_page": "options.html",
   "action": {
     "default_popup": "popup.html",
@@ -20,7 +23,9 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.console.aws.amazon.com/*"],
+      "matches": [
+        "https://*.console.aws.amazon.com/*"
+      ],
       "js": [
         "content.js"
       ]
