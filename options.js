@@ -1,13 +1,12 @@
-var saveButton = document.getElementById('saveButton');
-var accountID = document.getElementById('accountTextInput');
-var accountName = document.getElementById('nameTextInput');
+const saveButton = document.getElementById('saveButton');
+const accountID = document.getElementById('accountTextInput');
+const accountName = document.getElementById('nameTextInput');
 
 chrome.storage.sync.get(['new_account_id'], function (result) {
     if (result !== null) {
         accountID.value = result.new_account_id
-        console.log(result.new_account_id)
 
-        var obj = {};
+        const obj = {};
         obj['new_account_id'] = null;
         chrome.storage.sync.set(obj, function () {
         });
@@ -44,7 +43,7 @@ function addAccount(aws_account) {
 }
 
 function saveAccountsToStorage(accounts) {
-    var obj = {};
+    const obj = {};
     obj['aws_accounts'] = accounts;
     chrome.storage.sync.set(obj, function () {
     });
@@ -94,9 +93,7 @@ function render_accounts_table() {
 
             deleteButton.addEventListener("click", function () {
                 const buttonId = deleteButton.id; // Get the unique ID of the clicked button
-                console.log("Button clicked: " + buttonId);
                 const accountID = buttonId.replace(new RegExp(`^${'del_'}`), '');
-                console.log(accountID)
                 deleteAccount(accountID)
             })
 

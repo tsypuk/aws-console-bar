@@ -1,7 +1,5 @@
-console.log("AWS Account script loaded");
-
-var currentAccount = 'None'
-var prevAccountText = ''
+let currentAccount = 'None';
+let prevAccountText = '';
 const textNode = document.createTextNode('DATA: ');
 
 const button = document.createElement('button');
@@ -22,28 +20,25 @@ setTimeout(changeProgressBar, 5000);
 
 setInterval(function () {
     let accountId = getAccountIDFromAWSConsole()
-    console.log(accountId)
-
     let region = getRegion()
-    console.log(region)
 
     chrome.storage.sync.get(['aws_accounts'], function (result) {
-        alias = result['aws_accounts'].find(account => account.accountID === accountId);
+        const alias = result['aws_accounts'].find(account => account.accountID === accountId);
         let accountText;
         if (alias === undefined) {
-            var obj = {};
+            const obj = {};
             obj['new_account_id'] = accountId;
             chrome.storage.sync.set(obj, function () {
             });
-            accountText = `Unknown AWS AccountID: ${accountId} region: ${region}`
+            accountText = `AWS Account: Unknown | id:${accountId} region:${region}`
             currentAccount = accountId
             button.style.display = 'block'
         } else {
-            accountText = `Active Session: ${alias.name}`
+            accountText = `AWS Account: ${alias.name}`
             button.style.display = 'none'
         }
 
-        if (prevAccountText != accountText) {
+        if (prevAccountText !== accountText) {
             textNode.textContent = accountText
             prevAccountText = accountText
         }
@@ -55,9 +50,7 @@ setInterval(function () {
 function getRegion() {
     const regionSpanElement = document.querySelector('[data-testid="awsc-nav-regions-menu-button"]');
     if (regionSpanElement) {
-        const innerText = regionSpanElement.textContent;
-        // console.log(innerText);
-        return innerText
+        return regionSpanElement.textContent
     }
     return 'NONE'
 }
@@ -66,22 +59,13 @@ function getAccountIDFromAWSConsole() {
     const spanElement = document.querySelector('[data-testid="awsc-nav-account-menu-button"]');
     if (spanElement) {
         const innerText = spanElement.textContent;
-        // console.log(innerText);
-        // Split the string by the "@" character
         const parts = innerText.split('@');
-        const rightSide = parts[1].trim();
-        // console.log(rightSide);
-        return rightSide
-    } else {
-        console.log("Span element not found.");
+        return parts[1].trim()
     }
     return 'NONE'
 }
 
 function changeProgressBar() {
-    console.log('5 sec looking for global-nav__content')
-
-
     const divElement = document.querySelector('#awsc-navigation-container');
     if (divElement) {
         // divElement.style.backgroundColor = 'red';
@@ -96,24 +80,24 @@ function changeProgressBar() {
         // parent.insertBefore(newDiv, existingDiv);
 
 
-        const newdivElement = document.createElement('div');
+        const barDiv = document.createElement('div');
 
 // Apply styles to the div
-        newdivElement.style.backgroundColor = '#393941';
-        newdivElement.style.color = 'white';
-        newdivElement.style.fontSize = '20px';
-        newdivElement.style.padding = '4px';
-        newdivElement.appendChild(textNode);
-        newdivElement.appendChild(button);
+        barDiv.style.backgroundColor = '#393941';
+        barDiv.style.color = 'white';
+        barDiv.style.fontSize = '20px';
+        barDiv.style.padding = '4px';
+        barDiv.appendChild(textNode);
+        barDiv.appendChild(button);
 
         // divElement.parentNode.insertBefore(textNode, divElement);
-        divElement.parentNode.insertBefore(newdivElement, divElement);
+        divElement.parentNode.insertBefore(barDiv, divElement);
 
-        chrome.storage.sync.get(['aws_accounts'], function (result) {
-            result['aws_accounts'].forEach(account => {
-                textNode.appendData(`${account.name}, `)
-                // console.log(account.name)
-            })
-        });
+        // chrome.storage.sync.get(['aws_accounts'], function (result) {
+        //     result['aws_accounts'].forEach(account => {
+        //         textNode.appendData(`${account.name}, `)
+        //         // console.log(account.name)
+        //     })
+        // });
     }
 }
