@@ -21,28 +21,35 @@ setTimeout(changeProgressBar, 5000);
 setInterval(function () {
     let accountId = getAccountIDFromAWSConsole()
     let region = getRegion()
+    try {
 
-    chrome.storage.sync.get(['aws_accounts'], function (result) {
-        const alias = result['aws_accounts'].find(account => account.accountID === accountId);
-        let accountText;
-        if (alias === undefined) {
-            const obj = {};
-            obj['new_account_id'] = accountId;
-            chrome.storage.sync.set(obj, function () {
-            });
-            accountText = `AWS Account: Unknown | id:${accountId} region:${region}`
-            currentAccount = accountId
-            button.style.display = 'block'
-        } else {
-            accountText = `AWS Account: ${alias.name}`
-            button.style.display = 'none'
-        }
+        chrome.storage.sync.get(['aws_accounts'], function (result) {
+            const alias = result['aws_accounts'].find(account => account.accountID === accountId);
+            let accountText;
+            if (alias === undefined) {
+                const obj = {};
+                obj['new_account_id'] = accountId;
+                chrome.storage.sync.set(obj, function () {
+                });
+                accountText = `AWS Account: Unknown | id:${accountId} region:${region}`
+                currentAccount = accountId
+                button.style.display = 'block'
+                chrome.runtime.sendMessage({action: 'changeAlarmIcon'});
+            } else {
+                accountText = `AWS Account: ${alias.name}`
+                button.style.display = 'none'
+                chrome.runtime.sendMessage({action: 'changeDefaultIcon'});
+            }
 
-        if (prevAccountText !== accountText) {
-            textNode.textContent = accountText
-            prevAccountText = accountText
-        }
-    });
+            if (prevAccountText !== accountText) {
+                textNode.textContent = accountText
+                prevAccountText = accountText
+            }
+        });
+    } catch (error){
+        accountText = `AWS Account: Unknown | id:${accountId} region:${region}`
+        textNode.textContent = accountText
+    }
 
 
 }, 5000);
