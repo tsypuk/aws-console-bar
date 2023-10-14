@@ -4,7 +4,7 @@ const accountName = document.getElementById('nameTextInput');
 
 // Init storage for the first installation
 chrome.storage.sync.get(['aws_accounts'], function (result) {
-    if (result !== null) {
+    if (result == null) {
         console.log('Extension init...')
         const obj = {};
         obj['aws_accounts'] = [];
@@ -62,11 +62,7 @@ function saveAccountsToStorage(accounts) {
 
 function updateAccount(accountID, accountName) {
     chrome.storage.sync.get(['aws_accounts'], function (result) {
-        const updatedAccounts = result['aws_accounts'].map(account =>
-            (account.accountID === accountID) ?
-                {...account, name: accountName} :
-                account
-        );
+        const updatedAccounts = result['aws_accounts'].map(account => (account.accountID === accountID) ? {...account, name: accountName} : account);
         saveAccountsToStorage(updatedAccounts)
     })
 }
@@ -124,8 +120,7 @@ function render_accounts_table() {
     awsAccountsDiv.appendChild(table);
 }
 
-
-    render_accounts_table()
+render_accounts_table()
 
 
 function clear_account_input() {
@@ -133,12 +128,10 @@ function clear_account_input() {
     accountName.value = '';
 }
 
-saveButton.addEventListener('click', function () {
-
+saveButton.addEventListener('click', () => {
     // TODO: add user input validation
     let aws_account = {
-        accountID: accountID.value,
-        name: accountName.value,
+        accountID: accountID.value, name: accountName.value,
     }
     addAccount(aws_account)
 });

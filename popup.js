@@ -1,11 +1,19 @@
+
+chrome.action.setBadgeText({
+    text: "TIME",
+    }, () => {
+    console.log("badge text")
+    }
+)
+
 chrome.storage.sync.get(['popupText'], function(result) {
     const popupText = result.popupText || "Default Popup Text";
     const outputDiv = document.getElementById('output');
     outputDiv.textContent = popupText;
 });
 
-const myLink = document.getElementById('myLink');
-const myLink2 = document.getElementById('myLink2');
+const myLinkElement = document.getElementById('myLink');
+const myLink2Element = document.getElementById('myLink2');
 
 // Define the function to be called when the link is clicked
 function linkClickHandler(event) {
@@ -21,5 +29,5 @@ function extensionSettingsHandler(event) {
 
 
 // Add a click event listener to the link
-myLink.addEventListener('click', linkClickHandler);
-myLink2.addEventListener('click', extensionSettingsHandler);
+myLinkElement.addEventListener('click', linkClickHandler);
+myLink2Element.addEventListener('click', extensionSettingsHandler);
