@@ -8,7 +8,12 @@ chrome.action.setBadgeText({
 )
 
 chrome.storage.sync.get(['aws_accounts'], result => {
-    accountsCountElement.textContent = `Accounts: ${result.aws_accounts.length}`
+    count = 0
+    if (result && result.aws_accounts && Array.isArray(result.aws_accounts)) {
+        count = result.aws_accounts.length
+    }
+    // const count = result.aws_accounts ?? 0
+    accountsCountElement.textContent = `Accounts: ${count}`
 })
 
 chrome.storage.sync.get(['popupText'], result => {

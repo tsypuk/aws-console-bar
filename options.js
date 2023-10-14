@@ -4,7 +4,7 @@ const accountName = document.getElementById('nameTextInput');
 
 // Init storage for the first installation
 chrome.storage.sync.get(['aws_accounts'], result => {
-    if (result == null) {
+    if (result.aws_accounts == null) {
         console.log('Extension init...')
         chrome.storage.sync.set({aws_accounts: []}, () => {
             console.log('Init aws accounts storage...')
@@ -42,7 +42,7 @@ function deleteAccount(accountID) {
 
 function addAccount(aws_account) {
     chrome.storage.sync.get(['aws_accounts'], result => {
-        result['aws_accounts'].push(aws_account)
+        result.aws_accounts.push(aws_account)
         saveAccountsToStorage(result.aws_accounts)
 
         clear_accounts_table()
@@ -85,33 +85,35 @@ function render_accounts_table() {
 
     // Populate the table with data from the accounts array
     chrome.storage.sync.get(['aws_accounts'], result => {
-        result.aws_accounts.forEach(account => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+        if (result.aws_accounts) {
+            result.aws_accounts.forEach(account => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
         <td>${account.accountID}</td>
         <td><input type="text" id="account_name_${account.accountID}" value="${account.name}" style="width: 300px" ></td>
         <td><button id="update_${account.accountID}">Update</button></td>
         <td><button id="del_${account.accountID}">Delete</button></td>
       `;
-            tbody.appendChild(row);
-            const deleteButton = row.querySelector(`#del_${account.accountID}`);
-            const updateButton = row.querySelector(`#update_${account.accountID}`);
+                tbody.appendChild(row);
+                const deleteButton = row.querySelector(`#del_${account.accountID}`);
+                const updateButton = row.querySelector(`#update_${account.accountID}`);
 
-            deleteButton.addEventListener("click", function () {
-                const buttonId = deleteButton.id; // Get the unique ID of the clicked button
-                const accountID = buttonId.replace(new RegExp(`^${'del_'}`), '');
-                deleteAccount(accountID)
+                deleteButton.addEventListener("click", function () {
+                    const buttonId = deleteButton.id; // Get the unique ID of the clicked button
+                    const accountID = buttonId.replace(new RegExp(`^${'del_'}`), '');
+                    deleteAccount(accountID)
+                })
+
+                updateButton.addEventListener("click", function () {
+                    const buttonId = updateButton.id; // Get the unique ID of the clicked button
+                    const accountID = buttonId.replace(new RegExp(`^${'update_'}`), '');
+                    const inputAccountName = document.getElementById(`account_name_${accountID}`);
+                    const accountName = inputAccountName.value;
+                    updateAccount(accountID, accountName)
+                })
+
             })
-
-            updateButton.addEventListener("click", function () {
-                const buttonId = updateButton.id; // Get the unique ID of the clicked button
-                const accountID = buttonId.replace(new RegExp(`^${'update_'}`), '');
-                const inputAccountName = document.getElementById(`account_name_${accountID}`);
-                const accountName = inputAccountName.value;
-                updateAccount(accountID, accountName)
-            })
-
-        })
+        }
     })
 
     // Inject the table into the div with id "aws_accounts"
