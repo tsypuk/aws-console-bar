@@ -4,9 +4,24 @@ chrome.alarms.create(name = 'session-time', {
 
 chrome.alarms.onAlarm.addListener((alarm) => {
     console.log(alarm)
+
+    // Stop counter if console is closed
+    chrome.tabs.query({}, function(tabs) {
+        activeSession = false
+        tabs.forEach(function(tab) {
+            if (tab.url.includes('.amazon.com')) {
+                console.log('Console')
+                activeSession = true
+            }
+        });
+        if (!activeSession) {
+            chrome.alarms.clear("session-time");
+        }
+    });
+
     switch (alarm.name) {
         case 'session-time':
-            chrome.storage.local.get(["timer"], (res) => {
+            chrome.storage.local.get(["timer", "timeInterval"], (res) => {
                 const time = res.timer ?? 0
                 chrome.storage.local.set({
                     timer: time + 1,
@@ -14,7 +29,8 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                 chrome.action.setBadgeText({
                     text: `${secondsToHHMMSS(time)}`
                 })
-                if (time % 10 == 0) {
+                const internal = res.timeInterval ?? 45
+                if (time % internal == 0) {
                     this.registration.showNotification("Chrome Timer Extentions", {
                         body: "45 min has passed!",
                         icon: "icon.pnh"
