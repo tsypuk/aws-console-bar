@@ -1,12 +1,17 @@
+const accountsCountElement = document.getElementById("accountsCount")
 
 chrome.action.setBadgeText({
-    text: "TIME",
+        text: "TIME",
     }, () => {
-    console.log("badge text")
+        console.log("badge text")
     }
 )
 
-chrome.storage.sync.get(['popupText'], function(result) {
+chrome.storage.sync.get(['aws_accounts'], result => {
+    accountsCountElement.textContent = `Accounts: ${result.aws_accounts.length}`
+})
+
+chrome.storage.sync.get(['popupText'], result => {
     const popupText = result.popupText || "Default Popup Text";
     const outputDiv = document.getElementById('output');
     outputDiv.textContent = popupText;

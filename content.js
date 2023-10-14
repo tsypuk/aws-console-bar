@@ -24,7 +24,7 @@ setInterval(function () {
     try {
 
         chrome.storage.sync.get(['aws_accounts'], function (result) {
-            const alias = result['aws_accounts'].find(account => account.accountID === accountId);
+            const alias = result.aws_accounts.find(account => account.accountID === accountId);
             let accountText;
             if (alias === undefined) {
                 const obj = {};
