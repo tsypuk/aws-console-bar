@@ -1,0 +1,33 @@
+name: Publish Chrome Extension
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install  # If you have any npm dependencies
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Publish Extension
+        run: |
+          curl -X POST -H "Authorization: Bearer ${{ secrets.REFRESH_TOKEN }}" \
+          -H "x-goog-api-version: 2" -H "Content-Type: application/json" \
+          -d '{
+            "command": "publish",
+            "extensionId": "YOUR_EXTENSION_ID",
+            "target": "default"
+          }' \
+          https://chrome.googleapis.com/webstore/developer/ [email protected]${{ secrets.CLIENT_ID }}&client_secret=${{ secrets.CLIENT_SECRET }}

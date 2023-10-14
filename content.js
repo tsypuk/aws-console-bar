@@ -66,7 +66,7 @@ function getAccountIDFromAWSConsole() {
     const spanElement = document.querySelector('[data-testid="awsc-nav-account-menu-button"]');
     if (spanElement) {
         const innerText = spanElement.textContent;
-        const parts = innerText.split('@');
+        const parts = innerText.split(' @ ');
         return parts[1].trim()
     }
     return 'NONE'
@@ -92,7 +92,7 @@ function changeProgressBar() {
 // Apply styles to the div
         barDiv.style.backgroundColor = '#393941';
         barDiv.style.color = 'white';
-        barDiv.style.fontSize = '20px';
+        barDiv.style.fontSize = '16px';
         barDiv.style.padding = '4px';
         barDiv.appendChild(textNode);
         barDiv.appendChild(button);

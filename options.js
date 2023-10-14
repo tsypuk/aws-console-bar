@@ -2,6 +2,17 @@ const saveButton = document.getElementById('saveButton');
 const accountID = document.getElementById('accountTextInput');
 const accountName = document.getElementById('nameTextInput');
 
+// Init storage for the first installation
+chrome.storage.sync.get(['aws_accounts'], function (result) {
+    if (result !== null) {
+        console.log('Extension init...')
+        const obj = {};
+        obj['aws_accounts'] = [];
+        chrome.storage.sync.set(obj, function () {
+        });
+    }
+})
+
 chrome.storage.sync.get(['new_account_id'], function (result) {
     if (result !== null) {
         accountID.value = result.new_account_id
@@ -130,7 +141,4 @@ saveButton.addEventListener('click', function () {
         name: accountName.value,
     }
     addAccount(aws_account)
-
-
-
 });

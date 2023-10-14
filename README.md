@@ -2,3 +2,6 @@
 
 ---
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+
+## Publishing
+https://developer.chrome.com/docs/webstore/using_webstore_api/
