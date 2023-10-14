@@ -21,20 +21,23 @@ changeProgressBar()
 setTimeout(changeProgressBar, 5000);
 
 setInterval(function () {
-    let accountId = getAccountIDFromAWSConsole()
+    result = getAccountIDFromAWSConsole()
+    let activeAccount = result.accountID
+    // let iamUser = result.iamUser
+    console.log(result)
     let region = getRegion()
     try {
 
         chrome.storage.sync.get(['aws_accounts'], function (result) {
-            const alias = result.aws_accounts.find(account => account.accountID === accountId);
+            const alias = result.aws_accounts.find(account => account.accountID === activeAccount);
             let accountText;
             if (alias === undefined) {
                 const obj = {};
-                obj['new_account_id'] = accountId;
+                obj['new_account_id'] = activeAccount;
                 chrome.storage.sync.set(obj, function () {
                 });
-                accountText = `AWS Account: Unknown | id:${accountId} region:${region}`
-                currentAccount = accountId
+                accountText = `AWS Account: Unknown | id:${activeAccount} region:${region}`
+                currentAccount = activeAccount
                 button.style.display = 'block'
                 chrome.runtime.sendMessage({action: 'changeAlarmIcon'});
             } else {
@@ -49,7 +52,7 @@ setInterval(function () {
             }
         });
     } catch (error) {
-        accountText = `AWS Account: Unknown | id:${accountId} region:${region}`
+        accountText = `AWS Account: Unknown | id:${activeAccount} region:${region}`
         textNode.textContent = accountText
     }
 
@@ -67,45 +70,61 @@ function getRegion() {
 function getAccountIDFromAWSConsole() {
     let accountDetailMenu = document.querySelector("#menu--account")
     let divs = accountDetailMenu.querySelectorAll('div')
-    console.log(divs.length)
 
     if (divs.length > 12) {
         // Assumed cross-account role
-        let menuAcount = divs[1]
-        let spans = menuAcount.querySelectorAll('span');
+        let activeSessionSpans = divs[1].querySelectorAll('span');
+        let srcUserSpans = divs[5].querySelectorAll('span');
+        let srcAccountSpans = divs[6].querySelectorAll('span');
 
         // Extract IAM user and Account ID values
-        if ((spans[0].textContent.trim() == 'Currently active as:') &&
-            (spans[3].textContent.trim() == 'Account ID:')) {
-            console.log(spans[1].textContent.trim())
-            console.log(spans[4].textContent.trim())
+        if ((activeSessionSpans[0].textContent.trim() === 'Currently active as:') &&
+            (activeSessionSpans[3].textContent.trim() === 'Account ID:') &&
+            (srcUserSpans[0].textContent.trim() === 'Signed in as:') &&
+            (srcAccountSpans[0].textContent.trim() === 'Account ID:')) {
+            // activeRole
+            let activeRole = activeSessionSpans[1].textContent.trim();
+            console.log(activeRole)
+            // activeAccount
+            activeAccount = activeSessionSpans[4].textContent.trim()
+            console.log(activeAccount)
+            // user
+            user = srcUserSpans[1].textContent.trim()
+            console.log(user)
+            // srcAccount
+            let srcAccount = srcAccountSpans[1].textContent.trim();
+            console.log(srcAccount)
+            return {iamUser: `${user}/${activeRole}::${srcAccount}`, accountID: activeAccount}
         }
     } else {
         // IAM user
         let accountDetailMenu = divs[0]
         let spans = accountDetailMenu.querySelectorAll('span');
         console.log(spans)
+        if ((spans[0].textContent.trim() === 'Account ID:') &&
+            (spans[3].textContent.trim() === 'IAM user:')) {
+            // Extract IAM user and Account ID values
+            let iamUser = spans[4].textContent.trim(); // Assuming IAM user is the 4th span element
+            let accountID = spans[1].textContent.trim(); // Assuming Account ID is the 2nd span element
 
-        // Extract IAM user and Account ID values
-        let iamUser = spans[4].textContent.trim(); // Assuming IAM user is the 4th span element
-        let accountID = spans[1].textContent.trim(); // Assuming Account ID is the 2nd span element
-
-        console.log('IAM user:', iamUser);
-        console.log('Account ID:', accountID);
-    }
-
-    const spanElement = document.querySelector('[data-testid="awsc-nav-account-menu-button"]');
-    if (spanElement) {
-        const innerText = spanElement.textContent;
-        const parts = innerText.split(' @ ');
-        if (parts.length == 2) {
-            return parts[1].trim()
-        } else {
-            //     this is assumed Role
-
+            console.log('IAM user:', iamUser);
+            console.log('Account ID:', accountID);
+            return {iamUser, accountID}
         }
     }
-    return 'NONE'
+
+    // const spanElement = document.querySelector('[data-testid="awsc-nav-account-menu-button"]');
+    // if (spanElement) {
+    //     const innerText = spanElement.textContent;
+    //     const parts = innerText.split(' @ ');
+    //     if (parts.length == 2) {
+    //         return parts[1].trim()
+    //     } else {
+    //         //     this is assumed Role
+    //
+    //     }
+    // }
+    return {iamUser: 'NONE', accountID: 'NONE'}
 }
 
 function changeProgressBar() {
