@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/tsypuk/aws-console-bar/compare/v1.1.0...v1.2.0) (2023-10-14)
+
+
+### Features
+
+* add accounts counter to popup page ([a4e17a6](https://github.com/tsypuk/aws-console-bar/commit/a4e17a68c3d21463e7409afe3bb92e4031689d78))
+* add support for both assumed role and iam user ([3fb726d](https://github.com/tsypuk/aws-console-bar/commit/3fb726dcd41efb48f9592ed476546da5a974aa7c))
+* add timer for current session with notification ([c7bb46e](https://github.com/tsypuk/aws-console-bar/commit/c7bb46ea0ae86d1f99beb5ee3acd7ce0d3a52491))
+* addd publishing to chrome store ([25b93cc](https://github.com/tsypuk/aws-console-bar/commit/25b93cc54fe6e918420f42a7ad93104ba8287625))
+* check if active aws console session is running otherwise stop timer ([ffa1c58](https://github.com/tsypuk/aws-console-bar/commit/ffa1c58d9a48405b0f446c0eb31251b1236e9fe6))
+* extract option styles to css file; add storage initialization ([5faa85c](https://github.com/tsypuk/aws-console-bar/commit/5faa85c7400a66ba0b34ba71347acab0ccceb370))
+* extract popup styles to css file ([df83d2e](https://github.com/tsypuk/aws-console-bar/commit/df83d2eba48da43033f00f9b39a6a1299aa66f36))
+* read federated account identifiers ([ae785af](https://github.com/tsypuk/aws-console-bar/commit/ae785afd2f9dc4eeb6b8870f6c5d84cf1dd527a0))
+
+
+### Bug Fixes
+
+* **accounts:** add first initialization empty accounts case handler ([de5ede6](https://github.com/tsypuk/aws-console-bar/commit/de5ede6a8832a4fb2299164dc9ff00bb4ed3c5c0))
+
 ## 1.1.0 (2023-09-02)
 
 
