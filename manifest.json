@@ -4,7 +4,9 @@
   "version": "1.2.0",
   "description": "Increase your productivity in AWS Console with aws-console-bar Chrome Extension",
   "permissions": [
-    "storage"
+    "storage",
+    "alarms",
+    "notifications"
   ],
   "options_page": "options.html",
   "action": {

@@ -1,8 +1,15 @@
-const saveButton = document.getElementById('saveButton');
-const accountID = document.getElementById('accountTextInput');
-const accountName = document.getElementById('nameTextInput');
-
+const saveButton = document.getElementById('saveButton')
+const accountID = document.getElementById('accountTextInput')
+const accountName = document.getElementById('nameTextInput')
+const timeinput = document.getElementById('time-input')
+// TODO allign same naming
 // Init storage for the first installation
+
+timeinput.addEventListener('change', (event) =>{
+    timeInterval = event.target.value
+    chrome.storage.sync.set({timeInterval})
+})
+
 chrome.storage.sync.get(['aws_accounts'], result => {
     if (result.aws_accounts == null) {
         console.log('Extension init...')
@@ -84,7 +91,8 @@ function render_accounts_table() {
     const tbody = table.querySelector('tbody');
 
     // Populate the table with data from the accounts array
-    chrome.storage.sync.get(['aws_accounts'], result => {
+    chrome.storage.sync.get(['aws_accounts', 'timeInterval'], result => {
+        timeinput.value = result.timeInterval ?? 45
         if (result.aws_accounts) {
             result.aws_accounts.forEach(account => {
                 const row = document.createElement('tr');
