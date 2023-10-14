@@ -28,6 +28,7 @@
       "matches": [
         "https://*.console.aws.amazon.com/*"
       ],
+      "css": ["my-styles.css"],
       "js": [
         "content.js"
       ]

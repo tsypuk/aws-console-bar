@@ -1,5 +1,14 @@
+chrome.runtime.onInstalled.addListener(details => {
+    console.log(details)
+    // Initialize storage and default values
+})
+
 chrome.alarms.create(name = 'session-time', {
-    periodInMinutes: 1 / 60,
+    periodInMinutes: 1,
+})
+
+chrome.alarms.create(name = 'rss-time', {
+    periodInMinutes: 1,
 })
 
 chrome.alarms.onAlarm.addListener((alarm) => {
@@ -40,6 +49,14 @@ chrome.alarms.onAlarm.addListener((alarm) => {
             break
         case 'rss-time':
             console.log('Time to refresh RSS')
+            // fetch("https://api.apis.guru/v2/list.json")
+            //     .then(res => res.json())
+            //     .then(data => console.log(data))
+            // fetch("https://aws.amazon.com/blogs/machine-learning/feed/",{
+            //     method: 'GET',
+            //     mode: 'no-cors'
+            // })
+            //     .then(res => console.log(res))
             break
     }
 })
