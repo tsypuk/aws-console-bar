@@ -16,6 +16,7 @@ package:
 	mkdir -p build/src
 	cp *.js build/src
 	cp *.html build/src
+	cp *.css build/src
 	cp manifest.json build/src
 	cp -r images build/src
 	cd build/src && zip -r -X ../build.zip .
