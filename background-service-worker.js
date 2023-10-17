@@ -17,7 +17,7 @@ function readHistoryAddNewSession() {
         res.history.push(itemCurrentSession)
 
         chrome.storage.sync.set({history: res.history})
-        chrome.storage.sync.set({   active_session: sessionID})
+        chrome.storage.sync.set({active_session: sessionID})
     })
 }
 
@@ -27,10 +27,14 @@ chrome.runtime.onInstalled.addListener(details => {
     chrome.storage.sync.set({aws_accounts: []}, () => {
         console.log('Init aws accounts storage...')
     })
+    // chrome.storage.sync.set({rss: []}, () => {
+    //     console.log('Init RSS storage...')
+    // })
     chrome.storage.sync.set({history: []}).then(() => {
         console.log('Init history...')
         readHistoryAddNewSession()
     })
+    loadRSSDataFromServer()
 })
 
 chrome.alarms.create(name = 'session-time', {
@@ -38,7 +42,7 @@ chrome.alarms.create(name = 'session-time', {
 })
 
 chrome.alarms.create(name = 'rss-time', {
-    periodInMinutes: 1,
+    periodInMinutes: 1 / 20,
 })
 
 chrome.alarms.onAlarm.addListener((alarm) => {
@@ -95,12 +99,23 @@ chrome.alarms.onAlarm.addListener((alarm) => {
             break
         case 'rss-time':
             console.log('Time to refresh RSS')
-            fetch("https://blog.tsypuk.com/aws-news/data/ml/rs.json")
-                .then(res => res.json())
-                .then(data => console.log(data))
+            chrome.storage.sync.get(["rss"], (res) => {
+                index = Math.floor(Math.random() * res.rss.length)
+                console.log(res.rss[index])
+            })
             break
     }
 })
+
+function loadRSSDataFromServer() {
+    fetch("https://blog.tsypuk.com/aws-news/data/ml/rs.json")
+        .then(res => res.json())
+        // .then(data => console.log(data))
+        .then(data => {
+            console.log('Init RSS storage...')
+            chrome.storage.sync.set({rss: data})
+        })
+}
 
 function secondsToHHMMSS(seconds) {
     let minutes = Math.floor((seconds % 3600) / 60);
