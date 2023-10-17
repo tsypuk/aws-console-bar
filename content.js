@@ -1,5 +1,5 @@
-let currentAccount = 'None';
-let prevAccountText = '';
+let currentAccount = 'None'
+let prevAccountText = ''
 
 const textNode = document.createTextNode('DATA: ')
 
@@ -18,7 +18,7 @@ button.addEventListener('click', function () {
 
 changeProgressBar()
 
-setTimeout(changeProgressBar, 5000);
+setTimeout(changeProgressBar, 5000)
 
 setInterval(function () {
     result = getAccountIDFromAWSConsole()
@@ -29,11 +29,11 @@ setInterval(function () {
     try {
 
         chrome.storage.sync.get(['aws_accounts'], function (result) {
-            const alias = result.aws_accounts.find(account => account.accountID === activeAccount);
-            let accountText;
+            const alias = result.aws_accounts.find(account => account.accountID === activeAccount)
+            let accountText
             if (alias === undefined) {
-                const obj = {};
-                obj['new_account_id'] = activeAccount;
+                const obj = {}
+                obj['new_account_id'] = activeAccount
                 chrome.storage.sync.set(obj, function () {
                 });
                 accountText = `AWS Account: Unknown | id:${activeAccount} region:${region}`
@@ -43,24 +43,24 @@ setInterval(function () {
             } else {
                 accountText = `AWS Account: ${alias.name}`
                 button.style.display = 'none'
-                chrome.runtime.sendMessage({action: 'changeDefaultIcon'});
+                chrome.runtime.sendMessage({action: 'changeDefaultIcon'})
             }
 
             if (prevAccountText !== accountText) {
                 textNode.textContent = accountText
                 prevAccountText = accountText
             }
-        });
+        })
     } catch (error) {
         accountText = `AWS Account: Unknown | id:${activeAccount} region:${region}`
         textNode.textContent = accountText
     }
 
 
-}, 5000);
+}, 5000)
 
 function getRegion() {
-    const regionSpanElement = document.querySelector('[data-testid="awsc-nav-regions-menu-button"]');
+    const regionSpanElement = document.querySelector('[data-testid="awsc-nav-regions-menu-button"]')
     if (regionSpanElement) {
         return regionSpanElement.textContent
     }
@@ -73,9 +73,9 @@ function getAccountIDFromAWSConsole() {
 
     if (divs.length > 12) {
         // Assumed cross-account role
-        let activeSessionSpans = divs[1].querySelectorAll('span');
-        let srcUserSpans = divs[5].querySelectorAll('span');
-        let srcAccountSpans = divs[6].querySelectorAll('span');
+        let activeSessionSpans = divs[1].querySelectorAll('span')
+        let srcUserSpans = divs[5].querySelectorAll('span')
+        let srcAccountSpans = divs[6].querySelectorAll('span')
 
         // Extract IAM user and Account ID values
         if ((activeSessionSpans[0].textContent.trim() === 'Currently active as:') &&
@@ -92,20 +92,20 @@ function getAccountIDFromAWSConsole() {
             user = srcUserSpans[1].textContent.trim()
             console.log(user)
             // srcAccount
-            let srcAccount = srcAccountSpans[1].textContent.trim();
+            let srcAccount = srcAccountSpans[1].textContent.trim()
             console.log(srcAccount)
             return {iamUser: `${user}/${activeRole}::${srcAccount}`, accountID: activeAccount}
         }
     } else {
         // IAM user
         let accountDetailMenu = divs[0]
-        let spans = accountDetailMenu.querySelectorAll('span');
+        let spans = accountDetailMenu.querySelectorAll('span')
         console.log(spans)
         if ((spans[0].textContent.trim() === 'Account ID:') &&
             (spans[3].textContent.trim() === 'IAM user:')) {
             // Extract IAM user and Account ID values
-            let iamUser = spans[4].textContent.trim(); // Assuming IAM user is the 4th span element
-            let accountID = spans[1].textContent.trim(); // Assuming Account ID is the 2nd span element
+            let iamUser = spans[4].textContent.trim() // Assuming IAM user is the 4th span element
+            let accountID = spans[1].textContent.trim() // Assuming Account ID is the 2nd span element
 
             console.log('IAM user:', iamUser);
             console.log('Account ID:', accountID);
@@ -128,7 +128,7 @@ function getAccountIDFromAWSConsole() {
 }
 
 function changeProgressBar() {
-    const divElement = document.querySelector('#awsc-navigation-container');
+    const divElement = document.querySelector('#awsc-navigation-container')
     if (divElement) {
         // divElement.style.backgroundColor = 'red';
         // divElement.className="globalNav-327"
@@ -150,7 +150,7 @@ function changeProgressBar() {
         //     </div>
         // </div>
 
-        const barDiv = document.createElement('div',);
+        const barDiv = document.createElement('div')
         barDiv.className = "bar"
 
 // Apply styles to the div
@@ -159,17 +159,17 @@ function changeProgressBar() {
 //         barDiv.style.fontSize = '16px';
 //         barDiv.style.padding = '4px';
 
-        barDiv.appendChild(textNode);
-        barDiv.appendChild(button);
+        barDiv.appendChild(textNode)
+        barDiv.appendChild(button)
 
         // divElement.parentNode.insertBefore(textNode, divElement);
-        divElement.parentNode.insertBefore(barDiv, divElement);
+        divElement.parentNode.insertBefore(barDiv, divElement)
 
         // chrome.storage.sync.get(['aws_accounts'], function (result) {
         //     result['aws_accounts'].forEach(account => {
         //         textNode.appendData(`${account.name}, `)
         //         // console.log(account.name)
         //     })
-        // });
+        // })
     }
 }

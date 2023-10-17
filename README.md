@@ -5,3 +5,5 @@
 
 ## Publishing
 https://developer.chrome.com/docs/webstore/using_webstore_api/
+
+https://chrome.google.com/webstore/devconsole/

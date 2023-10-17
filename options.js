@@ -15,7 +15,7 @@ chrome.storage.sync.get(['aws_accounts'], result => {
         console.log('Extension init...')
         chrome.storage.sync.set({aws_accounts: []}, () => {
             console.log('Init aws accounts storage...')
-        });
+        })
     }
 })
 
@@ -63,7 +63,7 @@ function saveAccountsToStorage(accounts) {
     const obj = {};
     obj['aws_accounts'] = accounts;
     chrome.storage.sync.set(obj, () => {
-    });
+    })
 }
 
 function updateAccount(accountID, accountName) {
@@ -143,4 +143,4 @@ saveButton.addEventListener('click', () => {
         accountID: accountID.value, name: accountName.value,
     }
     addAccount(aws_account)
-});
+})
