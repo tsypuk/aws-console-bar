@@ -1,7 +1,7 @@
 let currentAccount = 'None'
 let prevAccountText = ''
 
-const accountTextElement = document.createTextNode('DATA: ')
+const accountTextElement = document.createTextNode('')
 const newsLink = document.createElement('a');
 
 const button = document.createElement('button')
@@ -17,15 +17,16 @@ button.addEventListener('click', function () {
     });
 });
 
-changeProgressBar()
+// changeProgressBar()
 
-setTimeout(changeProgressBar, 5000)
+setTimeout(changeProgressBar, 1000)
 
 setInterval(function () {
 
     chrome.storage.sync.get(["latest_news"], (res) => {
         newsLink.href = res.latest_news.link
-        newsLink.textContent = res.latest_news.title
+        let topic = 'ML'
+        newsLink.textContent = `${topic}: ${res.latest_news.title}`
         newsLink.target = "_blank"
     })
 
