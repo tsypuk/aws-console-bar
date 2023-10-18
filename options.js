@@ -5,7 +5,7 @@ const timeinput = document.getElementById('time-input')
 // TODO allign same naming
 // Init storage for the first installation
 
-timeinput.addEventListener('change', (event) =>{
+timeinput.addEventListener('change', (event) => {
     timeInterval = event.target.value
     chrome.storage.sync.set({timeInterval})
 })
@@ -131,6 +131,44 @@ function render_accounts_table() {
 
 render_accounts_table()
 
+
+function render_news() {
+    const table = document.createElement('table');
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>link</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    `;
+
+    const tbody = table.querySelector('tbody');
+
+    // Populate the table with data from the accounts array
+    chrome.storage.sync.get(['rss'], result => {
+        if (result.rss) {
+            result.rss.forEach((news, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+        <td>${index}</td>
+        <td>${news.title}</td>
+        <td>${news.link}</td>
+      `;
+                tbody.appendChild(row);
+            })
+        }
+    })
+
+    // Inject the table into the div with id "aws_accounts"
+    const awsNewsDiv = document.getElementById('aws_news');
+    awsNewsDiv.appendChild(table);
+}
+
+render_news()
 
 function clear_account_input() {
     accountID.value = '';

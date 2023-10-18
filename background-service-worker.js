@@ -3,12 +3,12 @@ function readHistoryAddNewSession() {
         console.log(res)
         var sessionID = 0
         itemCurrentSession = {}
-        if (res.history.length == 0) {
+        if (res.history.length === 0) {
             itemCurrentSession.StartTimeStamp = Date.now()
             itemCurrentSession.StartTime = new Date().toISOString()
 
         } else {
-            let maxIdElement = res.history.reduce((max, current) => (current.id > max.id) ? current : max)
+            // let maxIdElement = res.history.reduce((max, current) => (current.id > max.id) ? current : max)
             // sessionID = maxIdElement + 1
             itemCurrentSession.StartTimeStamp = Date.now()
             itemCurrentSession.StartTime = new Date().toISOString()
@@ -38,7 +38,7 @@ chrome.runtime.onInstalled.addListener(details => {
 })
 
 chrome.alarms.create(name = 'session-time', {
-    periodInMinutes: 1 / 30,
+    periodInMinutes: 1,
 })
 
 chrome.alarms.create(name = 'rss-time', {
@@ -73,7 +73,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                     text: `${secondsToHHMMSS(time)}`
                 })
                 const internal = res.timeInterval ?? 45
-                if (time % internal == 0) {
+                if (time % internal === 0) {
                     this.registration.showNotification("Chrome Timer Extentions", {
                         body: "45 min has passed!", icon: "icon.pnh"
                     })
