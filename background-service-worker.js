@@ -110,7 +110,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 })
 
 function loadRSSDataFromServer() {
-    fetch("https://blog.tsypuk.com/aws-news/data/ml/rs.json")
+    fetch("https://blog.tsypuk.com/aws-news/news/machine_learning.json")
         .then(res => res.json())
         // .then(data => console.log(data))
         .then(data => {
