@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/tsypuk/aws-console-bar/compare/v1.2.1...v1.3.0) (2023-10-18)
+
+
+### Features
+
+* add history tracking for account ([593a09d](https://github.com/tsypuk/aws-console-bar/commit/593a09d9a79dea1838cff0c2bb8ec62572aec4b2))
+* add reaction on active/inactive account ([3def040](https://github.com/tsypuk/aws-console-bar/commit/3def040428b3cc0fd653f139e1fbff1522cccf4b))
+* aws news rendered on console bar ([76cd35b](https://github.com/tsypuk/aws-console-bar/commit/76cd35b9208efe6e5428dc1a6c7da9d5c84b126e))
+* get AWS news, persist them and show random new in the toolbar ([f1b253d](https://github.com/tsypuk/aws-console-bar/commit/f1b253db89a53157de1a0f8cf76b5bd64c0a1a51))
+* render aws news in extension option page ([b8033dd](https://github.com/tsypuk/aws-console-bar/commit/b8033dd93c92b5a24873d408c92c6cf33d371408))
+
 ### [1.2.1](https://github.com/tsypuk/aws-console-bar/compare/v1.2.0...v1.2.1) (2023-10-14)
 
 ## [1.2.0](https://github.com/tsypuk/aws-console-bar/compare/v1.1.0...v1.2.0) (2023-10-14)
