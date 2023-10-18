@@ -4,14 +4,14 @@ let prevAccountText = ''
 const accountTextElement = document.createTextNode('')
 const newsLink = document.createElement('a');
 
-const button = document.createElement('button')
-button.style.display = 'none'
-button.innerText = 'Register Account'
-button.className = 'awsui_button_vjswe_1js1s_101 awsui_variant-primary_vjswe_1js1s_210'
+const registerButton = document.createElement('button')
+registerButton.style.display = 'none'
+registerButton.innerText = 'Register Account'
+// button.className = 'awsui_button_vjswe_1js1s_101 awsui_variant-primary_vjswe_1js1s_210'
 
 // Add event listener to handle button click
-button.addEventListener('click', function () {
-    button.style.display = 'none';
+registerButton.addEventListener('click', function () {
+    registerButton.style.display = 'none';
     chrome.runtime.sendMessage({
         "action": "openOptionsPage", "accountID": currentAccount
     });
@@ -21,13 +21,22 @@ button.addEventListener('click', function () {
 
 setTimeout(changeProgressBar, 1000)
 
-setInterval(function () {
+function changeStyleToActive(isActive) {
+    newsLink.className = isActive ? "active" : "unknown"
+}
 
+function limitString(input, maxLength) {
+    return input.length > maxLength ? input.substring(0, maxLength) : input;
+}
+
+setInterval(function () {
     chrome.storage.sync.get(["latest_news"], (res) => {
-        newsLink.href = res.latest_news.link
-        let topic = 'ML'
-        newsLink.textContent = `${topic}: ${res.latest_news.title}`
-        newsLink.target = "_blank"
+        if (res.latest_news) {
+            newsLink.href = res.latest_news.link
+            let topic = 'ML'
+            newsLink.textContent = limitString(`${topic}: ${res.latest_news.title}`, 100)
+            newsLink.target = "_blank"
+        }
     })
 
     result = getAccountIDFromAWSConsole()
@@ -45,14 +54,17 @@ setInterval(function () {
                 obj['new_account_id'] = activeAccount
                 chrome.storage.sync.set(obj, function () {
                 });
-                accountText = `AWS Account: Unknown | id:${activeAccount} region:${region}`
+                accountText = `AWS Account: Unknown`
+                changeStyleToActive(false)
                 currentAccount = activeAccount
-                button.style.display = 'block'
+                registerButton.textContent = `Register: ${activeAccount}`
+                registerButton.style.display = 'block'
                 chrome.runtime.sendMessage({action: 'changeAlarmIcon'});
             } else {
                 accountText = `AWS Account: ${alias.name}`
-                button.style.display = 'none'
+                registerButton.style.display = 'none'
                 chrome.runtime.sendMessage({action: 'changeDefaultIcon'})
+                changeStyleToActive(true)
             }
 
             if (prevAccountText !== accountText) {
@@ -61,7 +73,9 @@ setInterval(function () {
             }
         })
     } catch (error) {
-        accountTextElement.textContent = `AWS Account: Unknown | id:${activeAccount} region:${region}`
+        accountTextElement.textContent = `AWS Account: Unknown`
+        registerButton.textContent = activeAccount
+        changeStyleToActive(false)
     }
 
 
@@ -181,7 +195,7 @@ function changeProgressBar() {
 
         leftContentDiv.appendChild(accountTextElement)
         newsDiv.appendChild(newsLink)
-        buttonDiv.appendChild(button)
+        buttonDiv.appendChild(registerButton)
 
         // divElement.parentNode.insertBefore(accountText, divElement);
         divElement.parentNode.insertBefore(barDiv, divElement)
