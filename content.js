@@ -1,7 +1,8 @@
 let currentAccount = 'None'
 let prevAccountText = ''
 
-const textNode = document.createTextNode('DATA: ')
+const accountTextElement = document.createTextNode('DATA: ')
+const newsLink = document.createElement('a');
 
 const button = document.createElement('button')
 button.style.display = 'none'
@@ -21,10 +22,17 @@ changeProgressBar()
 setTimeout(changeProgressBar, 5000)
 
 setInterval(function () {
+
+    chrome.storage.sync.get(["latest_news"], (res) => {
+        newsLink.href = res.latest_news.link
+        newsLink.textContent = res.latest_news.title
+        newsLink.target = "_blank"
+    })
+
     result = getAccountIDFromAWSConsole()
     let activeAccount = result.accountID
     // let iamUser = result.iamUser
-    console.log(result)
+    // console.log(result)
     let region = getRegion()
     try {
 
@@ -47,13 +55,12 @@ setInterval(function () {
             }
 
             if (prevAccountText !== accountText) {
-                textNode.textContent = accountText
+                accountTextElement.textContent = accountText
                 prevAccountText = accountText
             }
         })
     } catch (error) {
-        accountText = `AWS Account: Unknown | id:${activeAccount} region:${region}`
-        textNode.textContent = accountText
+        accountTextElement.textContent = `AWS Account: Unknown | id:${activeAccount} region:${region}`
     }
 
 
@@ -100,7 +107,7 @@ function getAccountIDFromAWSConsole() {
         // IAM user
         let accountDetailMenu = divs[0]
         let spans = accountDetailMenu.querySelectorAll('span')
-        console.log(spans)
+        // console.log(spans)
         if ((spans[0].textContent.trim() === 'Account ID:') &&
             (spans[3].textContent.trim() === 'IAM user:')) {
             // Extract IAM user and Account ID values
@@ -153,21 +160,34 @@ function changeProgressBar() {
         const barDiv = document.createElement('div')
         barDiv.className = "bar"
 
+        const leftContentDiv = document.createElement('div')
+        leftContentDiv.className = "left-content"
+        barDiv.appendChild(leftContentDiv)
+
+        const newsDiv = document.createElement('div')
+        newsDiv.className = "news-content"
+        barDiv.appendChild(newsDiv)
+
+        const buttonDiv = document.createElement('div')
+        buttonDiv.className = "button-container"
+        barDiv.appendChild(buttonDiv)
+
 // Apply styles to the div
 //         barDiv.style.backgroundColor = '#393941';
 //         barDiv.style.color = 'white';
 //         barDiv.style.fontSize = '16px';
 //         barDiv.style.padding = '4px';
 
-        barDiv.appendChild(textNode)
-        barDiv.appendChild(button)
+        leftContentDiv.appendChild(accountTextElement)
+        newsDiv.appendChild(newsLink)
+        buttonDiv.appendChild(button)
 
-        // divElement.parentNode.insertBefore(textNode, divElement);
+        // divElement.parentNode.insertBefore(accountText, divElement);
         divElement.parentNode.insertBefore(barDiv, divElement)
 
         // chrome.storage.sync.get(['aws_accounts'], function (result) {
         //     result['aws_accounts'].forEach(account => {
-        //         textNode.appendData(`${account.name}, `)
+        //         accountText.appendData(`${account.name}, `)
         //         // console.log(account.name)
         //     })
         // })

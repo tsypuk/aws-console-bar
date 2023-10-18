@@ -6,6 +6,12 @@
     padding: 2px;
 }
 
+a {
+    color: white;
+    text-decoration: none;
+    font-size: 22px;
+}
+
 .left-content {
     flex: 1;
 }

@@ -102,6 +102,8 @@ chrome.alarms.onAlarm.addListener((alarm) => {
             chrome.storage.sync.get(["rss"], (res) => {
                 index = Math.floor(Math.random() * res.rss.length)
                 console.log(res.rss[index])
+                // chrome.runtime.sendMessage(null, res.rss[index])
+                chrome.storage.sync.set({latest_news: res.rss[index]})
             })
             break
     }
