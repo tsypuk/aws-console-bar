@@ -3,7 +3,9 @@ let prevAccountText = ''
 
 const accountTextElement = document.createTextNode('')
 const newsLink = document.createElement('a');
+
 const leftContentDiv = document.createElement('div')
+const barDiv = document.createElement('div')
 
 const registerButton = document.createElement('button')
 registerButton.style.display = 'none'
@@ -27,10 +29,13 @@ function changeStyleToActive(isActive) {
         newsLink.className = "white"
         leftContentDiv.classList.add('white')
         leftContentDiv.classList.remove('black')
+        barDiv.classList.remove('orange')
     } else {
         newsLink.className = "black"
         leftContentDiv.classList.add('black')
         leftContentDiv.classList.remove('white')
+
+        barDiv.classList.add('orange')
     }
 
 }
@@ -189,7 +194,6 @@ function changeProgressBar() {
         //     </div>
         // </div>
 
-        const barDiv = document.createElement('div')
         barDiv.className = "bar"
 
         leftContentDiv.className = "left-content"
