@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f0f0f0;
+    background-color: #332f36;
     padding: 2px;
 }
 
@@ -27,6 +27,14 @@ a.active {
 .left-content {
     display: inline-block;
     font-size: 16px;
+}
+
+.left-content.white {
+    color: white; /* Set font color to white */
+}
+
+.left-content.black {
+    color: black; /* Set font color to black */
 }
 
 .news-content {

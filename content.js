@@ -40,6 +40,7 @@ setInterval(function () {
     })
 
     result = getAccountIDFromAWSConsole()
+    console.log(result)
     let activeAccount = result.accountID
     // let iamUser = result.iamUser
     // console.log(result)
@@ -92,7 +93,7 @@ function getRegion() {
 function getAccountIDFromAWSConsole() {
     let accountDetailMenu = document.querySelector("#menu--account")
     let divs = accountDetailMenu.querySelectorAll('div')
-
+    console.log(divs.length)
     if (divs.length > 12) {
         // Assumed cross-account role
         let activeSessionSpans = divs[1].querySelectorAll('span')
@@ -122,15 +123,21 @@ function getAccountIDFromAWSConsole() {
         // IAM user
         let accountDetailMenu = divs[0]
         let spans = accountDetailMenu.querySelectorAll('span')
-        // console.log(spans)
-        if ((spans[0].textContent.trim() === 'Account ID:') &&
-            (spans[3].textContent.trim() === 'IAM user:')) {
+        console.log(spans)
+        if (spans[0].textContent.trim() === 'Account ID:') {
             // Extract IAM user and Account ID values
             let iamUser = spans[4].textContent.trim() // Assuming IAM user is the 4th span element
             let accountID = spans[1].textContent.trim() // Assuming Account ID is the 2nd span element
 
             console.log('IAM user:', iamUser);
             console.log('Account ID:', accountID);
+            type = 'UNKNOWN'
+            if (spans[3].textContent.trim() === 'IAM user:') {
+                type = 'iam_user'
+            }
+            if (spans[3].textContent.trim() === 'Federated user:'){
+                type = 'federated_user'
+            }
             return {iamUser, accountID}
         }
     }
