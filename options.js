@@ -2,7 +2,24 @@ const saveButton = document.getElementById('saveButton')
 const accountID = document.getElementById('accountTextInput')
 const accountName = document.getElementById('nameTextInput')
 const timeinput = document.getElementById('time-input')
-// TODO allign same naming
+// TODO align same naming
+
+document.getElementById('exportButton').addEventListener('click', () => {
+    chrome.storage.sync.get(['aws_accounts'], result => {
+        if (result.aws_accounts.length > 0) {
+            const jsonData = result.aws_accounts
+            const jsonBlob = new Blob([JSON.stringify(jsonData, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(jsonBlob);
+
+            chrome.downloads.download({
+                url: url,
+                filename: 'exported_aws_accounts.json',
+                saveAs: true
+            })
+        }
+    })
+})
+
 // Init storage for the first installation
 
 timeinput.addEventListener('change', (event) => {
@@ -127,19 +144,6 @@ function render_accounts_table() {
     // Inject the table into the div with id "aws_accounts"
     const awsAccountsDiv = document.getElementById('aws_accounts');
     awsAccountsDiv.appendChild(table);
-    document.getElementById('myButton').addEventListener('click', () => {
-        chrome.storage.sync.get(['aws_accounts'], result => {
-            const jsonData = result.aws_accounts
-            const jsonBlob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(jsonBlob);
-
-            chrome.downloads.download({
-                url: url,
-                filename: 'exported_aws_accounts.json',
-                saveAs: true
-            });
-        })
-    })
 }
 
 render_accounts_table()
