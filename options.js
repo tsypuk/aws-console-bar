@@ -1,10 +1,11 @@
-const saveButton = document.getElementById('saveButton')
-const accountID = document.getElementById('accountTextInput')
-const accountName = document.getElementById('nameTextInput')
-const timeinput = document.getElementById('time-input')
-// TODO align same naming
+const saveButton = document.getElementById('save-button')
+const exportButton = document.getElementById('export-button')
 
-document.getElementById('exportButton').addEventListener('click', () => {
+const accountIdInput = document.getElementById('account-input')
+const accountNameInput = document.getElementById('name-input')
+const timeInput = document.getElementById('time-input')
+
+exportButton.addEventListener('click', () => {
     chrome.storage.sync.get(['aws_accounts'], result => {
         if (result.aws_accounts.length > 0) {
             const jsonData = result.aws_accounts
@@ -22,7 +23,7 @@ document.getElementById('exportButton').addEventListener('click', () => {
 
 // Init storage for the first installation
 
-timeinput.addEventListener('change', (event) => {
+timeInput.addEventListener('change', (event) => {
     timeInterval = event.target.value
     chrome.storage.sync.set({timeInterval})
 })
@@ -38,7 +39,7 @@ chrome.storage.sync.get(['aws_accounts'], result => {
 
 chrome.storage.sync.get(['new_account_id'], result => {
     if (result !== null) {
-        accountID.value = result.new_account_id
+        accountIdInput.value = result.new_account_id
 
         const obj = {};
         obj['new_account_id'] = null;
@@ -109,7 +110,7 @@ function render_accounts_table() {
 
     // Populate the table with data from the accounts array
     chrome.storage.sync.get(['aws_accounts', 'timeInterval'], result => {
-        timeinput.value = result.timeInterval ?? 45
+        timeInput.value = result.timeInterval ?? 45
         if (result.aws_accounts) {
             result.aws_accounts.forEach(account => {
                 const row = document.createElement('tr');
@@ -188,14 +189,14 @@ function render_news() {
 render_news()
 
 function clear_account_input() {
-    accountID.value = '';
-    accountName.value = '';
+    accountIdInput.value = '';
+    accountNameInput.value = '';
 }
 
 saveButton.addEventListener('click', () => {
     // TODO: add user input validation
     let aws_account = {
-        accountID: accountID.value, name: accountName.value,
+        accountID: accountIdInput.value, name: accountNameInput.value,
     }
     addAccount(aws_account)
 })
