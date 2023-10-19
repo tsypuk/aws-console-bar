@@ -117,6 +117,13 @@ function loadRSSDataFromServer() {
             console.log('Init RSS storage...')
             chrome.storage.sync.set({rss: data})
         })
+
+    fetch("https://blog.tsypuk.com/aws-news/index.json")
+        .then(res => res.json())
+        // .then(data => console.log(data))
+        .then(data => {
+            chrome.storage.sync.set({rss_index: data})
+        })
 }
 
 function secondsToHHMMSS(seconds) {
