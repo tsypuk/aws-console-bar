@@ -50,7 +50,19 @@ function render_news_index() {
         const checkbox = event.target;
         const id = checkbox.id;
         console.log(`Checkbox with ID ${id} clicked. ${checkbox.checked}: `);
+        chrome.storage.local.get(['rss_index'], result => {
+            const clickedItem = result.rss_index.filter(item => item.name === id)[0]
+            clickedItem.checked = checkbox.checked
+            saveIndexToStorage(result.rss_index)
+        })
     }
+}
+
+function saveIndexToStorage(rss_index) {
+    console.log(rss_index)
+    const obj = {};
+    obj['rss_index'] = rss_index;
+    chrome.storage.local.set(obj)
 }
 
 render_news_index()
