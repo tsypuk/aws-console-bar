@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/tsypuk/aws-console-bar/compare/v1.3.0...v1.4.0) (2023-10-19)
+
+
+### Features
+
+* add support for federated user in aws console ([3dbc404](https://github.com/tsypuk/aws-console-bar/commit/3dbc4045642d6f86a4b6c6b77f35ee37bd31ce08))
+* change colors if unknown account ([510fe70](https://github.com/tsypuk/aws-console-bar/commit/510fe70d52f6853fd891ef1574c220d13540d445))
+* change registration button style based on account ([87429ef](https://github.com/tsypuk/aws-console-bar/commit/87429ef84e5d0494aca5010f8d8bc73412ea7853))
+* export aws accounts configuration as downloadable json configuration file ([87ff821](https://github.com/tsypuk/aws-console-bar/commit/87ff821f0d83e648026539835aa9960eaae4ab54))
+* hide/show export button depending on the storage of aws accounts ([ac01934](https://github.com/tsypuk/aws-console-bar/commit/ac019344e3a194f517cd7c5f187e1ad80eef33a0))
+
 ## [1.3.0](https://github.com/tsypuk/aws-console-bar/compare/v1.2.1...v1.3.0) (2023-10-18)
 
 
