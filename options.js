@@ -80,8 +80,8 @@ function addAccount(aws_account) {
 function saveAccountsToStorage(accounts) {
     const obj = {};
     obj['aws_accounts'] = accounts;
-    chrome.storage.sync.set(obj, () => {
-    })
+    chrome.storage.sync.set(obj)
+    exportButton.style.display = (accounts.length > 0) ? 'block' : 'none'
 }
 
 function updateAccount(accountID, accountName) {
@@ -110,6 +110,7 @@ function render_accounts_table() {
 
     // Populate the table with data from the accounts array
     chrome.storage.sync.get(['aws_accounts', 'timeInterval'], result => {
+        exportButton.style.display = (result.aws_accounts.length > 0) ? 'block' : 'none'
         timeInput.value = result.timeInterval ?? 45
         if (result.aws_accounts) {
             result.aws_accounts.forEach(account => {
