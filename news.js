@@ -18,21 +18,43 @@ function render_news_index() {
     chrome.storage.local.get(['rss_index'], result => {
         if (result.rss_index) {
             result.rss_index.forEach((item, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-        <td>${index}</td>
-        <td>${item.name}</td>
-        <td>${JSON.stringify(item)}</td>
-      `;
-                tbody.appendChild(row);
+                const newRow = document.createElement('tr');
+
+                const firstCell = document.createElement('td');
+                const inputElement = document.createElement('input');
+                inputElement.type = 'checkbox';
+                inputElement.id = item.name;
+                inputElement.checked = item.checked
+                inputElement.addEventListener('click', handleCheckboxClick)
+                firstCell.appendChild(inputElement);
+
+                const secondCell = document.createElement('td');
+                secondCell.textContent = item.name;
+
+                const thirdCell = document.createElement('td');
+                thirdCell.textContent = JSON.stringify(item);
+
+                newRow.appendChild(firstCell);
+                newRow.appendChild(secondCell);
+                newRow.appendChild(thirdCell);
+                tbody.appendChild(newRow);
             })
         }
     })
 
-    // Inject the table into the div with id "aws_accounts"
     const awsNewsDiv = document.getElementById('aws_news_index');
     awsNewsDiv.appendChild(table);
+    console.log('table')
+
+    function handleCheckboxClick(event) {
+        const checkbox = event.target;
+        const id = checkbox.id;
+        console.log(`Checkbox with ID ${id} clicked. ${checkbox.checked}: `);
+    }
 }
+
+render_news_index()
+
 function render_news() {
     const table = document.createElement('table');
     table.innerHTML = `
@@ -69,5 +91,4 @@ function render_news() {
     awsNewsDiv.appendChild(table);
 }
 
-render_news_index()
 render_news()
