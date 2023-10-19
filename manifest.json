@@ -8,7 +8,8 @@
     "alarms",
     "notifications",
     "tabs",
-    "downloads"
+    "downloads",
+    "unlimitedStorage"
   ],
   "options_page": "options.html",
   "action": {

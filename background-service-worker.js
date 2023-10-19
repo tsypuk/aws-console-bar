@@ -122,7 +122,8 @@ function loadRSSDataFromServer() {
         .then(res => res.json())
         // .then(data => console.log(data))
         .then(data => {
-            chrome.storage.sync.set({rss_index: data})
+            console.log(data)
+            chrome.storage.local.set({rss_index: data})
         })
 }
 
