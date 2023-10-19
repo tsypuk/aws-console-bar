@@ -3,6 +3,7 @@ let prevAccountText = ''
 
 const accountTextElement = document.createTextNode('')
 const newsLink = document.createElement('a');
+const leftContentDiv = document.createElement('div')
 
 const registerButton = document.createElement('button')
 registerButton.style.display = 'none'
@@ -22,7 +23,16 @@ registerButton.addEventListener('click', function () {
 setTimeout(changeProgressBar, 1000)
 
 function changeStyleToActive(isActive) {
-    newsLink.className = isActive ? "active" : "unknown"
+    if (isActive){
+        newsLink.className = "white"
+        leftContentDiv.classList.add('white')
+        leftContentDiv.classList.remove('black')
+    } else {
+        newsLink.className = "black"
+        leftContentDiv.classList.add('black')
+        leftContentDiv.classList.remove('white')
+    }
+
 }
 
 function limitString(input, maxLength) {
@@ -182,7 +192,6 @@ function changeProgressBar() {
         const barDiv = document.createElement('div')
         barDiv.className = "bar"
 
-        const leftContentDiv = document.createElement('div')
         leftContentDiv.className = "left-content"
         barDiv.appendChild(leftContentDiv)
 
