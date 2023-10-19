@@ -127,6 +127,19 @@ function render_accounts_table() {
     // Inject the table into the div with id "aws_accounts"
     const awsAccountsDiv = document.getElementById('aws_accounts');
     awsAccountsDiv.appendChild(table);
+    document.getElementById('myButton').addEventListener('click', () => {
+        chrome.storage.sync.get(['aws_accounts'], result => {
+            const jsonData = result.aws_accounts
+            const jsonBlob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(jsonBlob);
+
+            chrome.downloads.download({
+                url: url,
+                filename: 'exported_aws_accounts.json',
+                saveAs: true
+            });
+        })
+    })
 }
 
 render_accounts_table()
