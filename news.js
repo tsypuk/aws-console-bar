@@ -56,6 +56,12 @@ function render_news_index() {
             saveIndexToStorage(result.rss_index)
         })
     }
+
+    function getSubscribedNewsFromIndex() {
+        chrome.storage.local.get(['rss_index'], result => {
+            return result.rss_index.filter(item => item.name === id)
+        })
+    }
 }
 
 function saveIndexToStorage(rss_index) {
