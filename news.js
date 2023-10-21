@@ -22,13 +22,19 @@ function render_news_index() {
                 const newRow = document.createElement('tr');
 
                 const firstCell = document.createElement('td');
+
+                const checkDiv = document.createElement('div')
+                checkDiv.className = "form-check form-switch"
+
                 const inputElement = document.createElement('input');
                 inputElement.type = 'checkbox';
                 inputElement.className = 'form-check-input'
                 inputElement.id = item.name;
                 inputElement.checked = item.checked
                 inputElement.addEventListener('click', handleCheckboxClick)
-                firstCell.appendChild(inputElement);
+
+                firstCell.appendChild(checkDiv)
+                checkDiv.appendChild(inputElement)
 
                 const secondCell = document.createElement('td');
                 secondCell.textContent = item.name;
