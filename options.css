@@ -16,3 +16,7 @@ a {
 #export-button {
     display: none;
 }
+
+.links-container {
+    width: 100%;
+}
