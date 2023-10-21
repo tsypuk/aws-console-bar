@@ -42,6 +42,9 @@ function render_news_index() {
                 const thirdCell = document.createElement('td');
                 thirdCell.textContent = JSON.stringify(item);
 
+                if (item.checked) {
+                    newRow.className = "table-primary"
+                }
                 newRow.appendChild(firstCell);
                 newRow.appendChild(secondCell);
                 newRow.appendChild(thirdCell);
@@ -61,6 +64,12 @@ function render_news_index() {
         chrome.storage.local.get(['rss_index'], result => {
             const clickedItem = result.rss_index.filter(item => item.name === id)[0]
             clickedItem.checked = checkbox.checked
+            var newRow = checkbox.parentNode.parentNode.parentNode;
+            if (checkbox.checked) {
+                newRow.className = "table-primary"
+            } else {
+                newRow.className = ""
+            }
             saveIndexToStorage(result.rss_index)
         })
     }
