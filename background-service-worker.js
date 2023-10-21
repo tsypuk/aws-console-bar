@@ -38,12 +38,28 @@ chrome.runtime.onInstalled.addListener(details => {
 })
 
 chrome.alarms.create(name = 'session-time', {
-    periodInMinutes: 1,
+    periodInMinutes: 1 ,
 })
 
 chrome.alarms.create(name = 'rss-time', {
-    periodInMinutes: 1 / 20,
+    periodInMinutes: 1,
 })
+
+function updateHistory(itemCurrentSession) {
+    chrome.storage.sync.get('history', res => {
+        let toUpdate = res.history.find(item => item.id === itemCurrentSession.id)
+        toUpdate.EndTimeStamp = itemCurrentSession.EndTimeStamp
+        toUpdate.EndTime = itemCurrentSession.EndTime
+        toUpdate.Duration = itemCurrentSession.Duration
+        toUpdate.IAMUser = itemCurrentSession.IAMUser
+        toUpdate.Account = itemCurrentSession.Account
+        toUpdate.type = itemCurrentSession.type
+
+        console.log(toUpdate)
+        console.log(res.history)
+        chrome.storage.sync.set({history: res.history})
+    })
+}
 
 chrome.alarms.onAlarm.addListener((alarm) => {
     console.log(alarm)
@@ -84,17 +100,21 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                 console.log(`sessionID: ${sessionId}`)
                 let itemCurrentSession = res.history.find(item => item.ID === sessionId)
                 console.log(itemCurrentSession)
-                if (itemCurrentSession) {
-                    itemCurrentSession.EndTimeStamp = Date.now()
-                    itemCurrentSession.EndTime = new Date().toISOString()
-                    itemCurrentSession.Duration = itemCurrentSession.EndTimeStamp - itemCurrentSession.StartTimeStamp
-                    itemCurrentSession.IAMUser = 'TEST'
-                    itemCurrentSession.Account = '008-2-2-2'
 
-                    chrome.storage.sync.set({history: res.history}, () => {
-                        console.log('Update session')
-                    })
-                }
+                chrome.storage.local.get(['session'], consoleUser => {
+                    console.log(consoleUser)
+
+                    if (itemCurrentSession) {
+                        itemCurrentSession.EndTimeStamp = Date.now()
+                        itemCurrentSession.EndTime = new Date().toISOString()
+                        itemCurrentSession.Duration = itemCurrentSession.EndTimeStamp - itemCurrentSession.StartTimeStamp
+                        itemCurrentSession.IAMUser = consoleUser.iamUser
+                        itemCurrentSession.Account = consoleUser.accountID
+                        itemCurrentSession.type = consoleUser.type
+
+                        updateHistory(itemCurrentSession)
+                    }
+                })
             })
             break
         case 'rss-time':

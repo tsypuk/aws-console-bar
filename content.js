@@ -25,7 +25,7 @@ registerButton.addEventListener('click', function () {
 setTimeout(changeProgressBar, 1000)
 
 function changeStyleToActive(isActive) {
-    if (isActive){
+    if (isActive) {
         newsLink.className = "white"
         leftContentDiv.classList.add('white')
         leftContentDiv.classList.remove('black')
@@ -55,6 +55,8 @@ setInterval(function () {
     })
 
     result = getAccountIDFromAWSConsole()
+    chrome.storage.local.set({session: result})
+
     console.log(result)
     let activeAccount = result.accountID
     // let iamUser = result.iamUser
@@ -132,7 +134,11 @@ function getAccountIDFromAWSConsole() {
             // srcAccount
             let srcAccount = srcAccountSpans[1].textContent.trim()
             console.log(srcAccount)
-            return {iamUser: `${user}/${activeRole}::${srcAccount}`, accountID: activeAccount}
+            return {
+                iamUser: `${user}/${activeRole}::${srcAccount}`,
+                accountID: activeAccount,
+                type: 'cross-account-role'
+            }
         }
     } else {
         // IAM user
@@ -150,10 +156,10 @@ function getAccountIDFromAWSConsole() {
             if (spans[3].textContent.trim() === 'IAM user:') {
                 type = 'iam_user'
             }
-            if (spans[3].textContent.trim() === 'Federated user:'){
+            if (spans[3].textContent.trim() === 'Federated user:') {
                 type = 'federated_user'
             }
-            return {iamUser, accountID}
+            return {iamUser, accountID, type}
         }
     }
 
