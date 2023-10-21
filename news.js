@@ -1,5 +1,6 @@
 function render_news_index() {
     const table = document.createElement('table');
+    table.className = "table table-hover"
     table.innerHTML = `
       <thead>
         <tr>
@@ -23,6 +24,7 @@ function render_news_index() {
                 const firstCell = document.createElement('td');
                 const inputElement = document.createElement('input');
                 inputElement.type = 'checkbox';
+                inputElement.className = 'form-check-input'
                 inputElement.id = item.name;
                 inputElement.checked = item.checked
                 inputElement.addEventListener('click', handleCheckboxClick)
@@ -75,6 +77,7 @@ render_news_index()
 
 function render_news() {
     const table = document.createElement('table');
+    table.className = "table table-hover"
     table.innerHTML = `
       <thead>
         <tr>
