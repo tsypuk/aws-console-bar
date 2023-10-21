@@ -1,3 +1,16 @@
+ulAwsTopics = document.getElementById('aws-topics')
+
+function addElementToTab(name) {
+    li = document.createElement('li')
+    li.id = `id_${name}`
+    li.className = "nav-item"
+    a = document.createElement('a')
+    a.className = "nav-link"
+    a.text = name
+    li.appendChild(a)
+    ulAwsTopics.appendChild(li)
+}
+
 function render_news_index() {
     const table = document.createElement('table');
     table.className = "table table-hover"
@@ -44,6 +57,7 @@ function render_news_index() {
 
                 if (item.checked) {
                     newRow.className = "table-primary"
+                    addElementToTab(item.name)
                 }
                 newRow.appendChild(firstCell);
                 newRow.appendChild(secondCell);
@@ -65,10 +79,13 @@ function render_news_index() {
             const clickedItem = result.rss_index.filter(item => item.name === id)[0]
             clickedItem.checked = checkbox.checked
             var newRow = checkbox.parentNode.parentNode.parentNode;
+            let name = checkbox.parentNode.parentNode.nextElementSibling.textContent;
             if (checkbox.checked) {
                 newRow.className = "table-primary"
+                addElementToTab(name)
             } else {
                 newRow.className = ""
+                document.getElementById(`id_${name}`).remove()
             }
             saveIndexToStorage(result.rss_index)
         })
