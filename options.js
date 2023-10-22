@@ -93,6 +93,7 @@ function updateAccount(accountID, accountName) {
 
 function render_accounts_table() {
     const table = document.createElement('table');
+    table.className = "table table-hover"
     table.innerHTML = `
       <thead>
         <tr>
@@ -117,9 +118,9 @@ function render_accounts_table() {
                 const row = document.createElement('tr');
                 row.innerHTML = `
         <td>${account.accountID}</td>
-        <td><input type="text" id="account_name_${account.accountID}" value="${account.name}" style="width: 300px" ></td>
-        <td><button id="update_${account.accountID}">Update</button></td>
-        <td><button id="del_${account.accountID}">Delete</button></td>
+        <td><input type="text" id="account_name_${account.accountID}" value="${account.name}" class="form-control me-2"></td>
+        <td><button id="update_${account.accountID}" class="btn btn-warning">Update</button></td>
+        <td><button id="del_${account.accountID}" class="btn btn-danger">Delete</button></td>
       `;
                 tbody.appendChild(row);
                 const deleteButton = row.querySelector(`#del_${account.accountID}`);

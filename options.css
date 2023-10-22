@@ -13,6 +13,11 @@ a {
     font-size: 16px;
 }
 
+#time-input {
+    min-width: 20px;
+    width: 5vw;
+}
+
 #export-button {
     display: none;
 }
