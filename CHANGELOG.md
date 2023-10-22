@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/tsypuk/aws-console-bar/compare/v1.4.0...v1.5.0) (2023-10-22)
+
+
+### Features
+
+* add css for links container ([7927b88](https://github.com/tsypuk/aws-console-bar/commit/7927b881ad07a4f4daefb5a9f668f9cb13397471))
+* add design for main page elements ([2da62ed](https://github.com/tsypuk/aws-console-bar/commit/2da62ed00697e2896af79b7928765844760c673f))
+* add handler for each news type checkbox ([54f0fb0](https://github.com/tsypuk/aws-console-bar/commit/54f0fb088bbfa43f87be7f987dade85a569ca140))
+* add history page to track aws account switching and time of session in it ([31d790c](https://github.com/tsypuk/aws-console-bar/commit/31d790c6244abe492713e0bfbb89c2ad78c4d9d4))
+* add Index of aws news li element to news configuration page ([04d73e4](https://github.com/tsypuk/aws-console-bar/commit/04d73e4f32601758fa7fcf31b1f359d8c0eedc61))
+* add more elements; change styling for menu ([de5858c](https://github.com/tsypuk/aws-console-bar/commit/de5858c497d81f6a53b1474610cfb365454a6182))
+* add select and persist user choice for each aws news feed category ([cacb0d8](https://github.com/tsypuk/aws-console-bar/commit/cacb0d8878546350e9f624892c41628ca36fe9a1))
+* add toggle to select aws news index in table ([f646434](https://github.com/tsypuk/aws-console-bar/commit/f6464341b74cf6eae422b99f65072ad47ba00528))
+* added bootstrap design ([7866a97](https://github.com/tsypuk/aws-console-bar/commit/7866a97c9187474d7ce63da4ce3ec9044fe3b8ef))
+* change row color if toggle is on/off ([3cf7320](https://github.com/tsypuk/aws-console-bar/commit/3cf7320fea6865b9db1719dffdde97f2fab47fa9))
+* create menu; add navigation dynamic adding elements to menu based on select from index ([93fe7ed](https://github.com/tsypuk/aws-console-bar/commit/93fe7ed384e1bfb5e73db32f4791770e793e6d90))
+* extract aws news from option page; create injectable menu ([0d32aa8](https://github.com/tsypuk/aws-console-bar/commit/0d32aa867123c6e080e898b3abc48f1756d2ae08))
+* fetch aws news index ([9bdbadf](https://github.com/tsypuk/aws-console-bar/commit/9bdbadf461ee274b008ab078356d557378d98be7))
+* history page table add styling ([f81c0b1](https://github.com/tsypuk/aws-console-bar/commit/f81c0b156f1a4cf8bb33049044b4f09ffa7d7236))
+* implement single page navigation on aws news page both for index and all sections ([1dfb791](https://github.com/tsypuk/aws-console-bar/commit/1dfb79132d3fe66c3c9c256b49563affc6cac909))
+* redesign main menu ([afa9b64](https://github.com/tsypuk/aws-console-bar/commit/afa9b64d4cb9dd674cc23f36f9d19ce4330169b4))
+* render aws news index catalog; save to local storage ([2e96454](https://github.com/tsypuk/aws-console-bar/commit/2e96454aecdc30cfb6a27b0af8efef5268b787b8))
+
+
+### Bug Fixes
+
+* remove bundle script not available for cors policy ([60efeb4](https://github.com/tsypuk/aws-console-bar/commit/60efeb408841f87b027d33c2e33c3938b7bc732a))
+
 ## [1.4.0](https://github.com/tsypuk/aws-console-bar/compare/v1.3.0...v1.4.0) (2023-10-19)
 
 
