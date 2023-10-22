@@ -1,5 +1,6 @@
 function render_history_table() {
     const table = document.createElement('table');
+    table.className = "table table-hover"
     table.innerHTML = `
       <thead>
         <tr>
