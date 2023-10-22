@@ -22,11 +22,7 @@ function render_history_table() {
                 const newRow = document.createElement('tr');
 
                 const firstCell = document.createElement('td');
-                const inputElement = document.createElement('input');
-                inputElement.type = 'checkbox';
-                inputElement.id = item.name;
-                inputElement.checked = item.checked
-                firstCell.appendChild(inputElement);
+                firstCell.textContent = index
 
                 const secondCell = document.createElement('td');
                 secondCell.textContent = item.name;
