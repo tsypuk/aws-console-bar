@@ -1,4 +1,10 @@
-ulAwsTopics = document.getElementById('aws-topics')
+const ulAwsTopics = document.getElementById('aws-topics')
+const tableTitle = document.getElementById('table-title')
+const awsNewsDiv = document.getElementById('aws_news')
+const awsNewsIndexDiv = document.getElementById('aws_news_index')
+const indexNewsNavA = document.getElementById('index_news_nav_a')
+
+indexNewsNavA.addEventListener('click', handleNavIndexClick)
 
 function addElementToTab(name) {
     li = document.createElement('li')
@@ -7,11 +13,36 @@ function addElementToTab(name) {
     a = document.createElement('a')
     a.className = "nav-link"
     a.text = name
+    a.id = name
+    a.addEventListener('click', handleNavClick)
     li.appendChild(a)
     ulAwsTopics.appendChild(li)
 }
 
+function handleNavIndexClick(event) {
+    tableTitle.textContent = 'Index Content'
+    aws_news_index.style.display = 'block'
+    awsNewsDiv.style.display = 'none'
+}
+
+function handleNavClick(event) {
+    const nav = this.id;
+    tableTitle.textContent = `${convertToBigDataFormat(this.text)} feed`
+    aws_news_index.style.display = 'none';
+    awsNewsDiv.style.display = 'block'
+    render_news(this.text)
+}
+
+function convertToBigDataFormat(inputString) {
+    let upperCaseString = inputString.toUpperCase();
+    let formattedString = upperCaseString.replace(/_/g, ' ');
+    return formattedString;
+}
+
 function render_news_index() {
+    if (awsNewsDiv.firstChild) {
+        awsNewsDiv.removeChild(awsNewsDiv.firstChild)
+    }
     const table = document.createElement('table');
     table.className = "table table-hover"
     table.innerHTML = `
@@ -67,8 +98,7 @@ function render_news_index() {
         }
     })
 
-    const awsNewsDiv = document.getElementById('aws_news_index');
-    awsNewsDiv.appendChild(table);
+    awsNewsIndexDiv.appendChild(table);
     console.log('table')
 
     function handleCheckboxClick(event) {
@@ -108,6 +138,9 @@ function saveIndexToStorage(rss_index) {
 render_news_index()
 
 function render_news() {
+    if (awsNewsDiv.firstChild) {
+        awsNewsDiv.removeChild(awsNewsDiv.firstChild)
+    }
     const table = document.createElement('table');
     table.className = "table table-hover"
     table.innerHTML = `
@@ -116,6 +149,7 @@ function render_news() {
           <th>#</th>
           <th>link</th>
           <th>Title</th>
+          <th>Dump</th>
         </tr>
       </thead>
       <tbody>
@@ -133,15 +167,11 @@ function render_news() {
         <td>${index}</td>
         <td>${news.title}</td>
         <td>${news.link}</td>
+        <td>${JSON.stringify(news)}</td>
       `;
                 tbody.appendChild(row);
             })
         }
     })
-
-    // Inject the table into the div with id "aws_accounts"
-    const awsNewsDiv = document.getElementById('aws_news');
     awsNewsDiv.appendChild(table);
 }
-
-render_news()
