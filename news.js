@@ -39,6 +39,17 @@ function convertToBigDataFormat(inputString) {
     return formattedString;
 }
 
+function fetchRss(name) {
+    fetch(`https://blog.tsypuk.com/aws-news/news/${name}.json`)
+        .then(res => res.json())
+        // .then(data => console.log(data))
+        .then(data => {
+            console.log(`Fetch ${name} RSS into local storage...`)
+            console.log({[name]: data})
+            chrome.storage.local.set({[name]: data})
+        })
+}
+
 function render_news_index() {
     if (awsNewsDiv.firstChild) {
         awsNewsDiv.removeChild(awsNewsDiv.firstChild)
@@ -112,6 +123,7 @@ function render_news_index() {
             let name = checkbox.parentNode.parentNode.nextElementSibling.textContent;
             if (checkbox.checked) {
                 newRow.className = "table-primary"
+                fetchRss(name)
                 addElementToTab(name)
             } else {
                 newRow.className = ""
@@ -137,7 +149,7 @@ function saveIndexToStorage(rss_index) {
 
 render_news_index()
 
-function render_news() {
+function render_news(rssCategoryName) {
     if (awsNewsDiv.firstChild) {
         awsNewsDiv.removeChild(awsNewsDiv.firstChild)
     }
@@ -159,9 +171,11 @@ function render_news() {
     const tbody = table.querySelector('tbody');
 
     // Populate the table with data from the accounts array
-    chrome.storage.sync.get(['rss'], result => {
-        if (result.rss) {
-            result.rss.forEach((news, index) => {
+    console.log(rssCategoryName)
+    chrome.storage.local.get([rssCategoryName], result => {
+        console.log(result)
+        if (result[rssCategoryName]) {
+            result[rssCategoryName].forEach((news, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
         <td>${index}</td>
