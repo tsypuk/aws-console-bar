@@ -3,7 +3,6 @@ const exportButton = document.getElementById('export-button')
 
 const accountIdInput = document.getElementById('account-input')
 const accountNameInput = document.getElementById('name-input')
-const timeInput = document.getElementById('time-input')
 
 exportButton.addEventListener('click', () => {
     chrome.storage.sync.get(['aws_accounts'], result => {
@@ -19,13 +18,6 @@ exportButton.addEventListener('click', () => {
             })
         }
     })
-})
-
-// Init storage for the first installation
-
-timeInput.addEventListener('change', (event) => {
-    timeInterval = event.target.value
-    chrome.storage.sync.set({timeInterval})
 })
 
 chrome.storage.sync.get(['aws_accounts'], result => {
@@ -110,9 +102,8 @@ function render_accounts_table() {
     const tbody = table.querySelector('tbody');
 
     // Populate the table with data from the accounts array
-    chrome.storage.sync.get(['aws_accounts', 'timeInterval'], result => {
+    chrome.storage.sync.get(['aws_accounts'], result => {
         exportButton.style.display = (result.aws_accounts.length > 0) ? 'block' : 'none'
-        timeInput.value = result.timeInterval ?? 45
         if (result.aws_accounts) {
             result.aws_accounts.forEach(account => {
                 const row = document.createElement('tr');

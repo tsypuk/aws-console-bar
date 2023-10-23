@@ -34,11 +34,22 @@ chrome.runtime.onInstalled.addListener(details => {
         console.log('Init history...')
         readHistoryAddNewSession()
     })
+
+    chrome.storage.sync.set({
+        settings:
+            {
+                notificationTime: 45,
+                rssReindexInterval: 7
+            }
+
+    }).then(() => {
+        console.log('Init settings...')
+    })
     loadRSSDataFromServer()
 })
 
 chrome.alarms.create(name = 'session-time', {
-    periodInMinutes: 1 ,
+    periodInMinutes: 1,
 })
 
 chrome.alarms.create(name = 'rss-time', {
@@ -80,7 +91,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
     switch (alarm.name) {
         case 'session-time':
-            chrome.storage.sync.get(["timer", "timeInterval", "history", "active_session"], (res) => {
+            chrome.storage.sync.get(["timer", "history", "active_session"], (res) => {
                 const time = res.timer ?? 0
                 chrome.storage.sync.set({
                     timer: time + 1,
@@ -88,7 +99,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                 chrome.action.setBadgeText({
                     text: `${secondsToHHMMSS(time)}`
                 })
-                const internal = res.timeInterval ?? 45
+                const internal = 45
                 if (time % internal === 0) {
                     this.registration.showNotification("Chrome Timer Extentions", {
                         body: "45 min has passed!", icon: "icon.pnh"

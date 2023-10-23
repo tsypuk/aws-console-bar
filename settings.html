@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings and Configuration</title>
+    <link rel="stylesheet" href="options.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<h2>Settings</h2>
+
+<div id="links-container"></div>
+<script src="includeLinks.js"></script>
+
+<h3>Notification Timer</h3>
+<input id="time-input" type="number" class="form-control me-2" placeholder="time in min" aria-label="time in min">
+
+<h3>Reindex RSS</h3>
+<input id="time-input-rss" type="number" class="form-control me-2" placeholder="time in days" aria-label="time in days">
+
+<button id="save-button" class="btn btn-primary">Save Settings</button>
+
+<script src="settings.js"></script>
+</body>
+</html>
