@@ -24,26 +24,24 @@ function readHistoryAddNewSession() {
 chrome.runtime.onInstalled.addListener(details => {
     console.log(details)
     // Initialize storage and default values
-    chrome.storage.sync.set({aws_accounts: []}, () => {
-        console.log('Init aws accounts storage...')
-    })
+    chrome.storage.sync.set({aws_accounts: []})
     // chrome.storage.sync.set({rss: []}, () => {
     //     console.log('Init RSS storage...')
     // })
     chrome.storage.sync.set({history: []}).then(() => {
-        console.log('Init history...')
         readHistoryAddNewSession()
     })
 
     chrome.storage.sync.set({
-        settings:
-            {
-                notificationTime: 45,
-                rssReindexInterval: 7
-            }
+        settings: {
+            notificationTime: 45, rssReindexInterval: 7
+        }
 
-    }).then(() => {
-        console.log('Init settings...')
+    })
+
+    chrome.storage.local.set({
+        feed: []
+
     })
     loadRSSDataFromServer()
 })
@@ -130,6 +128,12 @@ chrome.alarms.onAlarm.addListener((alarm) => {
             break
         case 'rss-time':
             console.log('Time to refresh RSS')
+            // Load ordered, persist index
+            chrome.storage.local.get(['rss_index'], results => {
+                results.rss_index
+            })
+
+            //
             chrome.storage.sync.get(["rss"], (res) => {
                 index = Math.floor(Math.random() * res.rss.length)
                 console.log(res.rss[index])

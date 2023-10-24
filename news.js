@@ -47,6 +47,10 @@ function fetchRss(name) {
             console.log(`Fetch ${name} RSS into local storage...`)
             console.log({[name]: data})
             chrome.storage.local.set({[name]: data})
+            chrome.storage.local.get(['feed'], result => {
+                result.feed.push(name)
+                chrome.storage.local.set({'feed': result.feed})
+            })
         })
 }
 
@@ -128,6 +132,14 @@ function render_news_index() {
             } else {
                 newRow.className = ""
                 document.getElementById(`id_${name}`).remove()
+                chrome.storage.local.get(['feed'], result => {
+
+                    let index = result.feed.indexOf(name);
+                    if (index > -1) {
+                        result.feed.splice(index, 1);
+                    }
+                    chrome.storage.local.set({feed: result.feed})
+                })
             }
             saveIndexToStorage(result.rss_index)
         })
