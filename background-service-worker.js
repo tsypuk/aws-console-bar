@@ -128,17 +128,18 @@ chrome.alarms.onAlarm.addListener((alarm) => {
             break
         case 'rss-time':
             console.log('Time to refresh RSS')
-            // Load ordered, persist index
-            chrome.storage.local.get(['rss_index'], results => {
-                results.rss_index
-            })
 
-            //
-            chrome.storage.sync.get(["rss"], (res) => {
-                index = Math.floor(Math.random() * res.rss.length)
-                console.log(res.rss[index])
-                // chrome.runtime.sendMessage(null, res.rss[index])
-                chrome.storage.sync.set({latest_news: res.rss[index]})
+            // Load ordered, persist index
+            chrome.storage.local.get(['feed'], results => {
+                feedIndex = Math.floor(Math.random() * results.feed.length)
+                category = results.feed[feedIndex]
+
+                chrome.storage.sync.get([category], (res) => {
+                    index = Math.floor(Math.random() * res.rss.length)
+                    console.log(res[category][index])
+                    // chrome.runtime.sendMessage(null, res.rss[index])
+                    chrome.storage.sync.set({latest_news: res[category][index]})
+                })
             })
             break
     }
