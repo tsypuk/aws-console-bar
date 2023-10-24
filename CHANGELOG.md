@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/tsypuk/aws-console-bar/compare/v1.5.0...v1.6.0) (2023-10-24)
+
+
+### Features
+
+* add session tracking interval ([f4473a2](https://github.com/tsypuk/aws-console-bar/commit/f4473a22f283d66fa58a1384aec4df4e09533a06))
+* add settings page into extension, save 2 time configurations into chrome storage ([323580d](https://github.com/tsypuk/aws-console-bar/commit/323580db1d5cbc6929d9706bfbffcec75ff72005))
+* aws console shows random news from selected aws-news feed channels; news are clickable and open in new tab ([ce996e7](https://github.com/tsypuk/aws-console-bar/commit/ce996e7c86eaea33d42b7b54a21f66707cbea700))
+* fetch aws feed news for category when slide bar on news page is moved ([2ba3447](https://github.com/tsypuk/aws-console-bar/commit/2ba34478b6b82df1be99956a1a73552ad1d386d8))
+* maintain feed [] as index for lookups on category change ([ac19d73](https://github.com/tsypuk/aws-console-bar/commit/ac19d73e4a59a95ba74b486cf6d0dff33fb15028))
+* read random news from random category that is allowed ([ca9201d](https://github.com/tsypuk/aws-console-bar/commit/ca9201ddc954e0263df511faa88de28272f62104))
+
 ## [1.5.0](https://github.com/tsypuk/aws-console-bar/compare/v1.4.0...v1.5.0) (2023-10-22)
 
 
