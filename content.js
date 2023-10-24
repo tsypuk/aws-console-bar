@@ -20,9 +20,9 @@ registerButton.addEventListener('click', function () {
     });
 });
 
-// changeProgressBar()
+setTimeout(changeProgressBar, 5000)
 
-setTimeout(changeProgressBar, 1000)
+// changeProgressBar()
 
 function changeStyleToActive(isActive) {
     if (isActive) {
@@ -45,10 +45,10 @@ function limitString(input, maxLength) {
 }
 
 setInterval(function () {
-    chrome.storage.sync.get(["latest_news"], (res) => {
+    chrome.storage.local.get(["latest_news"], (res) => {
         if (res.latest_news) {
             newsLink.href = res.latest_news.link
-            let topic = 'ML'
+            let topic = res.latest_news.topic
             newsLink.textContent = limitString(`${topic}: ${res.latest_news.title}`, 100)
             newsLink.target = "_blank"
         }
@@ -97,7 +97,7 @@ setInterval(function () {
     }
 
 
-}, 5000)
+}, 10000)
 
 function getRegion() {
     const regionSpanElement = document.querySelector('[data-testid="awsc-nav-regions-menu-button"]')
@@ -178,6 +178,7 @@ function getAccountIDFromAWSConsole() {
 }
 
 function changeProgressBar() {
+    console.log('BAR show')
     const divElement = document.querySelector('#awsc-navigation-container')
     if (divElement) {
         // divElement.style.backgroundColor = 'red';

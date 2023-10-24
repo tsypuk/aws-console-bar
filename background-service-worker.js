@@ -133,14 +133,19 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
             // Load ordered, persist index
             chrome.storage.local.get(['feed'], results => {
-                feedIndex = Math.floor(Math.random() * results.feed.length)
-                category = results.feed[feedIndex]
 
-                chrome.storage.sync.get([category], (res) => {
-                    index = Math.floor(Math.random() * res.rss.length)
+                feedIndex = Math.floor(Math.random() * results.feed.length)
+                console.log(`feed: ${results.feed}`)
+                category = results.feed[feedIndex]
+                console.log(`category: ${category}`)
+
+                chrome.storage.local.get([category], res => {
+                    console.log(`res: ${res}`)
+                    index = Math.floor(Math.random() * res[category].length)
                     console.log(res[category][index])
-                    // chrome.runtime.sendMessage(null, res.rss[index])
-                    chrome.storage.sync.set({latest_news: res[category][index]})
+                    console.log(`latest_news: ${res[category][index]}`)
+                    res[category][index]['topic'] = category
+                    chrome.storage.local.set({latest_news: res[category][index]})
                 })
             })
             break

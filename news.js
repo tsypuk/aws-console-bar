@@ -45,7 +45,6 @@ function fetchRss(name) {
         // .then(data => console.log(data))
         .then(data => {
             console.log(`Fetch ${name} RSS into local storage...`)
-            console.log({[name]: data})
             chrome.storage.local.set({[name]: data})
             chrome.storage.local.get(['feed'], result => {
                 result.feed.push(name)
