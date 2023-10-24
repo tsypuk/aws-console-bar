@@ -34,7 +34,9 @@ chrome.runtime.onInstalled.addListener(details => {
 
     chrome.storage.sync.set({
         settings: {
-            notificationTime: 45, rssReindexInterval: 7
+            notificationTime: 45,
+            rssReindexInterval: 7,
+            sessionInterval: 1
         }
 
     })
