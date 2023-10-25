@@ -16,7 +16,7 @@ function render_history_table() {
     const tbody = table.querySelector('tbody');
 
     // Populate the table with data from the accounts array
-    chrome.storage.sync.get(['history'], result => {
+    chrome.storage.local.get(['history'], result => {
         if (result.history) {
             result.history.forEach((item, index) => {
                 const newRow = document.createElement('tr');

@@ -54,13 +54,15 @@ setInterval(function () {
         }
     })
 
-    result = getAccountIDFromAWSConsole()
-    chrome.storage.local.set({session: result})
+    const result = getAccountIDFromAWSConsole()
+    result['time'] = Date.now()
+
+    chrome.runtime.sendMessage({
+        action: "getActiveSession", session: result
+    });
 
     console.log(result)
     let activeAccount = result.accountID
-    // let iamUser = result.iamUser
-    // console.log(result)
     let region = getRegion()
     try {
 
@@ -174,7 +176,7 @@ function getAccountIDFromAWSConsole() {
     //
     //     }
     // }
-    return {iamUser: 'NONE', accountID: 'NONE'}
+    return {iamUser: 'NONE', accountID: 'NONE', type: 'NONE'}
 }
 
 function changeProgressBar() {
