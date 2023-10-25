@@ -164,18 +164,6 @@ function getAccountIDFromAWSConsole() {
             return {iamUser, accountID, type}
         }
     }
-
-    // const spanElement = document.querySelector('[data-testid="awsc-nav-account-menu-button"]');
-    // if (spanElement) {
-    //     const innerText = spanElement.textContent;
-    //     const parts = innerText.split(' @ ');
-    //     if (parts.length == 2) {
-    //         return parts[1].trim()
-    //     } else {
-    //         //     this is assumed Role
-    //
-    //     }
-    // }
     return {iamUser: 'NONE', accountID: 'NONE', type: 'NONE'}
 }
 
