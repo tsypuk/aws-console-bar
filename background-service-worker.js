@@ -36,7 +36,8 @@ chrome.runtime.onInstalled.addListener(details => {
         settings: {
             notificationTime: 45,
             rssReindexInterval: 7,
-            sessionInterval: 1
+            sessionInterval: 1,
+            newsInterval: 1
         }
 
     })
@@ -48,12 +49,16 @@ chrome.runtime.onInstalled.addListener(details => {
     loadRSSDataFromServer()
 })
 
-chrome.alarms.create(name = 'session-time', {
-    periodInMinutes: 1,
-})
+chrome.storage.sync.get('settings', result => {
+    console.log(result.settings)
 
-chrome.alarms.create(name = 'rss-time', {
-    periodInMinutes: 1,
+    chrome.alarms.create(name = 'session-time', {
+        periodInMinutes: result.settings['sessionInterval'],
+    })
+
+    chrome.alarms.create(name = 'rss-time', {
+        periodInMinutes: result.settings['newsInterval'],
+    })
 })
 
 function updateHistory(itemCurrentSession) {
@@ -66,8 +71,8 @@ function updateHistory(itemCurrentSession) {
         toUpdate.Account = itemCurrentSession.Account
         toUpdate.type = itemCurrentSession.type
 
-        console.log(toUpdate)
-        console.log(res.history)
+        console.log(`update ${toUpdate}`)
+        console.log(`history: ${res.history}`)
         chrome.storage.sync.set({history: res.history})
     })
 }
@@ -139,14 +144,16 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                 category = results.feed[feedIndex]
                 console.log(`category: ${category}`)
 
-                chrome.storage.local.get([category], res => {
-                    console.log(`res: ${res}`)
-                    index = Math.floor(Math.random() * res[category].length)
-                    console.log(res[category][index])
-                    console.log(`latest_news: ${res[category][index]}`)
-                    res[category][index]['topic'] = category
-                    chrome.storage.local.set({latest_news: res[category][index]})
-                })
+                if (category) {
+                    chrome.storage.local.get([category], res => {
+                        console.log(`res: ${res}`)
+                        index = Math.floor(Math.random() * res[category].length)
+                        console.log(res[category][index])
+                        console.log(`latest_news: ${res[category][index]}`)
+                        res[category][index]['topic'] = category
+                        chrome.storage.local.set({latest_news: res[category][index]})
+                    })
+                }
             })
             break
     }
@@ -199,3 +206,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 function openOptionsPage() {
     chrome.runtime.openOptionsPage();
 }
+
+
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    for (let [key, {oldValue, newValue}] of Object.entries(changes)) {
+        console.log(
+            `Storage key "${key}" in namespace "${namespace}" changed.`,
+            `Old value was "${oldValue}", new value is "${newValue}".`
+        );
+    }
+})
+
+
+// Watch for changes to the user's options & apply them
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes.session?.newValue) {
+        console.log(changes)
+        // const debugMode = Boolean(changes.options.newValue.debug);
+        // console.log('enable debug mode?', debugMode);
+        // setDebugMode(debugMode);
+    }
+})

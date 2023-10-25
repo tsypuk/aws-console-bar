@@ -110,7 +110,7 @@ function getRegion() {
 function getAccountIDFromAWSConsole() {
     let accountDetailMenu = document.querySelector("#menu--account")
     let divs = accountDetailMenu.querySelectorAll('div')
-    console.log(divs.length)
+
     if (divs.length > 12) {
         // Assumed cross-account role
         let activeSessionSpans = divs[1].querySelectorAll('span')
