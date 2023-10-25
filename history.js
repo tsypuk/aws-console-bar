@@ -25,7 +25,7 @@ function render_history_table() {
                 firstCell.textContent = index
 
                 const secondCell = document.createElement('td');
-                secondCell.textContent = item.name;
+                secondCell.textContent = JSON.stringify(item);
 
                 const thirdCell = document.createElement('td');
                 thirdCell.textContent = JSON.stringify(item);

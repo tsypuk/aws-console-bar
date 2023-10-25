@@ -1,25 +1,3 @@
-function readHistoryAddNewSession() {
-    chrome.storage.local.get(["history"]).then((res) => {
-        console.log(res)
-        var sessionID = 0
-        itemCurrentSession = {}
-        if (res.history.length === 0) {
-            itemCurrentSession.StartTimeStamp = Date.now()
-            itemCurrentSession.StartTime = new Date().toISOString()
-
-        } else {
-            // let maxIdElement = res.history.reduce((max, current) => (current.id > max.id) ? current : max)
-            // sessionID = maxIdElement + 1
-            itemCurrentSession.StartTimeStamp = Date.now()
-            itemCurrentSession.StartTime = new Date().toISOString()
-        }
-        itemCurrentSession.ID = sessionID
-        res.history.push(itemCurrentSession)
-
-        chrome.storage.local.set({history: res.history})
-    })
-}
-
 chrome.runtime.onInstalled.addListener(details => {
     console.log(details)
     // Initialize storage and default values
@@ -33,20 +11,16 @@ chrome.runtime.onInstalled.addListener(details => {
     // })
 
     chrome.storage.local.set({history: []})
-    
+
     chrome.storage.local.set({
         currentSession: {
-            sessionId: 0,
-            consoleSession: {}
+            sessionId: 0, consoleSession: {}
         }
     })
 
     chrome.storage.sync.set({
         settings: {
-            notificationTime: 45,
-            rssReindexInterval: 7,
-            sessionInterval: 1,
-            newsInterval: 1
+            notificationTime: 45, rssReindexInterval: 7, sessionInterval: 1, newsInterval: 1
         }
 
     })
@@ -69,22 +43,6 @@ chrome.storage.sync.get('settings', result => {
         periodInMinutes: result.settings['newsInterval'],
     })
 })
-
-function updateHistory(itemCurrentSession) {
-    chrome.storage.sync.get('history', res => {
-        let toUpdate = res.history.find(item => item.id === itemCurrentSession.id)
-        toUpdate.EndTimeStamp = itemCurrentSession.EndTimeStamp
-        toUpdate.EndTime = itemCurrentSession.EndTime
-        toUpdate.Duration = itemCurrentSession.Duration
-        toUpdate.IAMUser = itemCurrentSession.IAMUser
-        toUpdate.Account = itemCurrentSession.Account
-        toUpdate.type = itemCurrentSession.type
-
-        console.log(`update ${toUpdate}`)
-        console.log(`history: ${res.history}`)
-        chrome.storage.sync.set({history: res.history})
-    })
-}
 
 chrome.alarms.onAlarm.addListener((alarm) => {
     console.log(alarm)
@@ -175,6 +133,35 @@ const defaultIconPath = {
     "16": "images/icon16.png", "48": "images/icon48.png", "128": "images/icon128.png",
 }
 
+function addNewEntryToHistory(activeSession, sessionId) {
+    chrome.storage.local.get('history', result => {
+        newHistory = {}
+        newHistory.sessionId = sessionId
+        newHistory.StartTimeStamp = activeSession.time
+        newHistory.StartTime = new Date(activeSession.time).toISOString()
+        newHistory.EndTimeStamp = activeSession.time
+        newHistory.EndTime = new Date(activeSession.time).toISOString()
+        newHistory.Duration = 0
+        newHistory.IAMUser = activeSession.iamUser
+        newHistory.Account = activeSession.accountID
+        newHistory.type = activeSession.type
+
+        result.history.push(newHistory)
+        chrome.storage.local.set({history: result.history})
+    })
+}
+
+function updateEntryInHistory(activeSession, sessionId) {
+    chrome.storage.local.get('history', result => {
+        const currentSession = result.history.find(item => item.sessionId === sessionId)
+        currentSession.EndTimeStamp = activeSession.time
+        currentSession.EndTime = new Date(activeSession.time).toISOString()
+        currentSession.Duration = currentSession.EndTimeStamp - currentSession.StartTimeStamp
+
+        chrome.storage.local.set({history: result.history})
+    })
+}
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.action) {
         case "openOptionsPage":
@@ -187,36 +174,44 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             chrome.action.setIcon({path: defaultIconPath});
             break;
         case "getActiveSession":
-            console.log(`Received: ${request.session}`)
-            console.log(request.session)
-
+            console.log('getActiveSession')
             // read active session
-
+            const activeSession = request.session
+            console.log(activeSession)
+            // {
+            //     "iamUser": "ReadOnly/Z004BRDT",
+            //     "accountID": "5307-7388-2262",
+            //     "type": "federated_user",
+            //     "time": 1698218265176
+            // }
             // compare with receive requrest.session
+            chrome.storage.local.get('currentSession', result => {
 
-            // udpate session Timing
+                console.log(result)
 
-            // OR create a new entry in session history
+                let sessionId = result.currentSession.sessionId
+                const prevSession = result.currentSession.consoleSession
 
-
-            // Session: | ID | IAMUser | Account | StartTime | EndTime | StartTimeStamp | EndTimeStamp | Duration |
-            chrome.storage.local.get(["history"], (res) => {
-                let itemCurrentSession = res.history.find(item => item.ID === sessionId)
-                console.log(itemCurrentSession)
-
-                if (itemCurrentSession) {
-                    itemCurrentSession.EndTimeStamp = Date.now()
-                    itemCurrentSession.EndTime = new Date().toISOString()
-                    itemCurrentSession.Duration = itemCurrentSession.EndTimeStamp - itemCurrentSession.StartTimeStamp
-                    itemCurrentSession.IAMUser = consoleUser.iamUser
-                    itemCurrentSession.Account = consoleUser.accountID
-                    itemCurrentSession.type = consoleUser.type
-
-                    chrome.storage.sync.set({history: res.history})
-                    // updateHistory(itemCurrentSession)
+                if ((activeSession.time - prevSession.time < 15000) &
+                    (activeSession.accountID === prevSession.accountID) &
+                    (activeSession.iamUser === prevSession.iamUser) &
+                    (activeSession.type === prevSession.type)) {
+                    // update session Timing
+                    console.log('Same session: update timing')
+                    updateEntryInHistory(activeSession, sessionId)
+                } else {
+                    // OR create a new entry in session history
+                    console.log('NEW session: init session')
+                    sessionId = sessionId + 1
+                    addNewEntryToHistory(activeSession, sessionId)
                 }
-            })
 
+                chrome.storage.local.set({
+                    currentSession: {
+                        sessionId: sessionId, consoleSession: activeSession
+                    }
+                })
+            })
             break
         default:
             break;
@@ -239,14 +234,14 @@ function openOptionsPage() {
 
 
 // Watch for changes to the user's options & apply them
-chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'sync' && changes.session?.newValue) {
-        console.log(`New value for session ${changes.session?.newValue}`)
-        // user switched the session
-
-
-        // const debugMode = Boolean(changes.options.newValue.debug);
-        // console.log('enable debug mode?', debugMode);
-        // setDebugMode(debugMode);
-    }
-})
+// chrome.storage.onChanged.addListener((changes, area) => {
+//     if (area === 'sync' && changes.session?.newValue) {
+//         console.log(`New value for session ${changes.session?.newValue}`)
+//         // user switched the session
+//
+//
+//         // const debugMode = Boolean(changes.options.newValue.debug);
+//         // console.log('enable debug mode?', debugMode);
+//         // setDebugMode(debugMode);
+//     }
+// })
