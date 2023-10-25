@@ -174,10 +174,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             chrome.action.setIcon({path: defaultIconPath});
             break;
         case "getActiveSession":
-            console.log('getActiveSession')
             // read active session
             const activeSession = request.session
-            console.log(activeSession)
             // {
             //     "iamUser": "ReadOnly/Z004BRDT",
             //     "accountID": "5307-7388-2262",
@@ -187,21 +185,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             // compare with receive requrest.session
             chrome.storage.local.get('currentSession', result => {
 
-                console.log(result)
-
                 let sessionId = result.currentSession.sessionId
                 const prevSession = result.currentSession.consoleSession
 
-                if ((activeSession.time - prevSession.time < 15000) &
+                if ((activeSession.time - prevSession.time < 80000) &
                     (activeSession.accountID === prevSession.accountID) &
                     (activeSession.iamUser === prevSession.iamUser) &
                     (activeSession.type === prevSession.type)) {
                     // update session Timing
-                    console.log('Same session: update timing')
                     updateEntryInHistory(activeSession, sessionId)
                 } else {
                     // OR create a new entry in session history
-                    console.log('NEW session: init session')
                     sessionId = sessionId + 1
                     addNewEntryToHistory(activeSession, sessionId)
                 }

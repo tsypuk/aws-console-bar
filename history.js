@@ -5,8 +5,12 @@ function render_history_table() {
       <thead>
         <tr>
           <th>#</th>
-          <th>name</th>
-          <th>info</th>
+          <th>account</th>
+          <th>user</th>
+          <th>type</th>
+          <th>start</th>
+          <th>end</th>
+          <th>duration, min</th>
         </tr>
       </thead>
       <tbody>
@@ -25,14 +29,30 @@ function render_history_table() {
                 firstCell.textContent = index
 
                 const secondCell = document.createElement('td');
-                secondCell.textContent = JSON.stringify(item);
+                secondCell.textContent = item.Account
 
                 const thirdCell = document.createElement('td');
-                thirdCell.textContent = JSON.stringify(item);
+                thirdCell.textContent = item.IAMUser
+
+                const forthdCell = document.createElement('td');
+                forthdCell.textContent = item.type
+
+                const fifthdCell = document.createElement('td');
+                fifthdCell.textContent = item.StartTime
+
+                const sixdCell = document.createElement('td');
+                sixdCell.textContent = item.EndTime
+
+                const sevenCell = document.createElement('td');
+                sevenCell.textContent = item.Duration / 1000 / 60
 
                 newRow.appendChild(firstCell);
                 newRow.appendChild(secondCell);
                 newRow.appendChild(thirdCell);
+                newRow.appendChild(forthdCell);
+                newRow.appendChild(fifthdCell);
+                newRow.appendChild(sixdCell);
+                newRow.appendChild(sevenCell);
                 tbody.appendChild(newRow);
             })
         }
