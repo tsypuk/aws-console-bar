@@ -90,7 +90,7 @@ function render_accounts_table() {
       <thead>
         <tr>
           <th>Account ID</th>
-          <th>Name</th>
+          <th>Alias</th>
           <th>Update</th>
           <th>Delete</th>
         </tr>
