@@ -29,11 +29,12 @@ chrome.runtime.onInstalled.addListener(details => {
         feed: []
 
     })
+
+    chrome.storage.local.set({rssUpdateTimeStamp: 0})
     loadRSSDataFromServer()
 })
 
-chrome.storage.sync.get('settings', result => {
-    console.log(result.settings)
+chrome.storage.sync.get(['settings', 'rssUpdateTimeStamp'], result => {
 
     chrome.alarms.create(name = 'session-time', {
         periodInMinutes: result.settings['sessionInterval'],
@@ -42,6 +43,10 @@ chrome.storage.sync.get('settings', result => {
     chrome.alarms.create(name = 'rss-time', {
         periodInMinutes: result.settings['newsInterval'],
     })
+
+    if ((Date.now() - result.rssUpdateTimeStamp) > result.settings.rssReindexInterval * 1000 * 60 * 24) {
+        fetchRss()
+    }
 })
 
 chrome.alarms.onAlarm.addListener((alarm) => {
@@ -108,10 +113,9 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 function loadRSSDataFromServer() {
     fetch("https://blog.tsypuk.com/aws-news/index.json")
         .then(res => res.json())
-        // .then(data => console.log(data))
         .then(data => {
-            console.log(data)
             chrome.storage.local.set({rss_index: data})
+            chrome.storage.local.set({rssUpdateTimeStamp: Date.now()})
         })
 }
 
