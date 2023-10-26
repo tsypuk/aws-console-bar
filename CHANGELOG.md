@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/tsypuk/aws-console-bar/compare/v1.6.0...v1.7.0) (2023-10-26)
+
+
+### Features
+
+* change history session table, add all session fields to screen ([84a81f9](https://github.com/tsypuk/aws-console-bar/commit/84a81f9adfe96f47488a2a73194718d717bf4ac0))
+* change timing mechanism for loading content page ([1cab999](https://github.com/tsypuk/aws-console-bar/commit/1cab99916e2f1e88956cb1226228b82b93b29449))
+* create new session on diff n aws accountid; iamUser; login-type or timelimit ([8961faf](https://github.com/tsypuk/aws-console-bar/commit/8961faf84a3d29b13734e1f97d7cc63bbe9d6adc))
+* move session tracking to onMessage push between content and background worker ([7422be1](https://github.com/tsypuk/aws-console-bar/commit/7422be174eaf022ac495ff9fc0107b1b923b4ef4))
+* set news, session interval based on configuration ([d4421d4](https://github.com/tsypuk/aws-console-bar/commit/d4421d4b29e2e153b8c1f5c81d34da89af518dc9))
+* update aws accounts page ([5bf0268](https://github.com/tsypuk/aws-console-bar/commit/5bf026873c27668d805cfd1f8d50f10656a21492))
+
 ## [1.6.0](https://github.com/tsypuk/aws-console-bar/compare/v1.5.0...v1.6.0) (2023-10-24)
 
 
