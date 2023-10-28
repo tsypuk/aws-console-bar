@@ -1,6 +1,6 @@
 const ulAwsTopics = document.getElementById('aws-topics')
 const tableTitle = document.getElementById('table-title')
-const awsNewsDiv = document.getElementById('aws_news')
+const awsNewsDiv = document.getElementById('aws_news_div')
 const awsNewsIndexDiv = document.getElementById('aws_news_index')
 const indexNewsNavA = document.getElementById('index_news_nav_a')
 
@@ -21,14 +21,14 @@ function addElementToTab(name) {
 
 function handleNavIndexClick(event) {
     tableTitle.textContent = 'Index Content'
-    aws_news_index.style.display = 'block'
+    awsNewsIndexDiv.style.display = 'block'
     awsNewsDiv.style.display = 'none'
 }
 
 function handleNavClick(event) {
     const nav = this.id;
     tableTitle.textContent = `${convertToBigDataFormat(this.text)} feed`
-    aws_news_index.style.display = 'none';
+    awsNewsIndexDiv.style.display = 'none';
     awsNewsDiv.style.display = 'block'
     render_news(this.text)
 }
@@ -63,8 +63,8 @@ function render_news_index() {
       <thead>
         <tr>
           <th>#</th>
-          <th>name</th>
-          <th>info</th>
+          <th>Category</th>
+          <th>Link</th>
         </tr>
       </thead>
       <tbody>
@@ -98,7 +98,8 @@ function render_news_index() {
                 secondCell.textContent = item.name;
 
                 const thirdCell = document.createElement('td');
-                thirdCell.textContent = JSON.stringify(item);
+                // thirdCell.textContent = JSON.stringify(item);
+                thirdCell.textContent = item['path'];
 
                 if (item.checked) {
                     newRow.className = "table-primary"
@@ -113,7 +114,6 @@ function render_news_index() {
     })
 
     awsNewsIndexDiv.appendChild(table);
-    console.log('table')
 
     function handleCheckboxClick(event) {
         const checkbox = event.target;
@@ -170,9 +170,8 @@ function render_news(rssCategoryName) {
       <thead>
         <tr>
           <th>#</th>
-          <th>link</th>
           <th>Title</th>
-          <th>Dump</th>
+          <th>Link</th>
         </tr>
       </thead>
       <tbody>
@@ -192,7 +191,6 @@ function render_news(rssCategoryName) {
         <td>${index}</td>
         <td>${news.title}</td>
         <td>${news.link}</td>
-        <td>${JSON.stringify(news)}</td>
       `;
                 tbody.appendChild(row);
             })

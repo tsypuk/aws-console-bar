@@ -117,6 +117,7 @@ function loadRSSDataFromServer() {
             chrome.storage.local.set({rss_index: data})
             chrome.storage.local.set({rssUpdateTimeStamp: Date.now()})
         })
+    // fetch all category news that are available
 }
 
 function secondsToHHMMSS(seconds) {

@@ -25,3 +25,10 @@ a {
 .links-container {
     width: 100%;
 }
+
+#aws_news_div,#aws_news_index {
+    padding: 16px;
+    background-color: #fafbfd;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: auto;
+}
