@@ -84,9 +84,14 @@ function updateAccount(accountID, accountName) {
 }
 
 function render_accounts_table() {
-    const table = document.createElement('table');
-    table.className = "table table-hover"
-    table.innerHTML = `
+    // Populate the table with data from the accounts array
+    chrome.storage.sync.get(['aws_accounts'], result => {
+        exportButton.style.display = (result.aws_accounts.length > 0) ? 'block' : 'none'
+        if (result.aws_accounts.length > 0) {
+
+            const table = document.createElement('table');
+            table.className = "table table-hover"
+            table.innerHTML = `
       <thead>
         <tr>
           <th>Account ID</th>
@@ -99,12 +104,9 @@ function render_accounts_table() {
       </tbody>
     `;
 
-    const tbody = table.querySelector('tbody');
+            const tbody = table.querySelector('tbody');
 
-    // Populate the table with data from the accounts array
-    chrome.storage.sync.get(['aws_accounts'], result => {
-        exportButton.style.display = (result.aws_accounts.length > 0) ? 'block' : 'none'
-        if (result.aws_accounts) {
+
             result.aws_accounts.forEach(account => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -132,12 +134,13 @@ function render_accounts_table() {
                 })
 
             })
+            // Inject the table into the div with id "aws_accounts"
+            const awsAccountsDiv = document.getElementById('aws_accounts');
+            awsAccountsDiv.appendChild(table);
         }
     })
 
-    // Inject the table into the div with id "aws_accounts"
-    const awsAccountsDiv = document.getElementById('aws_accounts');
-    awsAccountsDiv.appendChild(table);
+
 }
 
 render_accounts_table()
