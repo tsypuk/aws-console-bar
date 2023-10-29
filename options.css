@@ -26,13 +26,21 @@ a {
     width: 100%;
 }
 
-#aws_news_div,#aws_news_index, #aws_history {
+#aws_news_div, #aws_news_index, #aws_history, #aws_accounts {
     padding: 16px;
     background-color: #fafbfd;
     border: 1px solid rgba(0, 0, 0, 0.06);
     overflow: auto;
 }
 
+div.add_account {
+    width: 350px;
+}
+
 #table-title {
     padding: 16px;
 }
+
+/*table.account-table td {*/
+/*    width: 60px;*/
+/*}*/

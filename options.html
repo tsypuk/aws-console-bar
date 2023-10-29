@@ -16,12 +16,13 @@
 
 <h2>AWS Account Manager</h2>
 
-<table>
+<div class="add_account">
+<table class="table account-table" width="200px">
     <tr>
-        <td>
+        <td width="100px">
             <label for="account-input">Account ID:</label>
         </td>
-        <td>
+        <td width="250px">
             <input type="text" id="account-input" class="form-control me-2" placeholder="Enter AWS Account ID" aria-label="Enter AWS Account ID">
         </td>
     </tr>
@@ -33,15 +34,9 @@
             <input type="text" id="name-input" class="form-control me-2" placeholder="Enter AWS Account Alias" aria-label="Enter AWS Account Alias">
         </td>
     </tr>
-    <tr>
-        <td>
-            <label for="save-button">Action:</label>
-        </td>
-        <td>
-            <button id="save-button" class="btn btn-primary">Add Alias</button>
-        </td>
-    </tr>
 </table>
+    <button id="save-button" class="btn btn-primary">Add Alias</button>
+</div>
 
 <h2>Registered AWS Account Aliases</h2>
 
