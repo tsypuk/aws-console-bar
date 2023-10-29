@@ -16,19 +16,41 @@
 <div id="links-container"></div>
 <script src="includeLinks.js"></script>
 
-<h3>Notification Timer, min</h3>
-<input id="time-input" type="number" class="form-control me-2" placeholder="time in min" aria-label="time in min">
+<div id="aws_history">
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Parameter</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    <tr>
+        <td>0</td>
+        <td>Notification Timer, min</td>
+        <td><input id="time-input" type="number" class="form-control me-2" placeholder="time in min" aria-label="time in min"></td>
+    </tr>
 
-<h3>Reindex RSS after, days</h3>
-<input id="time-input-rss" type="number" class="form-control me-2" placeholder="time in days" aria-label="time in days">
+    <tr>
+        <td>1</td>
+        <td>Reindex RSS after, days</td>
+        <td><input id="time-input-rss" type="number" class="form-control me-2" placeholder="time in days" aria-label="time in days"></td>
+    </tr>
 
-<h3>Show news every, min</h3>
-<input id="time-input-news" type="number" class="form-control me-2" placeholder="time in days" aria-label="time in min">
+    <tr>
+        <td>2</td>
+        <td>Show news every, min</td>
+        <td><input id="time-input-news" type="number" class="form-control me-2" placeholder="time in days" aria-label="time in min"></td>
+    </tr>
 
-<h3>Session Tracking interval, min</h3>
-<input id="time-input-session" type="number" class="form-control me-2" placeholder="time in days" aria-label="time in min">
-
-<button id="save-button" class="btn btn-primary">Save Settings</button>
+    <tr>
+        <td>3</td>
+        <td>Session Tracking interval, min</td>
+        <td><input id="time-input-session" type="number" class="form-control me-2" placeholder="time in days" aria-label="time in min"></td>
+    </tr>
+</table>
+    <button id="save-button" class="btn btn-primary">Save Settings</button>
+</div>
 
 <script src="settings.js"></script>
 </body>

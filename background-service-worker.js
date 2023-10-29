@@ -36,9 +36,9 @@ chrome.runtime.onInstalled.addListener(details => {
 
 chrome.storage.sync.get(['settings', 'rssUpdateTimeStamp'], result => {
 
-    chrome.alarms.create(name = 'session-time', {
-        periodInMinutes: result.settings['sessionInterval'],
-    })
+    // chrome.alarms.create(name = 'session-time', {
+    //     periodInMinutes: result.settings['sessionInterval'],
+    // })
 
     chrome.alarms.create(name = 'rss-time', {
         periodInMinutes: result.settings['newsInterval'],
@@ -67,23 +67,23 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     })
 
     switch (alarm.name) {
-        case 'session-time':
-            chrome.storage.sync.get(["timer"], (res) => {
-                const time = res.timer ?? 0
-                chrome.storage.sync.set({
-                    timer: time + 1,
-                })
-                chrome.action.setBadgeText({
-                    text: `${secondsToHHMMSS(time)}`
-                })
-                const internal = 45
-                if (time % internal === 0) {
-                    this.registration.showNotification("Chrome Timer Extentions", {
-                        body: "45 min has passed!", icon: "icon.pnh"
-                    })
-                }
-            })
-            break
+        // case 'session-time':
+        //     chrome.storage.sync.get(["timer"], (res) => {
+        //         const time = res.timer ?? 0
+        //         chrome.storage.sync.set({
+        //             timer: time + 1,
+        //         })
+        //         chrome.action.setBadgeText({
+        //             text: `${secondsToHHMMSS(time)}`
+        //         })
+        //         const internal = 45
+        //         if (time % internal === 0) {
+        //             this.registration.showNotification("Chrome Timer Extentions", {
+        //                 body: "45 min has passed!", icon: "icon.pnh"
+        //             })
+        //         }
+        //     })
+        //     break
         case 'rss-time':
             console.log('Time to refresh RSS')
 
