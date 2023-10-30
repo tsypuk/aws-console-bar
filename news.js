@@ -3,8 +3,89 @@ const tableTitle = document.getElementById('table-title')
 const awsNewsDiv = document.getElementById('aws_news_div')
 const awsNewsIndexDiv = document.getElementById('aws_news_index')
 const indexNewsNavA = document.getElementById('index_news_nav_a')
+const searchInput = document.getElementById('search_input')
 
 indexNewsNavA.addEventListener('click', handleNavIndexClick)
+
+function handleSearchInput() {
+    fullTextSearch(searchInput.value)
+}
+
+function showCategoryNews(category, item) {
+    let architectureRow = document.getElementById(category)
+    architectureRow.style.display = ''
+
+// Create a new <tr> element
+    let newRow = document.createElement("tr");
+
+// Create the HTML content for the new <tr>
+    newRow.innerHTML = `
+    <td></td>
+    <td colspan=2><a href="${item.link}" target="_blank">${item.title}</a></td>
+`;
+
+    architectureRow.parentNode.insertBefore(newRow, architectureRow.nextSibling);
+}
+
+function clearCategoryNews() {
+    // Get the table element
+    let table = document.getElementById("news_categories");
+
+    // Get a NodeList of all <tr> elements in the table
+    let rows = table.getElementsByTagName("tr");
+
+    // Iterate through the NodeList in reverse order (to avoid skipping elements)
+    for (let i = rows.length - 1; i >= 0; i--) {
+        let row = rows[i];
+
+        // Check if the row does not have an id attribute
+        if (!row.hasAttribute("id")) {
+            // Remove the row from the table
+            row.parentNode.removeChild(row);
+        }
+    }
+}
+
+function hideNewsCategory(category) {
+    console.log(category)
+    let architectureRow = document.getElementById(category)
+    // architectureRow.style.display = ''
+    architectureRow.style.display = 'none'
+}
+
+function showAllNewsCategories() {
+}
+
+function fullTextSearch(pattern) {
+    // render_news_index
+    chrome.storage.local.get(['rss_index'], result => {
+        // clear additional elements in table
+        clearCategoryNews()
+        if (result.rss_index) {
+            result.rss_index.forEach((category) => {
+                // Full-text search in this category
+                chrome.storage.local.get([category.name], result => {
+                        // console.log(result[item.name])
+                        result[category.name].forEach(function (item) {
+                            if (item.title.toLowerCase().includes(pattern.toLowerCase())) {
+                                // console.log(item.title)
+                                showCategoryNews(category.name, item)
+                                // if found add additional elements to table
+                            }
+                            else {
+                                // hideNewsCategory(category.name)
+                            }
+                        })
+                    }
+                )
+
+
+            })
+        }
+    })
+}
+
+searchInput.addEventListener('input', handleSearchInput)
 
 function addElementToTab(name) {
     li = document.createElement('li')
@@ -13,7 +94,7 @@ function addElementToTab(name) {
     a = document.createElement('a')
     a.className = "nav-link"
     a.text = name
-    a.id = name
+    a.id = `${name}_link`
     a.addEventListener('click', handleNavClick)
     li.appendChild(a)
     ulAwsTopics.appendChild(li)
@@ -59,6 +140,7 @@ function render_news_index() {
     }
     const table = document.createElement('table');
     table.className = "table table-hover"
+    table.id = "news_categories"
     table.innerHTML = `
       <thead>
         <tr>
@@ -78,6 +160,7 @@ function render_news_index() {
         if (result.rss_index) {
             result.rss_index.forEach((item, index) => {
                 const newRow = document.createElement('tr');
+                newRow.id = item.name
 
                 const firstCell = document.createElement('td');
 
@@ -87,7 +170,7 @@ function render_news_index() {
                 const inputElement = document.createElement('input');
                 inputElement.type = 'checkbox';
                 inputElement.className = 'form-check-input'
-                inputElement.id = item.name;
+                inputElement.id = item.name
                 inputElement.checked = item.checked
                 inputElement.addEventListener('click', handleCheckboxClick)
 

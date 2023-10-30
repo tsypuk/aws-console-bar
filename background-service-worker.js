@@ -116,8 +116,26 @@ function loadRSSDataFromServer() {
         .then(data => {
             chrome.storage.local.set({rss_index: data})
             chrome.storage.local.set({rssUpdateTimeStamp: Date.now()})
+
+            data.forEach(function (item) {
+                fetchRss(item.name)
+            })
+
         })
-    // fetch all category news that are available
+}
+
+function fetchRss(name) {
+    fetch(`https://blog.tsypuk.com/aws-news/news/${name}.json`)
+        .then(res => res.json())
+        // .then(data => console.log(data))
+        .then(data => {
+            console.log(`Fetch ${name} RSS into local storage...`)
+            chrome.storage.local.set({[name]: data})
+            chrome.storage.local.get(['feed'], result => {
+                result.feed.push(name)
+                chrome.storage.local.set({'feed': result.feed})
+            })
+        })
 }
 
 function secondsToHHMMSS(seconds) {
