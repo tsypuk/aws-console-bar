@@ -12,15 +12,26 @@ clearButton.addEventListener('click',
     () => {
         searchInput.value = ''
         clearCategoryNews()
+        ShowAllIndexNews()
     })
 
 function handleSearchInput() {
     if (searchInput.value === '') {
         clearCategoryNews()
+        ShowAllIndexNews()
     } else {
         fullTextSearch(searchInput.value)
     }
+}
 
+function ShowAllIndexNews() {
+    let table = document.getElementById("news_categories");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = rows.length - 1; i >= 0; i--) {
+        let row = rows[i];
+        row.style.display = ''
+    }
 }
 
 function showCategoryNews(category, item) {
@@ -40,17 +51,12 @@ function showCategoryNews(category, item) {
 }
 
 function clearCategoryNews() {
-    // Get the table element
     let table = document.getElementById("news_categories");
-
-    // Get a NodeList of all <tr> elements in the table
     let rows = table.getElementsByTagName("tr");
 
-    // Iterate through the NodeList in reverse order (to avoid skipping elements)
     for (let i = rows.length - 1; i >= 0; i--) {
         let row = rows[i];
 
-        // Check if the row does not have an id attribute
         if (!row.hasAttribute("id")) {
             // Remove the row from the table
             row.parentNode.removeChild(row);
@@ -59,13 +65,8 @@ function clearCategoryNews() {
 }
 
 function hideNewsCategory(category) {
-    console.log(category)
     let architectureRow = document.getElementById(category)
-    // architectureRow.style.display = ''
     architectureRow.style.display = 'none'
-}
-
-function showAllNewsCategories() {
 }
 
 function fullTextSearch(pattern) {
@@ -77,20 +78,19 @@ function fullTextSearch(pattern) {
             result.rss_index.forEach((category) => {
                 // Full-text search in this category
                 chrome.storage.local.get([category.name], result => {
-                        // console.log(result[item.name])
+                        categoryNoMatch = true
                         result[category.name].forEach(function (item) {
                             if (item.title.toLowerCase().includes(pattern.toLowerCase())) {
-                                // console.log(item.title)
                                 showCategoryNews(category.name, item)
+                                categoryNoMatch = false
                                 // if found add additional elements to table
-                            } else {
-                                // hideNewsCategory(category.name)
                             }
                         })
+                        if (categoryNoMatch) {
+                            hideNewsCategory(category.name)
+                        }
                     }
                 )
-
-
             })
         }
     })
@@ -136,7 +136,6 @@ function fetchRss(name) {
         .then(res => res.json())
         // .then(data => console.log(data))
         .then(data => {
-            console.log(`Fetch ${name} RSS into local storage...`)
             chrome.storage.local.set({[name]: data})
             chrome.storage.local.get(['feed'], result => {
                 result.feed.push(name)
@@ -212,7 +211,6 @@ function render_news_index() {
     function handleCheckboxClick(event) {
         const checkbox = event.target;
         const id = checkbox.id;
-        console.log(`Checkbox with ID ${id} clicked. ${checkbox.checked}: `);
         chrome.storage.local.get(['rss_index'], result => {
             const clickedItem = result.rss_index.filter(item => item.name === id)[0]
             clickedItem.checked = checkbox.checked
@@ -246,7 +244,6 @@ function render_news_index() {
 }
 
 function saveIndexToStorage(rss_index) {
-    console.log(rss_index)
     const obj = {};
     obj['rss_index'] = rss_index;
     chrome.storage.local.set(obj)
@@ -275,9 +272,7 @@ function render_news(rssCategoryName) {
     const tbody = table.querySelector('tbody');
 
     // Populate the table with data from the accounts array
-    console.log(rssCategoryName)
     chrome.storage.local.get([rssCategoryName], result => {
-        console.log(result)
         if (result[rssCategoryName]) {
             result[rssCategoryName].forEach((news, index) => {
                 const row = document.createElement('tr');
