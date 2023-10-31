@@ -4,11 +4,23 @@ const awsNewsDiv = document.getElementById('aws_news_div')
 const awsNewsIndexDiv = document.getElementById('aws_news_index')
 const indexNewsNavA = document.getElementById('index_news_nav_a')
 const searchInput = document.getElementById('search_input')
+const clearButton = document.getElementById('clear_button')
 
 indexNewsNavA.addEventListener('click', handleNavIndexClick)
 
+clearButton.addEventListener('click',
+    () => {
+        searchInput.value = ''
+        clearCategoryNews()
+    })
+
 function handleSearchInput() {
-    fullTextSearch(searchInput.value)
+    if (searchInput.value === '') {
+        clearCategoryNews()
+    } else {
+        fullTextSearch(searchInput.value)
+    }
+
 }
 
 function showCategoryNews(category, item) {
@@ -71,8 +83,7 @@ function fullTextSearch(pattern) {
                                 // console.log(item.title)
                                 showCategoryNews(category.name, item)
                                 // if found add additional elements to table
-                            }
-                            else {
+                            } else {
                                 // hideNewsCategory(category.name)
                             }
                         })
