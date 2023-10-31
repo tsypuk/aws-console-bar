@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/tsypuk/aws-console-bar/compare/v1.7.0...v1.8.0) (2023-10-31)
+
+
+### Features
+
+* ad styling for account manager ([f49de5d](https://github.com/tsypuk/aws-console-bar/commit/f49de5d83119c3c6f4043fdcb2092acea8ab29c5))
+* add clear search functionality; add reaction to empty pattern; clear input ([04f38a9](https://github.com/tsypuk/aws-console-bar/commit/04f38a9de1ed910f65569a775aee90c4054b25ec))
+* add fulltext search for all aws news categories ([b16e181](https://github.com/tsypuk/aws-console-bar/commit/b16e181964368aed485af2a090d4effba3a0c0f0))
+* aligned tables on settings page ([27be24d](https://github.com/tsypuk/aws-console-bar/commit/27be24d80052c20c081bf73f71c46486bb85b39c))
+* aligned tables rendering ([6835298](https://github.com/tsypuk/aws-console-bar/commit/68352984cf86009dddeef7fa059ce1dbff4b3a60))
+* styling for content section ([3ff91db](https://github.com/tsypuk/aws-console-bar/commit/3ff91dba7ee6c8345707b134a6c89f49b89a6ebd))
+* update rss news index by fetching latest aws news index every rssReindexInterval, by default 7days ([a19784e](https://github.com/tsypuk/aws-console-bar/commit/a19784e4cf56d0f860e110225e49ce161803ed76))
+
+
+### Bug Fixes
+
+* remove aws_news_div by default ([32edf8e](https://github.com/tsypuk/aws-console-bar/commit/32edf8e3144df8ddfd44b8a46f66af7f04218bd8))
+* show all categories after the full-text input cleared or changed ([9adae5e](https://github.com/tsypuk/aws-console-bar/commit/9adae5e295aed1b23190782e8bdeea65f94048c3))
+
 ## [1.7.0](https://github.com/tsypuk/aws-console-bar/compare/v1.6.0...v1.7.0) (2023-10-26)
 
 
