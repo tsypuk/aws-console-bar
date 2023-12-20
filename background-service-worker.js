@@ -138,16 +138,6 @@ function fetchRss(name) {
         })
 }
 
-function secondsToHHMMSS(seconds) {
-    let minutes = Math.floor((seconds % 3600) / 60);
-    let secondsRemainder = seconds % 60;
-
-    minutes = String(minutes).padStart(2, '0');
-    secondsRemainder = String(secondsRemainder).padStart(2, '0');
-
-    return `${minutes}:${secondsRemainder}`;
-}
-
 const alarmIconPath = {
     "16": "images/alarm/icon16.png", "48": "images/alarm/icon48.png", "128": "images/alarm/icon128.png",
 }
