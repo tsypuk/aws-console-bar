@@ -26,6 +26,9 @@ doc:
 	cd docs && bundle exec just-the-docs rake search:init \
 	cd docs && bundle exec jekyll serve --trace
 
+doc-prod:
+	JEKYLL_ENV=production && cd docs && bundle exec jekyll serve --trace
+
 test:
 	$(call colorecho, "Run all Tests...")
 	poetry run python -m unittest -v tests/*.py
