@@ -29,6 +29,9 @@ doc:
 doc-prod:
 	JEKYLL_ENV=production && cd docs && bundle exec jekyll serve --trace
 
+release:
+	npm run release && git push --tags
+
 test:
 	$(call colorecho, "Run all Tests...")
 	poetry run python -m unittest -v tests/*.py
