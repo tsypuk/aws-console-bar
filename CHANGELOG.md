@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/tsypuk/aws-console-bar/compare/v1.8.0...v1.9.0) (2024-01-21)
+
+
+### Features
+
+* add Google Analytics ([b28533d](https://github.com/tsypuk/aws-console-bar/commit/b28533ddceb4a57369a7d1f476799f52fef1ba59))
+* add online site for console bar documentation ([802cf5e](https://github.com/tsypuk/aws-console-bar/commit/802cf5e8cbceef63cd20d27cce4bbfa38a53a3cc))
+* bootstrap jekyll online ([cd07c11](https://github.com/tsypuk/aws-console-bar/commit/cd07c11ab0b2e55ea43df937cfdc1e35188ce5f6))
+
 ## [1.8.0](https://github.com/tsypuk/aws-console-bar/compare/v1.7.0...v1.8.0) (2023-10-31)
 
 
