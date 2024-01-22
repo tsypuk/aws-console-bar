@@ -12,7 +12,25 @@ permalink: /
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 {: .highlight }
-Install ``aws-console-bar`` extension into any popular Web Browser.
+AWS Console Bar is a Chrome extension seamlessly integrated with the native AWS Console. It enhances the AWS user experience by providing curated news topics and valuable usage statistics directly within the AWS Console interface.
+
+## Features
+- **Integrated with Official Latest News Feed:**
+  - Choose from various news topics such as architecture, big data, machine learning, etc.
+  - News updates are displayed in a non-intrusive bar within the AWS Console.
+
+- **Usage Statistics and Metrics:**
+  - Records login events, visits to different AWS accounts, and the usage duration.
+  - Allows users to draw AWS Console usage statistics and dashboards for insights.
+
+- **Account Personalization:**
+  - Customize each AWS account with a distinct name, icons, glyphs, and smiles for easy identification.
+  - Enhances user experience with personalized visual elements.
+
+- **Local Storage:**
+  - Metrics and statistics are stored locally for easy access and analysis.
+  - Provides a reliable and fast way to access historical usage data.
+
 
 ## Support OS Project:
 
