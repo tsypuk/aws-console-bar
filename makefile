@@ -26,6 +26,10 @@ doc:
 	cd docs && bundle exec just-the-docs rake search:init \
 	cd docs && bundle exec jekyll serve --trace
 
+release2docs:
+	$(call colorecho, "Adding changelog to online docs...")
+	{ echo '---'; echo 'title: CHANGELOG'; echo 'layout: default'; echo '---'; echo ''; cat CHANGELOG.MD; } > "docs/CHANGELOG.md"
+
 doc-prod:
 	JEKYLL_ENV=production && cd docs && bundle exec jekyll serve --trace
 
