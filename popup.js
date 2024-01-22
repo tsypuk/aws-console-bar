@@ -28,7 +28,7 @@ const myLink2Element = document.getElementById('myLink2')
 // Define the function to be called when the link is clicked
 function linkClickHandler(event) {
     event.preventDefault(); // Prevent the default behavior of the link
-    const url = 'https://www.example.com'; // Replace with the URL you want to open
+    const url = 'https://tsypuk.github.io/aws-console-bar/'; // Replace with the URL you want to open
     window.open(url, '_blank')
 }
 
