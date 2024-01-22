@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/tsypuk/aws-console-bar/compare/v1.9.0...v1.10.0) (2024-01-22)
+
+
+### Features
+
+* add about section ([adb8de8](https://github.com/tsypuk/aws-console-bar/commit/adb8de80b35e52315f6efd61087929fbfe84aaa6))
+* bootstrap main sections ([32a4d44](https://github.com/tsypuk/aws-console-bar/commit/32a4d44b3cf887338fe8f4f72fb016ba68d995ed))
+* change popup text ([5b69552](https://github.com/tsypuk/aws-console-bar/commit/5b69552401b3a8e1689731dd9ef5a03569da19f6))
+* update make file; add changelog ([c848b8a](https://github.com/tsypuk/aws-console-bar/commit/c848b8a258924f26b986b8a8d777683a019cab87))
+
 ## [1.9.0](https://github.com/tsypuk/aws-console-bar/compare/v1.8.0...v1.9.0) (2024-01-21)
 
 
