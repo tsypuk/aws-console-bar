@@ -7,14 +7,13 @@ nav_order: 2
 # Getting started
 {: .no_toc }
 
-## Installation
+## Installation from Chrome Web Store
 
 Download the AWS Console Bar Chrome Extension from the Chrome Web Store.
-Click "Add to Chrome" to install the extension.
 
-## Configuration
+## Installation from source
 
-Open the AWS Console and log in to your AWS account.
-Navigate to the AWS Console Bar section in the top bar.
-Choose your preferred news topics to display on the Console Bar.
-Personalize each AWS account by providing a unique name, icons, and other visual elements.
+1. Checkout official github repo: [https://github.com/tsypuk/aws-console-bar](https://github.com/tsypuk/aws-console-bar)
+2. Enable ``Developer mode`` in Chrome or other browser you plan to use
+3. ![img.png](images/install/img.png)
+4. Click ``Load Unpacked`` and select folder with extension in the Dialog
