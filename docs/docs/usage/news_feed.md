@@ -6,6 +6,12 @@ nav_order: 3
 date: 2024-01-22
 ---
 
+# News Feed
+{: .d-inline-block .toc }
+
+New (v1.6.0)
+{: .label .label-green }
+
 ## Table of contents
 {: .no_toc .text-delta }
 
@@ -14,8 +20,6 @@ date: 2024-01-22
 
 ---
 
-# News Feed
-{: .d-inline-block .toc }
 
 ## AWS news
 

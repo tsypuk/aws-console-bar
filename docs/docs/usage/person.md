@@ -17,6 +17,10 @@ date: 2024-01-22
 # Account Personalization
 {: .d-inline-block .no_toc }
 
+Since (v0.0.1)
+{: .label .label-red }
+
+
 One the main goals of ``aws-console-bar`` extension is to help user to have aliases for each AWS account and detect cases when
 unknown account is used. This is very useful, especially when you operate with multi-account environment or login to some sandbox environment
 during learning or going through course of material.
