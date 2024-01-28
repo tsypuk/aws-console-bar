@@ -14,7 +14,19 @@ permalink: /
 {: .highlight }
 AWS Console Bar is a Chrome extension seamlessly integrated with the native AWS Console. It enhances the AWS user experience by providing curated news topics and valuable usage statistics directly within the AWS Console interface.
 
-## Features
+{: .highlight }
+Easy to switch between aws account, apply custom naming and emojis to your account, check if you are in ``production`` or unknown sandbox account.
+Decreasing the risk of modifying wrong resources in wrong account.
+
+
+![img.png](docs/images/console/img.png)
+
+![img_4.png](docs/images/console/img_4.png)
+
+## Key Features
+- **It is OpenSourced:**
+  - Follow to official github.com of the project and check the sources and full business logic if needed 
+
 - **Integrated with Official Latest News Feed:**
   - Choose from various news topics such as architecture, big data, machine learning, etc.
   - News updates are displayed in a non-intrusive bar within the AWS Console.
