@@ -6,6 +6,14 @@ nav_order: 3
 date: 2024-01-22
 ---
 
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
 # News Feed
 {: .d-inline-block .toc }
 
@@ -21,7 +29,13 @@ All news are stored in gitrepo and publicly available. Repository has schedulled
 JSON news are exposed through public endpoint of Githubpages.
 
 
+## News are rendered at the main bar and periodically updated
+
+![img_4.png](../images/console/img_4.png)
+
 ## Select your news
+
+To start using news, you need to perform initial configuration and specify you focus of interest.
 
 ``aws-console-bar`` allows you to select what topics you are interested in, and news from these topics will be rendered in ``aws-console-bar`` section.
 ![img_0.png](../images/news_0.png)
