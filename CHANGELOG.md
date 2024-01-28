@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/tsypuk/aws-console-bar/compare/v1.10.0...v1.11.0) (2024-01-28)
+
+
+### Features
+
+* add ruby git hash plugin add data to footer ([0407d6d](https://github.com/tsypuk/aws-console-bar/commit/0407d6d4730122abdcda13d7170acde25ec9b08a))
+
 ## [1.10.0](https://github.com/tsypuk/aws-console-bar/compare/v1.9.0...v1.10.0) (2024-01-22)
 
 
