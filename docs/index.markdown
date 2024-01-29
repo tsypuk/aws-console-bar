@@ -24,10 +24,8 @@ Decreasing the risk of modifying wrong resources in wrong account.
 ![img_4.png](docs/images/console/img_4.png)
 
 ## Key Features
-- **It is OpenSourced:**
-  - Follow to official github.com of the project and check the sources and full business logic if needed 
 
-- **Integrated with Official Latest News Feed:**
+- **Operates with Official AWS Latest News Feed:**
   - Choose from various news topics such as architecture, big data, machine learning, etc.
   - News updates are displayed in a non-intrusive bar within the AWS Console.
 
@@ -39,9 +37,12 @@ Decreasing the risk of modifying wrong resources in wrong account.
   - Customize each AWS account with a distinct name, icons, glyphs, and smiles for easy identification.
   - Enhances user experience with personalized visual elements.
 
-- **Local Storage:**
-  - Metrics and statistics are stored locally for easy access and analysis.
+- **Data Privacy and Security:**
+  - Metrics and statistics are not pushed to any cloud or third party - they are fully stored on your machine local storage for easy access and analysis.
   - Provides a reliable and fast way to access historical usage data.
+
+- **It is OpenSourced:**
+  - Follow to official [https://github.com/tsypuk/aws-console-bar](https://github.com/tsypuk/aws-console-bar) of the project and view the sources and full business logic if needed
 
 
 ## Support OS Project:
