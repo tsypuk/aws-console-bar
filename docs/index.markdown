@@ -41,7 +41,7 @@ Decreasing the risk of modifying wrong resources in wrong account.
   - Metrics and statistics are not pushed to any cloud or third party - they are fully stored on your machine local storage for easy access and analysis.
   - Provides a reliable and fast way to access historical usage data.
 
-- **It is OpenSourced:**
+- **OpenSource:**
   - Follow to official [https://github.com/tsypuk/aws-console-bar](https://github.com/tsypuk/aws-console-bar) of the project and view the sources and full business logic if needed
 
 
