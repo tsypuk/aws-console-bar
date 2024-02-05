@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/tsypuk/aws-console-bar/compare/v1.11.0...v1.12.0) (2024-02-05)
+
+
+### Features
+
+* add aws account activity graphs to session history page ([1398fb0](https://github.com/tsypuk/aws-console-bar/commit/1398fb09461fdefccd1a6e8f92a3ee83e722c8c7))
+
 ## [1.11.0](https://github.com/tsypuk/aws-console-bar/compare/v1.10.0...v1.11.0) (2024-01-28)
 
 
