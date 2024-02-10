@@ -1,10 +1,33 @@
-
 var chartDom = document.getElementById('main');
 var myChart = echarts.init(chartDom);
 
-datas = []
+accounts = new Map()
 xlabels = []
 
+function appendOrCreateArray(accountId, data) {
+    console.log(accounts.get(accountId))
+    if (accounts.has(accountId)) {
+        accounts.get(accountId).push(data);
+    } else {
+        accounts.set(accountId, [data]);
+        // change size based on other elements size
+        for (let [key, value] of accounts) {
+            if (key != accountId) {
+                size = value.length
+                for (let i = 0; i < size; i++) {
+                    accounts.get(accountId).unshift(0)
+                }
+                break
+            }
+        }
+    }
+    for (let [key, value] of accounts) {
+        if (key != accountId) {
+            value.push(0)
+        }
+    }
+
+}
 
 function render_history_table() {
     const table = document.createElement('table');
@@ -31,7 +54,7 @@ function render_history_table() {
     chrome.storage.local.get(['history'], result => {
         if (result.history) {
             startPageIndex = 0
-            pagingSize = 20
+            pagingSize = 10
 
             result.history = result.history.sort((a, b) => b.StartTimeStamp - a.StartTimeStamp).slice(startPageIndex, pagingSize)
             result.history.forEach((item, index) => {
@@ -68,35 +91,30 @@ function render_history_table() {
                 tbody.appendChild(newRow);
             })
 
-            accounts = {}
             result.history.reverse().forEach((item, index) => {
-                console.log(item.Account)
-                // Draw the graph
-                datas.push(parseInt(item.Duration / 1000))
+                appendOrCreateArray(item.Account, parseInt(item.Duration / 1000))
+                // accounts[item.Account].datas.push(parseInt(item.Duration / 1000))
                 xlabels.push(item.StartTime)
             })
+
+            series = []
+            for (let [key, value] of accounts) {
+                series.push({
+                    name: key, type: 'bar', data: value
+                })
+            }
+
             var option = {
                 title: {
-                    text: 'AWS account activity by date'
-                },
-                tooltip: {},
+                    text: 'AWS console activity based on accounts by date'
+                }, tooltip: {},
 
                 xAxis: {
-                    data: xlabels
+                    axisTick: {
+                        alignWithLabel: true
+                    }, data: xlabels
                 },
-                yAxis: {},
-                series: [
-                    {
-                        name: 'sales2',
-                        type: 'bar',
-                        data: datas
-                    },
-                    {
-                        name: 'sales1',
-                        type: 'bar',
-                        data: datas
-                    }
-                ]
+                yAxis: {}, series: series
             };
             option && myChart.setOption(option);
         }
@@ -117,38 +135,3 @@ function secondsToHHMMSS(seconds) {
 }
 
 render_history_table()
-
-//
-// chrome.storage.local.get(['history'], result => {
-//     if (result.history) {
-//         result.history.forEach((item, index) => {
-//
-//             datas.push(parseInt(item.Duration / 1000))
-//             xlabels.push(item.StartTime)
-//         })
-//         // console.log(datas)
-//         // console.log(xlabels)
-//         var option = {
-//             title: {
-//                 text: 'AWS account activity by date'
-//             },
-//             tooltip: {},
-//
-//             xAxis: {
-//                 data: xlabels
-//             },
-//             yAxis: {},
-//             series: [
-//                 {
-//                     name: 'sales',
-//                     type: 'bar',
-//                     data: datas
-//                 }
-//             ]
-//         };
-//         option && myChart.setOption(option);
-//
-//     }
-// })
-
-
