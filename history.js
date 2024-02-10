@@ -1,3 +1,11 @@
+
+var chartDom = document.getElementById('main');
+var myChart = echarts.init(chartDom);
+
+datas = []
+xlabels = []
+
+
 function render_history_table() {
     const table = document.createElement('table');
     table.className = "table table-hover"
@@ -22,6 +30,10 @@ function render_history_table() {
     // Populate the table with data from the accounts array
     chrome.storage.local.get(['history'], result => {
         if (result.history) {
+            startPageIndex = 0
+            pagingSize = 20
+
+            result.history = result.history.sort((a, b) => b.StartTimeStamp - a.StartTimeStamp).slice(startPageIndex, pagingSize)
             result.history.forEach((item, index) => {
                 const newRow = document.createElement('tr');
 
@@ -55,6 +67,38 @@ function render_history_table() {
                 newRow.appendChild(sevenCell);
                 tbody.appendChild(newRow);
             })
+
+            accounts = {}
+            result.history.reverse().forEach((item, index) => {
+                console.log(item.Account)
+                // Draw the graph
+                datas.push(parseInt(item.Duration / 1000))
+                xlabels.push(item.StartTime)
+            })
+            var option = {
+                title: {
+                    text: 'AWS account activity by date'
+                },
+                tooltip: {},
+
+                xAxis: {
+                    data: xlabels
+                },
+                yAxis: {},
+                series: [
+                    {
+                        name: 'sales2',
+                        type: 'bar',
+                        data: datas
+                    },
+                    {
+                        name: 'sales1',
+                        type: 'bar',
+                        data: datas
+                    }
+                ]
+            };
+            option && myChart.setOption(option);
         }
     })
 
@@ -74,43 +118,37 @@ function secondsToHHMMSS(seconds) {
 
 render_history_table()
 
-var chartDom = document.getElementById('main');
-var myChart = echarts.init(chartDom);
-
-datas = []
-xlabels = []
-
-
-chrome.storage.local.get(['history'], result => {
-    if (result.history) {
-        result.history.forEach((item, index) => {
-
-            datas.push(parseInt(item.Duration / 1000))
-            xlabels.push(item.StartTime)
-        })
-        console.log(datas)
-        console.log(xlabels)
-        var option = {
-            title: {
-                text: 'AWS account activity by date'
-            },
-            tooltip: {},
-
-            xAxis: {
-                data: xlabels
-            },
-            yAxis: {},
-            series: [
-                {
-                    name: 'sales',
-                    type: 'bar',
-                    data: datas
-                }
-            ]
-        };
-        option && myChart.setOption(option);
-
-    }
-})
+//
+// chrome.storage.local.get(['history'], result => {
+//     if (result.history) {
+//         result.history.forEach((item, index) => {
+//
+//             datas.push(parseInt(item.Duration / 1000))
+//             xlabels.push(item.StartTime)
+//         })
+//         // console.log(datas)
+//         // console.log(xlabels)
+//         var option = {
+//             title: {
+//                 text: 'AWS account activity by date'
+//             },
+//             tooltip: {},
+//
+//             xAxis: {
+//                 data: xlabels
+//             },
+//             yAxis: {},
+//             series: [
+//                 {
+//                     name: 'sales',
+//                     type: 'bar',
+//                     data: datas
+//                 }
+//             ]
+//         };
+//         option && myChart.setOption(option);
+//
+//     }
+// })
 
 
