@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0](https://github.com/tsypuk/aws-console-bar/compare/v1.13.0...v1.14.0) (2024-02-23)
+
+
+### Features
+
+* add aws account alias enrichment to history; updated timing presentation ([16e9ff4](https://github.com/tsypuk/aws-console-bar/commit/16e9ff405ea7fb76d49ce7e3cdf3f52d19716279))
+* add AWS Session line with timing on top of bars for each AWS account ([911f5c0](https://github.com/tsypuk/aws-console-bar/commit/911f5c0dc884d73933d5696970bd268db83a0f1b))
+
 ## [1.13.0](https://github.com/tsypuk/aws-console-bar/compare/v1.12.0...v1.13.0) (2024-02-10)
 
 
