@@ -7,6 +7,28 @@ layout: default
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](https://github.com/tsypuk/aws-console-bar/compare/v1.12.0...v1.13.0) (2024-02-10)
+
+
+### Features
+
+* add pagination by 10 of aws accounts visits ([a8e0711](https://github.com/tsypuk/aws-console-bar/commit/a8e0711cc6b5868e008841cc568d0e9fa67d3ea1))
+* render multiple accounts on chart with different color bars ([c32b00a](https://github.com/tsypuk/aws-console-bar/commit/c32b00a92cc554a498c0d0f4ab0983997ccd59cc))
+
+## [1.12.0](https://github.com/tsypuk/aws-console-bar/compare/v1.11.0...v1.12.0) (2024-02-05)
+
+
+### Features
+
+* add aws account activity graphs to session history page ([1398fb0](https://github.com/tsypuk/aws-console-bar/commit/1398fb09461fdefccd1a6e8f92a3ee83e722c8c7))
+
+## [1.11.0](https://github.com/tsypuk/aws-console-bar/compare/v1.10.0...v1.11.0) (2024-01-28)
+
+
+### Features
+
+* add ruby git hash plugin add data to footer ([0407d6d](https://github.com/tsypuk/aws-console-bar/commit/0407d6d4730122abdcda13d7170acde25ec9b08a))
+
 ## [1.10.0](https://github.com/tsypuk/aws-console-bar/compare/v1.9.0...v1.10.0) (2024-01-22)
 
 
