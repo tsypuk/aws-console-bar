@@ -14,6 +14,22 @@ function secondsToHHMMSS(seconds) {
     return `${hours}:${minutes}:${secondsRemainder}`;
 }
 
+function mergeArrays(...arrays) {
+    let result = []
+
+    arrays.forEach(array => {
+        array.forEach((value_array, idx) => {
+            value_array.forEach((value, index) => {
+                if (result[index] == undefined) {
+                    result[index] = 0
+                }
+                result[index] += value
+            })
+        })
+    })
+    return result
+}
+
 var chartDom = document.getElementById('main');
 var myChart = echarts.init(chartDom);
 
@@ -135,22 +151,85 @@ function render_history_table() {
             })
 
             series = []
-            for (let [key, value] of accounts) {
+            data = []
+            for (let [account, value] of accounts) {
                 series.push({
-                    name: key, type: 'bar', data: value
+                    name: account, type: 'bar', data: value
                 })
+                data.push(account)
             }
+
+            series.push({
+                name: 'AWS Session', type: 'line', data: mergeArrays(accounts)
+            })
+
+            data.push('AWS Session')
+
+            const colors = ['#5470C6', '#91CC75', '#EE6666'];
 
             var option = {
                 title: {
                     text: 'AWS console activity based on accounts by date'
-                }, tooltip: {},
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross'
+                    }
+                },
+                grid: {
+                    right: '20%'
+                },
+                toolbox: {
+                    feature: {
+                        dataView: {show: true, readOnly: false},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend: {
+                    data: data
+                },
 
                 xAxis: {
                     axisTick: {
                         alignWithLabel: true
                     }, data: xlabels
-                }, yAxis: {}, series: series
+                }, yAxis: [
+                    {
+                        type: 'value',
+                        name: 'Session',
+                        position: 'right',
+                        alignTicks: true,
+                        offset: 5,
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: colors[0]
+                            }
+                        },
+                        axisLabel: {
+                            formatter: '{value} sec'
+                        }
+                    },
+                    {
+                        type: 'value',
+                        name: 'Session',
+                        position: 'left',
+                        alignTicks: true,
+                        offset: 5,
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: colors[0]
+                            }
+                        },
+                        axisLabel: {
+                            formatter: '{value} sec'
+                        }
+                    }
+                ]
+                , series: series
             };
             option && myChart.setOption(option);
         }

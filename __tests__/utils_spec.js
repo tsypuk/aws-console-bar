@@ -15,6 +15,34 @@ function secondsToHHMMSS(seconds) {
 }
 
 
+function mergeArrays(...arrays) {
+    let result = []
+
+    arrays.forEach(array => {
+        array.forEach((value_array, idx) => {
+            value_array.forEach((value, index) => {
+                if (result[index] == undefined) {
+                    result[index] = 0
+                }
+                result[index] += value
+            })
+        })
+    })
+    return result
+}
+
+test("Merge of arrays with sum elements", () => {
+
+    accounts = new Map()
+    accounts.set("1", [0, 0, 0, 0, 0, 0, 0, 0, 109, 0])
+    accounts.set("2", [0, 0, 0, 0, 0, 0, 0, 0, 0, 3708])
+
+    expect(mergeArrays(
+        accounts
+    )).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 109, 3708])
+});
+
+
 test("Seconds only", () => {
     expect(secondsToHHMMSS(22)).toBe("00:00:22");
 });
