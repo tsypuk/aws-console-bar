@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.15.0](https://github.com/tsypuk/aws-console-bar/compare/v1.14.0...v1.15.0) (2024-02-24)
+
+
+### Features
+
+* add circle to table of aws session history ([e74b4be](https://github.com/tsypuk/aws-console-bar/commit/e74b4befc2cc3e382a1f651babae27853035d0c3))
+
 ## [1.14.0](https://github.com/tsypuk/aws-console-bar/compare/v1.13.0...v1.14.0) (2024-02-23)
 
 
