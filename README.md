@@ -2,8 +2,8 @@
 
 ---
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-![jest](https://github.com/tsypuk/aws-console-bar/workflows/Run%jest/badge.svg?branch=main)
-![example event parameter](https://github.com/tsypuk/aws-console-bar/actions/workflows/jest.yml/badge.svg?event=push)
+![Docs](https://github.com/tsypuk/aws-console-bar/actions/workflows/pages.yml/badge.svg?event=push)
+![Jest Tests](https://github.com/tsypuk/aws-console-bar/actions/workflows/jest.yml/badge.svg?event=push)
 
 ## Publishing
 https://developer.chrome.com/docs/webstore/using_webstore_api/
