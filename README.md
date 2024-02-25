@@ -2,6 +2,7 @@
 
 ---
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+![jest](https://github.com/tsypuk/aws-console-bar/workflows/Run%jest/badge.svg?branch=main)
 
 ## Publishing
 https://developer.chrome.com/docs/webstore/using_webstore_api/
