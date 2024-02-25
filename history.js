@@ -15,6 +15,9 @@ function secondsToHHMMSS(seconds) {
 }
 
 function mergeAccountAndColors(accounts, colors) {
+    if (colors.length > accounts.length) {
+        throw new Error('Colors and Accounts must have same length');
+    }
     let result = new Map()
 
     for (i = 0; i < colors.length; i++) {
@@ -289,4 +292,5 @@ function render_history_table() {
     const awsHistoryDiv = document.getElementById('aws_history');
     awsHistoryDiv.appendChild(table);
 }
-module.exports = { secondsToHHMMSS, mergeAccountAndColors, mergeArrays };
+
+module.exports = {secondsToHHMMSS, mergeAccountAndColors, mergeArrays};
