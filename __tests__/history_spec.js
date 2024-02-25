@@ -25,18 +25,18 @@ const {secondsToHHMMSS, mergeAccountAndColors, mergeArrays} = require('../histor
 
 describe('mergeAccountAndColors', () => {
     test.each([
-        [["a", "b", "c", "d"], ["red", "green", "blue"], new Map([
-            ["a", "red"],
-            ["b", "green"],
-            ["c", "blue"]
+        [["0000-0000-0000", "0000-0000-0001", "0000-0000-0002", "0000-0000-0003"], ["red", "green", "blue"], new Map([
+            ["0000-0000-0000", "red"],
+            ["0000-0000-0001", "green"],
+            ["0000-0000-0002", "blue"]
         ])],
-        [["x", "y", "z"], ["red", "green", "blue"], new Map([
-            ["x", "red"],
-            ["y", "green"],
-            ["z", "blue"]
+        [["0000-0000-0000", "0000-0000-0001", "0000-0000-0002"], ["red", "green", "blue"], new Map([
+            ["0000-0000-0000", "red"],
+            ["0000-0000-0001", "green"],
+            ["0000-0000-0002", "blue"]
         ])],
-        [["p", "q"], ["red"], new Map([
-            ["p", "red"]
+        [["0000-0000-0000", "0000-0000-0001"], ["red"], new Map([
+            ["0000-0000-0000", "red"]
         ])],
         [[], [], new Map()],
     ])('merges arrays into a map', (accounts, colors, expected) => {
@@ -49,7 +49,7 @@ describe('mergeAccountAndColors', () => {
 
     test('throws error if arrays have different lengths', () => {
         expect(() => {
-            mergeAccountAndColors(["a", "b", "c"], ["red", "green", "blue", "yellow"]);
+            mergeAccountAndColors(["0000-0000-0000", "0000-0000-0001", "0000-0000-0002"], ["red", "green", "blue", "yellow"]);
         }).toThrow('Colors and Accounts must have same length');
     });
 });
