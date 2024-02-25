@@ -5,6 +5,14 @@
 ![Docs](https://github.com/tsypuk/aws-console-bar/actions/workflows/pages.yml/badge.svg?event=push)
 ![Jest Tests](https://github.com/tsypuk/aws-console-bar/actions/workflows/jest.yml/badge.svg?event=push)
 
+## Screens of extension
+
+![account_registration.png](docs/docs/images/screens/account_registration.png)
+
+![accounts_history.png](docs/docs/images/screens/accounts_history.png)
+
+![aws_news.png](docs/docs/images/screens/aws_news.png)
+
 ## Publishing
 https://developer.chrome.com/docs/webstore/using_webstore_api/
 
