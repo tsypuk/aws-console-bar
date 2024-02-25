@@ -1,6 +1,6 @@
 function secondsToHHMMSS(seconds) {
     // get hours from seconds
-    hours = 0
+    let hours = 0
     if (seconds => 3600) {
         hours = Math.floor(seconds / 3600);
     }
@@ -109,7 +109,7 @@ function render_history_table() {
           <th>Type</th>
           <th>Start</th>
           <th>End</th>
-          <th>Duration, min</th>
+          <th>Duration</th>
         </tr>
       </thead>
       <tbody>
@@ -289,3 +289,4 @@ function render_history_table() {
     const awsHistoryDiv = document.getElementById('aws_history');
     awsHistoryDiv.appendChild(table);
 }
+module.exports = { secondsToHHMMSS, mergeAccountAndColors, mergeArrays };

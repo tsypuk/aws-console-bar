@@ -1,44 +1,27 @@
-function secondsToHHMMSS(seconds) {
-    // get hours from seconds
-    hours = 0
-    if (seconds => 3600) {
-        hours = Math.floor(seconds / 3600);
+const get = jest.fn()
+const set = jest.fn()
+global.chrome = {
+    storage: {
+        local: {
+            set,
+            get
+        },
+        sync: {
+            set,
+            get,
+        }
     }
-    let minutes = Math.floor((seconds % 3600) / 60);
-    let secondsRemainder = seconds % 60;
-
-    minutes = String(minutes).padStart(2, '0');
-    hours = String(hours).padStart(2, '0');
-    secondsRemainder = String(secondsRemainder).padStart(2, '0');
-
-    return `${hours}:${minutes}:${secondsRemainder}`;
 }
-
-
-function mergeArrays(...arrays) {
-    let result = []
-
-    arrays.forEach(array => {
-        array.forEach((value_array, idx) => {
-            value_array.forEach((value, index) => {
-                if (result[index] == undefined) {
-                    result[index] = 0
-                }
-                result[index] += value
-            })
-        })
-    })
-    return result
-}
-
-function mergeAccountAndColors(accounts, colors) {
-    let result = new Map()
-
-    for (i = 0; i < colors.length; i++) {
-        result.set(accounts[i], colors[i])
+document = {
+    getElementById: () => {
     }
-    return result
 }
+
+echarts = {
+    init: jest.fn()
+}
+
+const {secondsToHHMMSS, mergeAccountAndColors, mergeArrays} = require('../history');
 
 test("Test Account and Colors merge", () => {
     result = mergeAccountAndColors(["a", "b", "c", "d"], ["red", "green", "blue"])
