@@ -23,20 +23,6 @@ echarts = {
 
 const {secondsToHHMMSS, mergeAccountAndColors, mergeArrays} = require('../history');
 
-test("Test Account and Colors merge", () => {
-    result = mergeAccountAndColors(["a", "b", "c", "d"], ["red", "green", "blue"])
-
-    expect(result.size).toEqual(3)
-    expect(result.has("a")).toEqual(true)
-    expect(result.has("b")).toEqual(true)
-    expect(result.has("c")).toEqual(true)
-    expect(result.has("d")).toEqual(false)
-
-    expect(result.get("a")).toEqual("red")
-    expect(result.get("b")).toEqual("green")
-    expect(result.get("c")).toEqual("blue")
-});
-
 describe('mergeAccountAndColors', () => {
     test.each([
         [["a", "b", "c", "d"], ["red", "green", "blue"], new Map([
@@ -68,15 +54,37 @@ describe('mergeAccountAndColors', () => {
     });
 });
 
-test("Merge of arrays with sum elements", () => {
-
-    accounts = new Map()
-    accounts.set("1", [0, 0, 0, 0, 0, 0, 0, 0, 109, 0])
-    accounts.set("2", [0, 0, 0, 0, 0, 0, 0, 0, 0, 3708])
-
-    expect(mergeArrays(
-        accounts
-    )).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 109, 3708])
+describe('mergeArrays', () => {
+    test.each([
+        [
+            new Map([
+                ["1", [0, 0, 0, 0, 0, 0, 0, 0, 109, 0]],
+                ["2", [0, 0, 0, 0, 0, 0, 0, 0, 0, 3708]]
+            ]),
+            [0, 0, 0, 0, 0, 0, 0, 0, 109, 3708]
+        ],
+        [
+            new Map([
+                ["1", [1, 2, 3]],
+                ["2", [4, 5, 6]]
+            ]),
+            [5, 7, 9]
+        ],
+        [
+            new Map([
+                ["1", [0, 0, 0]],
+                ["2", [0, 0, 0]]
+            ]),
+            [0, 0, 0]
+        ],
+        [
+            new Map(),
+            []
+        ]
+    ])('merges arrays with sum of elements', (accounts, expected) => {
+        const result = mergeArrays(accounts);
+        expect(result).toEqual(expected);
+    });
 });
 
 describe('secondsToHHMMSS', () => {
