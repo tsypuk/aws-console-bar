@@ -6,6 +6,11 @@
     "test": "jest",
     "release": "standard-version"
   },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/tests/**/*.js"
+    ]
+  },
   "keywords": [],
   "author": "",
   "license": "MIT",
