@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.16.0](https://github.com/tsypuk/aws-console-bar/compare/v1.15.1...v1.16.0) (2024-02-28)
+
+
+### Features
+
+* add color for each aws account on registration ([0630ccc](https://github.com/tsypuk/aws-console-bar/commit/0630ccc61990107fdd856ec551b4b91aa020f239))
+* render bar color from default to blue change on account selection ([c0fe297](https://github.com/tsypuk/aws-console-bar/commit/c0fe2979e392d33ca0f42cb30852599eb0a89db5))
+
 ### [1.15.1](https://github.com/tsypuk/aws-console-bar/compare/v1.15.0...v1.15.1) (2024-02-25)
 
 ## [1.15.0](https://github.com/tsypuk/aws-console-bar/compare/v1.14.0...v1.15.0) (2024-02-24)

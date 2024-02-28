@@ -1,6 +1,6 @@
 {
   "name": "aws_extension",
-  "version": "1.15.1",
+  "version": "1.16.0",
   "main": "background-service-worker.js",
   "scripts": {
     "test": "jest",
