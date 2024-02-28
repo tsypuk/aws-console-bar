@@ -7,6 +7,8 @@ const newsLink = document.createElement('a');
 const leftContentDiv = document.createElement('div')
 const barDiv = document.createElement('div')
 
+const circleDiv = document.createElement('div');
+
 const registerButton = document.createElement('button')
 
 window.onload = function exampleFunction() {
@@ -87,6 +89,9 @@ let renderBar = () => {
                 if (prevAccountText !== accountText) {
                     accountTextElement.textContent = accountText
                     prevAccountText = accountText
+                    if (prevAccountText !== `AWS Account: Unknown`) {
+                        circleDiv.style.backgroundColor = "blue"
+                    }
                 }
             })
         } catch (error) {
@@ -129,10 +134,7 @@ function getAccountIDFromAWSConsole() {
             let srcAccountSpans = divs[6].querySelectorAll('span')
 
             // Extract IAM user and Account ID values
-            if ((activeSessionSpans[0].textContent.trim() === 'Currently active as:') &&
-                (activeSessionSpans[3].textContent.trim() === 'Account ID:') &&
-                (srcUserSpans[0].textContent.trim() === 'Signed in as:') &&
-                (srcAccountSpans[0].textContent.trim() === 'Account ID:')) {
+            if ((activeSessionSpans[0].textContent.trim() === 'Currently active as:') && (activeSessionSpans[3].textContent.trim() === 'Account ID:') && (srcUserSpans[0].textContent.trim() === 'Signed in as:') && (srcAccountSpans[0].textContent.trim() === 'Account ID:')) {
                 // activeRole
                 let activeRole = activeSessionSpans[1].textContent.trim();
                 // activeAccount
@@ -142,9 +144,7 @@ function getAccountIDFromAWSConsole() {
                 // srcAccount
                 let srcAccount = srcAccountSpans[1].textContent.trim()
                 return {
-                    iamUser: `${user}/${activeRole}::${srcAccount}`,
-                    accountID: activeAccount,
-                    type: 'cross-account-role'
+                    iamUser: `${user}/${activeRole}::${srcAccount}`, accountID: activeAccount, type: 'cross-account-role'
                 }
             }
         } else {
@@ -176,6 +176,11 @@ function changeProgressBar() {
         barDiv.className = "bar"
 
         leftContentDiv.className = "left-content"
+
+        // <div style="width: 100px; height: 100px; border-radius: 50%; background-color: red;"></div>
+        // change color to yellow
+        circleDiv.style = "width: 20px; height: 20px; border-radius: 50%; background-color: rgb(255, 174, 0);"
+        barDiv.appendChild(circleDiv)
         barDiv.appendChild(leftContentDiv)
 
         const newsDiv = document.createElement('div')
@@ -196,6 +201,6 @@ function changeProgressBar() {
         changeStyleToActive(false)
         renderBar()
     } else {
-        console.error('No nav element')
+        // console.error('No nav element')
     }
 }
