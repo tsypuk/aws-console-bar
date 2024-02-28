@@ -76,9 +76,9 @@ function saveAccountsToStorage(accounts) {
     exportButton.style.display = (accounts.length > 0) ? 'block' : 'none'
 }
 
-function updateAccount(accountID, accountName) {
+function updateAccount(accountID, accountName, color) {
     chrome.storage.sync.get(['aws_accounts'], result => {
-        const updatedAccounts = result.aws_accounts.map(account => (account.accountID === accountID) ? {...account, name: accountName} : account);
+        const updatedAccounts = result.aws_accounts.map(account => (account.accountID === accountID) ? {...account, name: accountName, color: color} : account);
         saveAccountsToStorage(updatedAccounts)
     })
 }
@@ -94,6 +94,7 @@ function render_accounts_table() {
             table.innerHTML = `
       <thead>
         <tr>
+          <th>Color</th>
           <th>Account ID</th>
           <th>Alias</th>
           <th>Update</th>
@@ -110,6 +111,11 @@ function render_accounts_table() {
             result.aws_accounts.forEach(account => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
+        <td>
+        <div class="colorcontainer">
+        <input id="color_${account.accountID}" type="color" value="${account.color}" class="circle"/>
+        </div>
+        </td>
         <td>${account.accountID}</td>
         <td><input type="text" id="account_name_${account.accountID}" value="${account.name}" class="form-control me-2"></td>
         <td><button id="update_${account.accountID}" class="btn btn-warning">Update</button></td>
@@ -129,8 +135,10 @@ function render_accounts_table() {
                     const buttonId = updateButton.id; // Get the unique ID of the clicked button
                     const accountID = buttonId.replace(new RegExp(`^${'update_'}`), '');
                     const inputAccountName = document.getElementById(`account_name_${accountID}`);
+                    const color = document.getElementById(`color_${accountID}`).value;
                     const accountName = inputAccountName.value;
-                    updateAccount(accountID, accountName)
+                    console.log(accountID, accountName, color)
+                    updateAccount(accountID, accountName, color)
                 })
 
             })
