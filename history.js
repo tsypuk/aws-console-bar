@@ -52,14 +52,14 @@ aws_accounts = new Map()
 
 chrome.storage.sync.get(['aws_accounts'], result => {
     result.aws_accounts.forEach(item => {
-        aws_accounts.set(item.accountID, item.name)
+        aws_accounts.set(item.accountID, item)
     })
     render_history_table()
 })
 
 function enrichAccountName(accountId) {
     if (aws_accounts.has(accountId)) {
-        return aws_accounts.get(accountId)
+        return aws_accounts.get(accountId).name
     } else {
         return accountId
     }
@@ -143,18 +143,23 @@ function render_history_table() {
             data = []
             for (let [account, value] of accounts) {
                 series.push({
-                    name: account, type: 'bar', data: value
+                    name: account, type: 'bar', data: value, color: aws_accounts.get(account).color, label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    }
                 })
                 data.push(account)
             }
 
+            const colors = ['#5470C6', '#91CC75', '#EE6666'];
+
             series.push({
-                name: 'AWS Session', type: 'line', data: mergeArrays(accounts)
+                name: 'AWS Session', type: 'line', data: mergeArrays(accounts), color: colors[2]
             })
 
             data.push('AWS Session')
-
-            const colors = ['#5470C6', '#91CC75', '#EE6666'];
 
             var option = {
                 title: {
@@ -223,14 +228,14 @@ function render_history_table() {
             option && myChart.setOption(option);
 
             myChartColors = []
-            myChart.getModel().getSeries().map(s => {
-                myChartColors.push(myChart.getVisual({seriesIndex: s.seriesIndex}, 'color'))
-            })
+
+            // myChart.getModel().getSeries().map(s => {
+            //     myChartColors.push(myChart.getVisual({seriesIndex: s.seriesIndex}, 'color'))
+            // })
 
 
             // prepare color map
             color_account_map = mergeAccountAndColors(data, myChartColors)
-            console.log(color_account_map)
             // data
             // Table Object
 
@@ -268,9 +273,7 @@ function render_history_table() {
 
                 const span = document.createElement('span');
                 span.className = "circle"
-                console.log(item.Account)
-                console.log(color_account_map.get(item.Account))
-                span.style.backgroundColor = color_account_map.get(item.Account)
+                span.style.backgroundColor = aws_accounts.get(item.Account).color
                 circleCell.appendChild(span)
 
                 newRow.appendChild(idCell);

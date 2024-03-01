@@ -11,9 +11,16 @@ const circleDiv = document.createElement('div');
 
 const registerButton = document.createElement('button')
 
-window.onload = function exampleFunction() {
-    changeProgressBar()
-}
+aws_accounts = new Map()
+
+chrome.storage.sync.get(['aws_accounts'], result => {
+    result.aws_accounts.forEach(item => {
+        aws_accounts.set(item.accountID, item)
+    })
+    window.onload = () => {
+        changeProgressBar()
+    }
+})
 
 registerButton.style.display = 'none'
 registerButton.innerText = 'Register Account'
@@ -90,7 +97,9 @@ let renderBar = () => {
                     accountTextElement.textContent = accountText
                     prevAccountText = accountText
                     if (prevAccountText !== `AWS Account: Unknown`) {
-                        circleDiv.style.backgroundColor = "blue"
+                        if (aws_accounts.get(activeAccount) != undefined) {
+                            circleDiv.style.backgroundColor = aws_accounts.get(activeAccount).color
+                        }
                     }
                 }
             })
@@ -179,7 +188,7 @@ function changeProgressBar() {
 
         // <div style="width: 100px; height: 100px; border-radius: 50%; background-color: red;"></div>
         // change color to yellow
-        circleDiv.style = "width: 20px; height: 20px; border-radius: 50%; background-color: rgb(255, 174, 0);"
+        circleDiv.style = "width: 20px; height: 20px; border-radius: 50%; background-color: rgb(255, 0, 0);"
         barDiv.appendChild(circleDiv)
         barDiv.appendChild(leftContentDiv)
 
