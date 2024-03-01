@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.17.0](https://github.com/tsypuk/aws-console-bar/compare/v1.16.0...v1.17.0) (2024-03-01)
+
+
+### Features
+
+* add color selector on account registration stage ([995799c](https://github.com/tsypuk/aws-console-bar/commit/995799c2e4ce8bbd8df66bf36e838adcee31f45d))
+* render of each account in table and graph; render circle with account color on main console page ([c79342d](https://github.com/tsypuk/aws-console-bar/commit/c79342d72cb565a76ae700bc30c4f5ef375eba7b))
+
 ## [1.16.0](https://github.com/tsypuk/aws-console-bar/compare/v1.15.1...v1.16.0) (2024-02-28)
 
 
