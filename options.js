@@ -3,6 +3,7 @@ const exportButton = document.getElementById('export-button')
 
 const accountIdInput = document.getElementById('account-input')
 const accountNameInput = document.getElementById('name-input')
+const accountColorInput = document.getElementById('color-input')
 
 exportButton.addEventListener('click', () => {
     chrome.storage.sync.get(['aws_accounts'], result => {
@@ -137,7 +138,6 @@ function render_accounts_table() {
                     const inputAccountName = document.getElementById(`account_name_${accountID}`);
                     const color = document.getElementById(`color_${accountID}`).value;
                     const accountName = inputAccountName.value;
-                    console.log(accountID, accountName, color)
                     updateAccount(accountID, accountName, color)
                 })
 
@@ -161,7 +161,9 @@ function clear_account_input() {
 saveButton.addEventListener('click', () => {
     // TODO: add user input validation
     let aws_account = {
-        accountID: accountIdInput.value, name: accountNameInput.value,
+        accountID: accountIdInput.value,
+        name: accountNameInput.value,
+        color: accountColorInput.value
     }
     addAccount(aws_account)
 })

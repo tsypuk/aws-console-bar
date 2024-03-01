@@ -16,6 +16,7 @@
             border-radius: 20px;
             overflow: hidden;
         }
+
         .colorcontainer > input[type='color'] {
             opacity: 1;
             width: 60px;
@@ -48,6 +49,16 @@
             </td>
             <td>
                 <input type="text" id="name-input" class="form-control me-2" placeholder="Enter AWS Account Alias" aria-label="Enter AWS Account Alias">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="name-input">Color:</label>
+            </td>
+            <td>
+                <div class="colorcontainer">
+                    <input id="color-input" type="color" class="circle" placeholder="Select Color" aria-label="Select Color"/>
+                </div>
             </td>
         </tr>
     </table>
