@@ -32,3 +32,6 @@ https://chrome.google.com/webstore/devconsole/
 - update online documentation
 - detect non-home region feature
 - add pagination to session history
+- update popup with more styles
+- import accounts into extension from JSON
+- random color for new account created (if non was defined)

@@ -1,9 +1,25 @@
+function getRandomColor() {
+    var red = Math.floor(Math.random() * 256);
+    var green = Math.floor(Math.random() * 256);
+    var blue = Math.floor(Math.random() * 256);
+
+    // Convert the values to a hexadecimal string and return it
+    return "#" + componentToHex(red) + componentToHex(green) + componentToHex(blue);
+}
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
 const saveButton = document.getElementById('save-button')
 const exportButton = document.getElementById('export-button')
 
 const accountIdInput = document.getElementById('account-input')
 const accountNameInput = document.getElementById('name-input')
 const accountColorInput = document.getElementById('color-input')
+
+accountColorInput.value = getRandomColor()
 
 exportButton.addEventListener('click', () => {
     chrome.storage.sync.get(['aws_accounts'], result => {
