@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.18.0](https://github.com/tsypuk/aws-console-bar/compare/v1.17.0...v1.18.0) (2024-03-02)
+
+
+### Features
+
+* generate random color for account if the color was not selected ([0f599ba](https://github.com/tsypuk/aws-console-bar/commit/0f599baf139311a0a7b061498e0675a7580d579d))
+* import file with exported aws account settings ([556854f](https://github.com/tsypuk/aws-console-bar/commit/556854f5802fd9b94ab51e1fbf422c3b38b2ed41))
+* render accounts table on multi file import ([922dc8e](https://github.com/tsypuk/aws-console-bar/commit/922dc8e1a73045e391aaddd0d93e503fed8fd851))
+
 ## [1.17.0](https://github.com/tsypuk/aws-console-bar/compare/v1.16.0...v1.17.0) (2024-03-01)
 
 
