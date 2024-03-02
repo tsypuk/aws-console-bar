@@ -14,6 +14,8 @@ function componentToHex(c) {
 
 const saveButton = document.getElementById('save-button')
 const exportButton = document.getElementById('export-button')
+const importButton = document.getElementById('import-button')
+
 
 const accountIdInput = document.getElementById('account-input')
 const accountNameInput = document.getElementById('name-input')
@@ -35,6 +37,26 @@ exportButton.addEventListener('click', () => {
             })
         }
     })
+})
+
+importButton.addEventListener('click', () => {
+    let fileInput = document.getElementById('fileInput');
+    for (const file of fileInput.files) {
+        console.log(`Processing ${file}`)
+
+        let reader = new FileReader();
+
+        reader.onload = function (e) {
+            let fileContent = e.target.result;
+            let accountImportedJsonData = JSON.parse(fileContent);
+            saveAccountsToStorage(accountImportedJsonData)
+            clear_accounts_table()
+            render_accounts_table()
+        };
+
+        reader.readAsText(file);
+    }
+
 })
 
 chrome.storage.sync.get(['aws_accounts'], result => {
