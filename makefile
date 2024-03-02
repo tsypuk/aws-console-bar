@@ -34,7 +34,7 @@ doc-prod:
 	JEKYLL_ENV=production && cd docs && bundle exec jekyll serve --trace
 
 release:
-	npm run release && git push --tags
+	npm run release && git push --tags && git push
 
 test:
 	$(call colorecho, "Run all Tests...")
