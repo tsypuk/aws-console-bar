@@ -21,6 +21,8 @@ const accountIdInput = document.getElementById('account-input')
 const accountNameInput = document.getElementById('name-input')
 const accountColorInput = document.getElementById('color-input')
 
+const awsAccountsDiv = document.getElementById('aws_accounts');
+
 accountColorInput.value = getRandomColor()
 
 exportButton.addEventListener('click', () => {
@@ -31,27 +33,36 @@ exportButton.addEventListener('click', () => {
             const url = URL.createObjectURL(jsonBlob);
 
             chrome.downloads.download({
-                url: url,
-                filename: 'exported_aws_accounts.json',
-                saveAs: true
+                url: url, filename: 'exported_aws_accounts.json', saveAs: true
             })
         }
     })
 })
 
+function mergeJsonData(mergedData, newData) {
+    newData.forEach(function (obj) {
+        if (!mergedData.some(search => search.accountID === obj.accountID && search.color == obj.color && search.name == obj.name)) {
+            mergedData.push(obj)
+        }
+    });
+    return mergedData
+}
+
 importButton.addEventListener('click', () => {
     let fileInput = document.getElementById('fileInput');
-    for (const file of fileInput.files) {
-        console.log(`Processing ${file}`)
 
+    var accountImportedJsonData = []
+    for (const file of fileInput.files) {
         let reader = new FileReader();
 
         reader.onload = function (e) {
+
             let fileContent = e.target.result;
-            let accountImportedJsonData = JSON.parse(fileContent);
-            saveAccountsToStorage(accountImportedJsonData)
+            let jsonData = JSON.parse(fileContent);
+            mergeJsonData(accountImportedJsonData, jsonData);
             clear_accounts_table()
-            render_accounts_table()
+            saveAccountsToStorage(accountImportedJsonData)
+            render(accountImportedJsonData)
         };
 
         reader.readAsText(file);
@@ -122,15 +133,13 @@ function updateAccount(accountID, accountName, color) {
     })
 }
 
-function render_accounts_table() {
-    // Populate the table with data from the accounts array
-    chrome.storage.sync.get(['aws_accounts'], result => {
-        exportButton.style.display = (result.aws_accounts.length > 0) ? 'block' : 'none'
-        if (result.aws_accounts.length > 0) {
+let render = (aws_accounts) => {
+    exportButton.style.display = (aws_accounts.length > 0) ? 'block' : 'none'
+    if (aws_accounts.length > 0) {
 
-            const table = document.createElement('table');
-            table.className = "table table-hover"
-            table.innerHTML = `
+        const table = document.createElement('table');
+        table.className = "table table-hover"
+        table.innerHTML = `
       <thead>
         <tr>
           <th>Color</th>
@@ -144,12 +153,12 @@ function render_accounts_table() {
       </tbody>
     `;
 
-            const tbody = table.querySelector('tbody');
+        const tbody = table.querySelector('tbody');
 
 
-            result.aws_accounts.forEach(account => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
+        aws_accounts.forEach(account => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
         <td>
         <div class="colorcontainer">
         <input id="color_${account.accountID}" type="color" value="${account.color}" class="circle"/>
@@ -160,33 +169,36 @@ function render_accounts_table() {
         <td><button id="update_${account.accountID}" class="btn btn-warning">Update</button></td>
         <td><button id="del_${account.accountID}" class="btn btn-danger">Delete</button></td>
       `;
-                tbody.appendChild(row);
-                const deleteButton = row.querySelector(`#del_${account.accountID}`);
-                const updateButton = row.querySelector(`#update_${account.accountID}`);
+            tbody.appendChild(row);
+            const deleteButton = row.querySelector(`#del_${account.accountID}`);
+            const updateButton = row.querySelector(`#update_${account.accountID}`);
 
-                deleteButton.addEventListener("click", function () {
-                    const buttonId = deleteButton.id; // Get the unique ID of the clicked button
-                    const accountID = buttonId.replace(new RegExp(`^${'del_'}`), '');
-                    deleteAccount(accountID)
-                })
-
-                updateButton.addEventListener("click", function () {
-                    const buttonId = updateButton.id; // Get the unique ID of the clicked button
-                    const accountID = buttonId.replace(new RegExp(`^${'update_'}`), '');
-                    const inputAccountName = document.getElementById(`account_name_${accountID}`);
-                    const color = document.getElementById(`color_${accountID}`).value;
-                    const accountName = inputAccountName.value;
-                    updateAccount(accountID, accountName, color)
-                })
-
+            deleteButton.addEventListener("click", function () {
+                const buttonId = deleteButton.id; // Get the unique ID of the clicked button
+                const accountID = buttonId.replace(new RegExp(`^${'del_'}`), '');
+                deleteAccount(accountID)
             })
-            // Inject the table into the div with id "aws_accounts"
-            const awsAccountsDiv = document.getElementById('aws_accounts');
-            awsAccountsDiv.appendChild(table);
-        }
-    })
 
+            updateButton.addEventListener("click", function () {
+                const buttonId = updateButton.id; // Get the unique ID of the clicked button
+                const accountID = buttonId.replace(new RegExp(`^${'update_'}`), '');
+                const inputAccountName = document.getElementById(`account_name_${accountID}`);
+                const color = document.getElementById(`color_${accountID}`).value;
+                const accountName = inputAccountName.value;
+                updateAccount(accountID, accountName, color)
+            })
 
+        })
+        // Inject the table into the div with id "aws_accounts"
+        awsAccountsDiv.appendChild(table);
+    } else {
+        console.log('no accounts')
+    }
+}
+
+function render_accounts_table() {
+    // Populate the table with data from the accounts array
+    chrome.storage.sync.get(['aws_accounts'], result => render(result.aws_accounts))
 }
 
 render_accounts_table()
@@ -199,9 +211,7 @@ function clear_account_input() {
 saveButton.addEventListener('click', () => {
     // TODO: add user input validation
     let aws_account = {
-        accountID: accountIdInput.value,
-        name: accountNameInput.value,
-        color: accountColorInput.value
+        accountID: accountIdInput.value, name: accountNameInput.value, color: accountColorInput.value
     }
     addAccount(aws_account)
 })
