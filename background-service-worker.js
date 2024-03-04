@@ -20,7 +20,7 @@ chrome.runtime.onInstalled.addListener(details => {
 
     chrome.storage.sync.set({
         settings: {
-            notificationTime: 45, rssReindexInterval: 7, sessionInterval: 1, newsInterval: 1
+            rssReindexInterval: 7, sessionInterval: 1, newsInterval: 1
         }
 
     })
@@ -35,10 +35,6 @@ chrome.runtime.onInstalled.addListener(details => {
 })
 
 chrome.storage.sync.get(['settings', 'rssUpdateTimeStamp'], result => {
-
-    // chrome.alarms.create(name = 'session-time', {
-    //     periodInMinutes: result.settings['sessionInterval'],
-    // })
 
     chrome.alarms.create(name = 'rss-time', {
         periodInMinutes: result.settings['newsInterval'],
@@ -67,23 +63,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     })
 
     switch (alarm.name) {
-        // case 'session-time':
-        //     chrome.storage.sync.get(["timer"], (res) => {
-        //         const time = res.timer ?? 0
-        //         chrome.storage.sync.set({
-        //             timer: time + 1,
-        //         })
-        //         chrome.action.setBadgeText({
-        //             text: `${secondsToHHMMSS(time)}`
-        //         })
-        //         const internal = 45
-        //         if (time % internal === 0) {
-        //             this.registration.showNotification("Chrome Timer Extentions", {
-        //                 body: "45 min has passed!", icon: "icon.pnh"
-        //             })
-        //         }
-        //     })
-        //     break
         case 'rss-time':
             console.log('Time to refresh RSS')
 
@@ -228,27 +207,3 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 function openOptionsPage() {
     chrome.runtime.openOptionsPage();
 }
-
-
-// chrome.storage.onChanged.addListener((changes, namespace) => {
-//     for (let [key, {oldValue, newValue}] of Object.entries(changes)) {
-//         console.log(
-//             `Storage key "${key}" in namespace "${namespace}" changed.`,
-//             `Old value was "${oldValue}", new value is "${newValue}".`
-//         );
-//     }
-// })
-
-
-// Watch for changes to the user's options & apply them
-// chrome.storage.onChanged.addListener((changes, area) => {
-//     if (area === 'sync' && changes.session?.newValue) {
-//         console.log(`New value for session ${changes.session?.newValue}`)
-//         // user switched the session
-//
-//
-//         // const debugMode = Boolean(changes.options.newValue.debug);
-//         // console.log('enable debug mode?', debugMode);
-//         // setDebugMode(debugMode);
-//     }
-// })
