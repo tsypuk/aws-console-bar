@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.19.0](https://github.com/tsypuk/aws-console-bar/compare/v1.18.0...v1.19.0) (2024-03-04)
+
+
+### Features
+
+* download permission removed; account export JSON can be downloaded from text-area ([bfe0d18](https://github.com/tsypuk/aws-console-bar/commit/bfe0d18432f36127b51dccadd751fb8b11a0d7f8))
+* remove notification of 45 min session ([331ef11](https://github.com/tsypuk/aws-console-bar/commit/331ef115ae9858a281ae2bf4d47f7fa9aa36a840))
+
 ## [1.18.0](https://github.com/tsypuk/aws-console-bar/compare/v1.17.0...v1.18.0) (2024-03-02)
 
 
