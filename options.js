@@ -29,12 +29,10 @@ exportButton.addEventListener('click', () => {
     chrome.storage.sync.get(['aws_accounts'], result => {
         if (result.aws_accounts.length > 0) {
             const jsonData = result.aws_accounts
-            const jsonBlob = new Blob([JSON.stringify(jsonData, null, 2)], {type: 'application/json'});
-            const url = URL.createObjectURL(jsonBlob);
-
-            chrome.downloads.download({
-                url: url, filename: 'exported_aws_accounts.json', saveAs: true
-            })
+            const textArea = document.getElementById('accounts_export')
+            textArea.value = JSON.stringify(jsonData, null, 2);
+            document.getElementById('div_accounts_export').hidden = false
+            textArea.select();
         }
     })
 })

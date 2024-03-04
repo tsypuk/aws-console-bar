@@ -7,7 +7,6 @@
     "storage",
     "alarms",
     "tabs",
-    "downloads",
     "unlimitedStorage"
   ],
   "options_page": "options.html",
