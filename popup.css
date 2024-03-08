@@ -1,9 +1,26 @@
 body {
-    width: 400px;
+    width: 300px;
     height: 100px;
     padding: 10px;
+    overflow: hidden;
+    color: #000;
+    background-color: #f0f0f0;
 }
 
 h1, h2 {
     color: darkblue;
+}
+.colorcontainer {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.colorcontainer > input[type='color'] {
+    opacity: 1;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    margin: -30px 0 0 -30px;
 }
