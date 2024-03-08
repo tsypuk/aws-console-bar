@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.20.0](https://github.com/tsypuk/aws-console-bar/compare/v1.19.0...v1.20.0) (2024-03-08)
+
+
+### Features
+
+* add aws accounts to popup window; move styles between css ([ab3e219](https://github.com/tsypuk/aws-console-bar/commit/ab3e219d76a0964148b306fb7e2556b28eed7d7d))
+
 ## [1.19.0](https://github.com/tsypuk/aws-console-bar/compare/v1.18.0...v1.19.0) (2024-03-04)
 
 
