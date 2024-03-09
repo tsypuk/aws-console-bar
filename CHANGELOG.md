@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.21.0](https://github.com/tsypuk/aws-console-bar/compare/v1.20.0...v1.21.0) (2024-03-09)
+
+
+### Features
+
+* move to typescript; add react; add types; configure webpack ([baca33b](https://github.com/tsypuk/aws-console-bar/commit/baca33bc1d3ae278c9c0cf83067271fbb3b5150e))
+
 ## [1.20.0](https://github.com/tsypuk/aws-console-bar/compare/v1.19.0...v1.20.0) (2024-03-08)
 
 
