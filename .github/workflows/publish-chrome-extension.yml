@@ -3,7 +3,7 @@ name: Publish Chrome Extension
 on:
   push:
     branches:
-      - main
+      - main2
 
 jobs:
   publish:
