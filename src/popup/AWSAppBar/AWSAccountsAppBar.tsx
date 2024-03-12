@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import {styled, alpha} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
+import {useState} from "react";
 
 const Search = styled('div')(({theme}) => ({
     position: 'relative',
@@ -50,7 +51,23 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 }));
 
 export default function AWSAccountsAppBar() {
+
+    const [inputValue, setInputValue] = useState('');
+
+    // Click handler function
+    const handleClick = () => {
+        console.log('Text input clicked');
+        console.log('Input value:', inputValue);
+    };
+
+    // Change handler function
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+        console.log(event.target.value)
+    };
+
     return (
+
         <Box sx={{flexGrow: 1}}>
             <AppBar position="fixed">
                 <Toolbar variant="dense">
@@ -65,6 +82,9 @@ export default function AWSAccountsAppBar() {
                         <StyledInputBase
                             placeholder="Search…"
                             inputProps={{'aria-label': 'search'}}
+                            value={inputValue}
+                            onChange={handleChange} // Attach onChange listener
+                            onClick={handleClick} // Attach onClick listener
                         />
                     </Search>
                 </Toolbar>
