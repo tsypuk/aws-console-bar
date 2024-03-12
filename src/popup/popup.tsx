@@ -4,6 +4,7 @@ import AccountCard from "./AccountCard"
 import './popup.css'
 import {AWSAccount, getAccounts} from "../utils/api";
 import AccountGraph from "./AccountGraph";
+import AWSAccountsAppBar from "./AWSAppBar/AWSAccountsAppBar";
 
 const App: React.FC<{}> = () => {
     const [accounts, setAccounts] = useState<AWSAccount[]>([]);
@@ -18,6 +19,7 @@ const App: React.FC<{}> = () => {
 
     return (
         <div>
+            <AWSAccountsAppBar/>
             <section>
                 <h2>Data</h2>
                 {accounts.map((account) => (
@@ -31,15 +33,6 @@ const App: React.FC<{}> = () => {
     )
 
 };
-
-// return (
-//     <div>
-//         <h1>Available AWS accounts</h1>
-//         <AccountCard name="1111-2222-2222"/>
-//         <AccountCard name="2222-2222-2222"/>
-//     </div>
-// );
-// }
 
 const rootEl = document.createElement("div");
 document.body.appendChild(rootEl);
