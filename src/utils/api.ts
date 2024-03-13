@@ -6,17 +6,22 @@ export interface AWSAccount {
     name: string
 }
 
-export async function getAccounts(): Promise<AWSAccount[]> {
-    // return [
-    //     { accountID: "1111-1111-1111", name: 'Account 1', color: 'red' },
-    //     { accountID: "2222-2222-1111", name: 'Account 22', color: 'blue' },
-    // ];
+export async function getAccounts(accountPattern: string): Promise<AWSAccount[]> {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get([STORAGE_ALIAS], (result) => {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError);
             } else {
-                const awsAccounts: AWSAccount[] = result.aws_accounts || [];
+                let awsAccounts: AWSAccount[];
+                if (accountPattern === '' || accountPattern === undefined) {
+                    awsAccounts = (result.aws_accounts || [])
+                } else {
+                    awsAccounts = (result.aws_accounts || [])
+                        .filter(
+                            (account => account.name.toLowerCase().includes(accountPattern.toLowerCase()))
+                            // (account => account.accountID.toLowerCase().includes(accountPattern.toLowerCase()))
+                        );
+                }
                 resolve(awsAccounts);
             }
         });

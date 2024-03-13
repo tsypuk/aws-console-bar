@@ -7,19 +7,26 @@ import AccountGraph from "./AccountGraph";
 import AWSAccountsAppBar from "./AWSAppBar/AWSAccountsAppBar";
 
 const App: React.FC<{}> = () => {
+    const initialState = {
+        // Define your initial state here
+    };
     const [accounts, setAccounts] = useState<AWSAccount[]>([]);
+    const fetchData = async (accountPattern: string) => {
+        const data = await getAccounts(accountPattern);
+        setAccounts([])
+        setAccounts(data);
+        console.log(data);
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            const data = await getAccounts();
-            setAccounts(data);
-        };
-        fetchData();
+        fetchData('');
     }, []);
 
     return (
         <div>
-            <AWSAccountsAppBar/>
+            <section>
+                <AWSAccountsAppBar onClick={fetchData}></AWSAccountsAppBar>
+            </section>
             <section>
                 <h2>Data</h2>
                 {accounts.map((account) => (
@@ -27,11 +34,10 @@ const App: React.FC<{}> = () => {
                 ))}
             </section>
             <section>
-                <AccountGraph></AccountGraph>
+                <AccountGraph/>
             </section>
         </div>
     )
-
 };
 
 const rootEl = document.createElement("div");

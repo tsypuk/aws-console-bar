@@ -50,24 +50,20 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
     },
 }));
 
-export default function AWSAccountsAppBar() {
+type ChildProps = {
+    onClick: (accountPattern: string) => void;
+};
+export default function AWSAccountsAppBar<ChildProps>({onClick}) {
 
     const [inputValue, setInputValue] = useState('');
 
-    // Click handler function
-    const handleClick = () => {
-        console.log('Text input clicked');
-        console.log('Input value:', inputValue);
-    };
-
     // Change handler function
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        onClick(event.target.value);
         setInputValue(event.target.value);
-        console.log(event.target.value)
     };
 
     return (
-
         <Box sx={{flexGrow: 1}}>
             <AppBar position="fixed">
                 <Toolbar variant="dense">
@@ -84,7 +80,6 @@ export default function AWSAccountsAppBar() {
                             inputProps={{'aria-label': 'search'}}
                             value={inputValue}
                             onChange={handleChange} // Attach onChange listener
-                            onClick={handleClick} // Attach onClick listener
                         />
                     </Search>
                 </Toolbar>
