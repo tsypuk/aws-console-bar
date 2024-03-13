@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.23.0](https://github.com/tsypuk/aws-console-bar/compare/v1.22.0...v1.23.0) (2024-03-13)
+
+
+### Features
+
+* add filtering predicate based on account name ([787681d](https://github.com/tsypuk/aws-console-bar/commit/787681d262457a4bbb763474cf1e52a3f2d69939))
+* add handler for account input ([d758a1c](https://github.com/tsypuk/aws-console-bar/commit/d758a1c3b286729bd64866c35130e6a2a3589591))
+* add menu to popup with search ([5fe6d01](https://github.com/tsypuk/aws-console-bar/commit/5fe6d013d15bfdcc51fa2eecc1dd33ad144371e1))
+
 ## [1.22.0](https://github.com/tsypuk/aws-console-bar/compare/v1.21.0...v1.22.0) (2024-03-11)
 
 
