@@ -24,15 +24,14 @@ const App: React.FC<{}> = () => {
 
     return (
         <div>
-            <section>
+            <div>
                 <AWSAccountsAppBar onClick={fetchData}></AWSAccountsAppBar>
-            </section>
-            <section>
-                <h2>Data</h2>
+            </div>
+            <div className="content">
                 {accounts.map((account) => (
                     <AccountCard key={account.accountID} awsAccount={account}/>
                 ))}
-            </section>
+            </div>
             <section>
                 <AccountGraph/>
             </section>

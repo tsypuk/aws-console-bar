@@ -1,5 +1,7 @@
 import React from 'react';
-import {Card, Box, CardContent, Typography} from '@material-ui/core';
+import {Card, Box, CardContent} from '@material-ui/core';
+import { Button, CardActionArea, CardActions } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import {AWSAccount} from "../../utils/api";
 
 const AccountCard: React.FC<{
@@ -9,9 +11,13 @@ const AccountCard: React.FC<{
         <Box mx={'4px'} my={'6px'}>
             <Card>
                 <CardContent>
-                    <Typography variant="body2">{awsAccount.name}</Typography>
-                    <Typography variant="body2">{awsAccount.accountID}</Typography>
+                    <Typography gutterBottom variant="h5" component="div">{awsAccount.name}</Typography>
+                    <Typography variant="body2" color="text.secondary">{awsAccount.accountID}</Typography>
                 </CardContent>
+                <CardActions>
+                    <Button size="small" color="primary">Share</Button>
+                    <Button size="small" color="primary">Update</Button>
+                </CardActions>
             </Card>
         </Box>
     )
