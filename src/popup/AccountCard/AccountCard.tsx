@@ -8,11 +8,11 @@ const AccountCard: React.FC<{
     awsAccount: AWSAccount
 }> = ({awsAccount}) => {
     return (
-        <Box mx={'4px'} my={'6px'}>
+        <Box mx={'2px'} my={'2px'}>
             <Card>
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">{awsAccount.name}</Typography>
-                    <Typography variant="body2" color="text.secondary">{awsAccount.accountID}</Typography>
+                    <Typography gutterBottom variant="h5" component="div">{awsAccount.accountID}</Typography>
+                    <Typography variant="body2" color="text.secondary">{awsAccount.name}</Typography>
                 </CardContent>
                 <CardActions>
                     <Button size="small" color="primary">Share</Button>
