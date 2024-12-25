@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.24.0](https://github.com/tsypuk/aws-console-bar/compare/v1.23.0...v1.24.0) (2024-12-25)
+
+
+### Features
+
+* account page add styling align components size ([63d51c0](https://github.com/tsypuk/aws-console-bar/commit/63d51c07867f87e0b6e8ba2d43478c6ba363a86a))
+
 ## [1.23.0](https://github.com/tsypuk/aws-console-bar/compare/v1.22.0...v1.23.0) (2024-03-13)
 
 
