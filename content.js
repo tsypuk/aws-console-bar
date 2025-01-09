@@ -132,11 +132,23 @@ function getRegion() {
 }
 
 function getAccountIDFromAWSConsole() {
+    console.log("getAccountIDFromAWSConsole")
     let accountDetailMenu = document.querySelector("#menu--account")
     if (accountDetailMenu) {
         let divs = accountDetailMenu.querySelectorAll('div')
+        // TODO should be better marker for role identification
+        console.log(divs.length)
+        if (divs.length === 22) {
+            let accountDetailMenu = divs[0]
+            let spans = accountDetailMenu.querySelectorAll('span')
 
-        if (divs.length > 12) {
+            let iamUser = spans[7].textContent.trim() // Assuming IAM user is the 4th span element
+            let accountID = spans[3].textContent.trim() // Assuming Account ID is the 2nd span element
+
+            let type = 'IAM Identity Center user'
+            return {iamUser, accountID, type}
+
+        } else if (divs.length > 22) {
             // Assumed cross-account role
             let activeSessionSpans = divs[1].querySelectorAll('span')
             let srcUserSpans = divs[5].querySelectorAll('span')
@@ -153,7 +165,9 @@ function getAccountIDFromAWSConsole() {
                 // srcAccount
                 let srcAccount = srcAccountSpans[1].textContent.trim()
                 return {
-                    iamUser: `${user}/${activeRole}::${srcAccount}`, accountID: activeAccount, type: 'cross-account-role'
+                    iamUser: `${user}/${activeRole}::${srcAccount}`,
+                    accountID: activeAccount,
+                    type: 'cross-account-role'
                 }
             }
         } else {
